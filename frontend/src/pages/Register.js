@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState,useRef } from "react";
+import styles from '../styles/components/auth.module.css';
 import { useAuth } from "../hooks/auth";
 
 const Register = () => {
@@ -60,20 +61,21 @@ const Register = () => {
                         value={formData.email}
                         onChange={(e) => setFormData((old) => ({ ...old, username: e.target.value }))}
                     />
-                      <div className="pass-wrap"><input name="password" placeholder="*******" type={passVisible?"text":"password"} required  onChange={(e) => setFormData((old) => ({ ...old, password: e.target.value }))}/><i class={passVisible?"fas fa-eye-slash":"fas fa-eye"} onClick={togglePass}></i></div>
+                      <div className={styles.passWrap}><input name="password" placeholder="*******" type={passVisible?"text":"password"} required  onChange={(e) => setFormData((old) => ({ ...old, password: e.target.value }))}/><i class={passVisible?"fas fa-eye-slash":"fas fa-eye"} onClick={togglePass}></i></div>
                     <input type="submit" value="Continue" />
                 </form>
 
-                <a href={`${process.env.REACT_APP_SERVER_URL}/api/connect/google`} className="google-a">                    <div className="google" style={{marginTop:"0"}}>
+                <a href={`${process.env.REACT_APP_SERVER_URL}/api/connect/google`} className={styles.googleA}>                    
+                <div className={styles.google} style={{marginTop:"0"}}>
                         <img src="/images/google.svg" width="25" />
                         &nbsp;&nbsp; Sign up with Google
                     </div>
                 </a>
 
-                <div className="login">
+                <div className={styles.login}>
                     Already have an account? <Link to="/login">Login</Link>
                 </div>
-                <div className="error" style={{paddingBottom:" 30px"}}>
+                <div className={styles.error} style={{paddingBottom:" 30px"}}>
                 {errorMsg.length?<i class="fas fa-exclamation-circle"></i>:<></>}<p id="error-msg">{errorMsg}</p> 
                 </div>
             </main>

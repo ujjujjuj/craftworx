@@ -4,8 +4,12 @@ nav{
     background-color: #FFFBFB;
     justify-content: space-between;    
     font-size: 0.9rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 9999;
-
+    white-space: nowrap;
     border-bottom: 1px solid rgba(84, 96, 95,50%);
 }
 
@@ -18,10 +22,10 @@ nav .right img{
     cursor: pointer;
 }
 
-nav .item.nav-search img{
+nav .item.navSearch img{
     width: 1.2em;
 }
-nav .item.nav-search{
+nav .item.navSearch{
     border: 1px solid #54605F;
 box-sizing: border-box;
 border-radius: 8px;
@@ -29,7 +33,7 @@ padding: 5px 15px;
 padding-right: 13.5px;
 }
 
-.item.nav-search input{
+.item.navSearch input{
     border: none;
     padding-right: 5px;
     font-family: 'Poppins';
@@ -56,7 +60,7 @@ nav .item:hover a{
     color: #eba0bc;
 }
 
-nav .right .item.cart-nav:hover img{
+nav .right .item.cartNav:hover img{
     filter: invert(74%) sepia(13%) saturate(882%) hue-rotate(288deg) brightness(103%) contrast(97%);
 }
 
@@ -66,7 +70,7 @@ nav .left{
     justify-content: center;
 }
 
-nav .left .logo-nav{
+nav .left .logoNav{
     margin-left: 0;
     display: flex;
 }

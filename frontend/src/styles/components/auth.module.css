@@ -3,9 +3,8 @@
 main{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding-top: 2.3em;
     align-items: center;
+    margin-top: 6em;
 }
 
 main h1{
@@ -14,12 +13,12 @@ main h1{
     font-family: 'Sacramento';
 }
 
-.pass-wrap{
+.passWrap{
     position: relative;
     margin-bottom: 16px;
     width: 100%;
 }
-.pass-wrap i{
+.passWrap i{
     position: absolute;
     top: 50%;
     right: 15px;
@@ -28,10 +27,10 @@ main h1{
     transform: translateY(-50%);
 }
 
-.pass-wrap i.fa-eye-slash{
+.passWrap i.fa-eye-slash{
     right: 14px;
 }
-.pass-wrap input{
+.passWrap input{
     width: 100%;
     margin-bottom: 0;
     
@@ -95,7 +94,7 @@ main input[type='submit']{
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
 }
 
-.google-a{
+.googleA{
     text-decoration: none;
 }
 a{
