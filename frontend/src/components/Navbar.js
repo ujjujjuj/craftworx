@@ -1,15 +1,39 @@
-import styles from "../styles/components/Navbar.module.css";
+import styles from "../styles/components/Navbar.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../helpers/auth";
 
 const Navbar = () => {
     const { user } = useAuth();
     return (
-        <nav className={styles.navContainer}>
-            <Link to="/">Home</Link>
-            <Link to="/shop">Shop</Link>
-            {user.isLoggedIn ? <Link to="/logout">Logout</Link> : <Link to="/login">Login</Link>}
-        </nav>
+         <nav>
+         <div className="left">
+         <Link to="/"> <div className="item logo-nav">
+             <img src="/images/logo.png" alt=""/>
+           </div></Link>
+           <Link to="/shop"> <div className="item">
+             Shop
+           </div></Link>
+           <div className="item">
+             About Us
+           </div>
+           <div className="item">
+             Contact
+           </div>
+         </div>
+         <div className="right">
+            <div className="item nav-search">
+           <input type={"text"} placeholder="Search Products" />
+           <img src="/images/search.svg"  alt=""/>
+            </div>
+           <div className="item cart-nav">
+               <img src="/images/cart.svg" alt=""/>
+            &nbsp; Cart
+           </div>
+           <div className="item">
+           {user.isLoggedIn ? <Link to="/logout">Logout</Link> : <Link to="/login">Login</Link>}
+           </div>
+         </div>
+       </nav>
     );
 };
 

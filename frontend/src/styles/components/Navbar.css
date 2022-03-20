@@ -1,0 +1,95 @@
+nav{
+    display: flex;
+    padding: 6px 100px;
+    background-color: #FFFBFB;
+    justify-content: space-between;    
+    font-size: 0.9rem;
+    z-index: 9999;
+
+    border-bottom: 1px solid rgba(84, 96, 95,50%);
+}
+
+nav .left img{
+    width: 3.2em;
+}
+
+nav .right img{
+    width: 1.7em;
+    cursor: pointer;
+}
+
+nav .item.nav-search img{
+    width: 1.2em;
+}
+nav .item.nav-search{
+    border: 1px solid #54605F;
+box-sizing: border-box;
+border-radius: 8px;
+padding: 5px 15px;
+padding-right: 13.5px;
+}
+
+.item.nav-search input{
+    border: none;
+    padding-right: 5px;
+    font-family: 'Poppins';
+}
+input:focus{
+    outline: none;
+}
+
+nav .item{
+    margin-left:28px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+nav .item img{
+    transition: all 0.2s ease;
+}
+nav .item:hover{
+    color: #eba0bc;
+}
+nav .item:hover a{
+    color: #eba0bc;
+}
+
+nav .right .item.cart-nav:hover img{
+    filter: invert(74%) sepia(13%) saturate(882%) hue-rotate(288deg) brightness(103%) contrast(97%);
+}
+
+nav .left{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav .left .logo-nav{
+    margin-left: 0;
+    display: flex;
+}
+nav .right{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+nav a{
+    text-decoration: none;
+    color: #000;
+    transition: color 0.2s ease;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #54605F;
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #54605F;
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: #54605F;
+  } 
