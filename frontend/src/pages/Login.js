@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useAuth } from "../helpers/auth";
 import styles from '../styles/components/auth.css';
+import { useAuth } from "../hooks/auth";
+
 const Login = () => {
     const [formData, setFormData] = useState({ identifier: "", password: "" });
     const { loginUser } = useAuth();

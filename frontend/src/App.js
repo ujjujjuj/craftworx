@@ -6,9 +6,10 @@ import Login from "./pages/Login";
 import Product from "./pages/Product";
 import Register from "./pages/Register";
 import Shop from "./pages/Shop";
-import { AuthProvider } from "./helpers/auth";
+import { AuthProvider } from "./hooks/auth";
 import Callback from "./pages/Callback";
 import Logout from "./pages/Logout";
+import Checkout from "./pages/Checkout";
 
 const App = () => {
     return (
@@ -24,6 +25,7 @@ const App = () => {
                     <Route path="/product" element={<Product />} />
                     <Route path="/auth/callback" element={<Callback />} />
                     <Route path="/logout" element={<Logout />} />
+                    <Route path="/checkout" element={<Checkout />} />
                 </Routes>
             </Router>
         </AuthProvider>
