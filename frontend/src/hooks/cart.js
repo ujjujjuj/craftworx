@@ -1,8 +1,15 @@
-export const addToCart = (item) => {
-    const oldCart = JSON.parse(localStorage.getItem("cart")) || [];
-    localStorage.setItem("cart", JSON.stringify([...oldCart, item]));
+import { useState, useContext, createContext } from "react";
+
+export const CartContext = createContext([]);
+
+export const CartProvider = ({ children }) => {
+    return <CartContext.Provider value={useProvideCart()}>{children}</CartContext.Provider>;
 };
 
-export const getCart = () => {
-    return JSON.stringify(localStorage.getItem("cart")) || [];
+export const useCart = () => useContext(CartContext);
+
+export const useProvideCart = () => {
+    const [cart, setCart] = useState([]);
+
+    return { cart };
 };

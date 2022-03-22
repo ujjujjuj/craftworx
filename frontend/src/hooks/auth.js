@@ -1,6 +1,6 @@
 import { useState, useContext, createContext, useEffect } from "react";
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext({ isLoggedIn: false });
 export const useAuth = () => useContext(AuthContext);
 
 const useProvideAuth = () => {

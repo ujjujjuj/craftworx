@@ -1,275 +1,222 @@
+.container h1 {
+    font-family: "Sacramento";
+    font-size: 2.3rem;
+    font-weight: 300;
+}
+.container h2 {
+    font-size: 2.6rem;
+    font-weight: 600;
+    color: #54605f;
+    margin-top: 7px;
+}
+.container p {
+    font-size: 1rem;
+    width: 30%;
+    margin-top: 24px;
+}
 
-    
-    .container h1{
-        font-family: 'Sacramento';
-        font-size: 2.3rem;
-        font-weight: 300;
-    }
-    .container h2{
-        font-size: 2.6rem;
-        font-weight: 600;
-        color: #54605F;
-        margin-top: 7px;
-    }
-    .container p{
-        font-size: 1rem;
-        width: 30%;
-        margin-top: 24px;
-    }
-    
-    .container a{
-        text-decoration: none;
-        color: white;
-        background-color: #54605F;
-        padding: 10px 23px;
-        border-radius: 10px;
-        margin-top: 10px;
-    }
-    *{
-        margin: 0;
-        padding: 0;
-    }
-    .dot{
-    width:50px;
-    height:50px;
-    position:absolute;
-    background: url('../images/Square leaf.png');
+.container a {
+    text-decoration: none;
+    color: white;
+    background-color: #54605f;
+    padding: 10px 23px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+.dot {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    background: url("../images/Square leaf.png");
     background-size: 100% 100%;
-    }
-    
-    .fl1{
-    width:120px;
-    height:120px;
-    position:absolute;
-    background: url('../images/fl1.png');
-    background-size: 100% 100%;
-    }
-    
-    .fl2{
-    width:160px;
-    height:160px;
-    position:absolute;
-    background: url('../images/fl0.png');
-    background-size: 100% 100%;
-    }
-    .container 
-    {
-        position: absolute;
-        top: 0;
-        z-index: -1;
-        background-color: #FFFBFB;
-        overflow: hidden;
-        width:100%; height:100%;
-    }
-    body,html{
-        width: 100%;height: 100%;
-    }
+}
 
-    body{
-        background-color: unset;
-    }
-    
-    .main{
-        width: 100%;
-        height: 100vh;
-        align-items: center;
-        display: flex;
-        padding:  0 100px;
-        justify-content: left;
-    
-    }
-    nav{
-        background-color: #FFFBFB;
-    }
-    .main h1{
-        font-size: 3.1em;
-        font-weight: 300;
-        color: black;
-        font-family: 'Sacramento';
-    }
-    
-    .main h2{
-        font-weight: 500;
-        color: #54605F;
-        font-size: 3.2em;
-        margin-top: 0px;
-        margin-bottom: 19px;
-    }
-    
-    .hero{
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-    }
-    
-    .hero p{
-        width: 524px;
-        font-size: 1.16em;
-    }
-    
-    .homeSec1{
-        padding: 50px 100px;
-        background-color: #fff;
-    }
-    
-    .homeSec1 .title{
-        display : flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 1.1em;
-    }
-    
-    .homeSec1 .title a{
-        color: black;
-    }
-    
-    .popProducts{
-        display: grid;
-        padding: 30px 0;
-        column-gap: 5vw;
-        grid-template-columns: auto auto auto;
-    }
-    
-    .productCard{
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .prodImg{
-        background-image: url('../images/product-placeholder.png');
-        background-size: cover;
-        border-radius: 8px;
-        width: 100%;
-        height: 20vw;
-    }
-    
-    .productCard p{
-        margin-top: 15px;
-        margin-bottom: 5px;
-        font-size: 1.1em;
-    }
-    
-    
-    
-    .promo{
-        display: grid;
-        column-gap: 0;
-        grid-template-columns: 1fr 1fr;
-    }
-    
-    .promoImg{
-        width: 100%;
-        height: 100%;
-        background-image: url('../images/promo-placeholder.png');
-        background-repeat: no-repeat;
-    }
-    
-    .promoContent{
-        display: flex;
-        align-items: center;
-        padding: 250px 100px;
-        flex-direction: column;
-        background-color: #F1DBE3;
-    }
-    
-    
-    
-    .promoContent h2{
-        font-weight: 600;
-        color: #54605F;
-        font-size: 2em;
-        margin-top: 0px;
-        margin-bottom: 19px;
-    }
-    
-    .col{
+.fl1 {
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    background: url("../images/fl1.png");
+    background-size: 100% 100%;
+}
+
+.fl2 {
+    width: 160px;
+    height: 160px;
+    position: absolute;
+    background: url("../images/fl0.png");
+    background-size: 100% 100%;
+}
+.container {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    background-color: #fffbfb;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+body,
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background-color: unset;
+}
+
+.main {
+    width: 100%;
+    height: 100vh;
+    align-items: center;
+    display: flex;
+    padding: 0 100px;
+    justify-content: left;
+}
+nav {
+    background-color: #fffbfb;
+}
+.main h1 {
+    font-size: 3.1em;
+    font-weight: 300;
+    color: black;
+    font-family: "Sacramento";
+}
+
+.main h2 {
+    font-weight: 500;
+    color: #54605f;
+    font-size: 3.2em;
+    margin-top: 0px;
+    margin-bottom: 19px;
+}
+
+.hero {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    }
-    
-    .corporate .promoContent{
-        background-color: #FFFBFB;
-    }
-    
-    footer{
-        background-color: #54605F;
-        height: 300px;
-    }
+}
 
+.hero p {
+    width: 524px;
+    font-size: 1.16em;
+}
 
-    .shop-btn{
-        background-color: #54605F;
-        padding: 10.5px 40px;
-        border-radius: 8px;
-        margin-top: 30px;
-        border: 1.5px #54605F solid;
-        transition: all 0.2s ease;
-        cursor: pointer;
-        color: white;
-        z-index: 999;
-    }
-    
-    .shop-btn:hover{
-        background-color: transparent;
-        color: #54605F;
-        border: 1.5px #54605F solid;
-    }
-    .addToCart{
-        display: flex;
-        background: none;
-        cursor: pointer;
-        padding: 10px 0;
-        margin-top: 12px;
-        color: #54605F;
-        border: 1.5px #54605F solid;
-        transition: all 0.3s ease;
-        align-items: center;
-        border-radius: 7px;
-        font-size: 0.9em;
-        justify-content: center;
-    }
-    
-    .addToCart:hover img{
-        filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(112deg) brightness(200%) contrast(105%);
-    
-    }
-    
-    .addToCart:hover{
-        background-color: #54605F;
-        color: white;}
-    
-    .addToCart img{
-        width: 20px;
-        transition: all 0.3s ease;
-        filter: none;
-    }
-    
-.shopBtn{
-    background-color: #54605F;
+.homeSec1 {
+    padding: 50px 100px;
+    background-color: #fff;
+}
+
+.homeSec1 .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1em;
+}
+
+.homeSec1 .title a {
+    color: black;
+}
+
+.popProducts {
+    display: grid;
+    padding: 30px 0;
+    column-gap: 5vw;
+    grid-template-columns: auto auto auto;
+}
+
+.productCard {
+    display: flex;
+    flex-direction: column;
+}
+
+.prodImg {
+    background-image: url("../images/product-placeholder.png");
+    background-size: cover;
+    border-radius: 8px;
+    width: 100%;
+    height: 20vw;
+}
+
+.productCard p {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+
+.promo {
+    display: grid;
+    column-gap: 0;
+    grid-template-columns: 1fr 1fr;
+}
+
+.promoImg {
+    width: 100%;
+    height: 100%;
+    background-image: url("../images/promo-placeholder.png");
+    background-repeat: no-repeat;
+}
+
+.promoContent {
+    display: flex;
+    align-items: center;
+    padding: 250px 100px;
+    flex-direction: column;
+    background-color: #f1dbe3;
+}
+
+.promoContent h2 {
+    font-weight: 600;
+    color: #54605f;
+    font-size: 2em;
+    margin-top: 0px;
+    margin-bottom: 19px;
+}
+
+.col {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.corporate .promoContent {
+    background-color: #fffbfb;
+}
+
+footer {
+    background-color: #54605f;
+    height: 300px;
+}
+
+.shop-btn {
+    background-color: #54605f;
     padding: 10.5px 40px;
     border-radius: 8px;
     margin-top: 30px;
-    border: 1.5px #54605F solid;
+    border: 1.5px #54605f solid;
     transition: all 0.2s ease;
     cursor: pointer;
     color: white;
     z-index: 999;
 }
 
-.shopBtn:hover{
+.shop-btn:hover {
     background-color: transparent;
-    color: #54605F;
-    border: 1.5px #54605F solid;
+    color: #54605f;
+    border: 1.5px #54605f solid;
 }
-.addToCart{
+.addToCart {
     display: flex;
     background: none;
     cursor: pointer;
     padding: 10px 0;
     margin-top: 12px;
-    color: #54605F;
-    border: 1.5px #54605F solid;
+    color: #54605f;
+    border: 1.5px #54605f solid;
     transition: all 0.3s ease;
     align-items: center;
     border-radius: 7px;
@@ -277,19 +224,64 @@
     justify-content: center;
 }
 
-.addToCart:hover img{
+.addToCart:hover img {
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(112deg) brightness(200%) contrast(105%);
-
 }
 
-.addToCart:hover{
-    background-color: #54605F;
-    color: white;}
+.addToCart:hover {
+    background-color: #54605f;
+    color: white;
+}
 
-.addToCart img{
+.addToCart img {
     width: 20px;
     transition: all 0.3s ease;
     filter: none;
 }
 
-    
+.shopBtn {
+    background-color: #54605f;
+    padding: 10.5px 40px;
+    border-radius: 8px;
+    margin-top: 30px;
+    border: 1.5px #54605f solid;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    color: white;
+    z-index: 999;
+}
+
+.shopBtn:hover {
+    background-color: transparent;
+    color: #54605f;
+    border: 1.5px #54605f solid;
+}
+.addToCart {
+    display: flex;
+    background: none;
+    cursor: pointer;
+    padding: 10px 0;
+    margin-top: 12px;
+    color: #54605f;
+    border: 1.5px #54605f solid;
+    transition: all 0.3s ease;
+    align-items: center;
+    border-radius: 7px;
+    font-size: 0.9em;
+    justify-content: center;
+}
+
+.addToCart:hover img {
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(112deg) brightness(200%) contrast(105%);
+}
+
+.addToCart:hover {
+    background-color: #54605f;
+    color: white;
+}
+
+.addToCart img {
+    width: 20px;
+    transition: all 0.3s ease;
+    filter: none;
+}

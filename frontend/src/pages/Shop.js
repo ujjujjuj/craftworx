@@ -1,62 +1,152 @@
-import styles from '../styles/components/shop.module.css';
-import Product from './Product'
-import classnames from 'classnames';
-import React from 'react';
+import styles from "../styles/components/shop.module.css";
+import Product from "./Product";
+import classnames from "classnames";
+import { useState, useEffect, useRef } from "react";
+
+const dropdownOptions = [
+    {
+        text: "Relevance",
+        func: (arr) => arr,
+    },
+    {
+        text: "Price: Low to High",
+        func: (arr) => {
+            arr.sort((a, b) => (a.price < b.price ? -1 : 1));
+            return arr;
+        },
+    },
+    {
+        text: "Price: High to Low",
+        func: (arr) => {
+            arr.sort((a, b) => (a.price > b.price ? -1 : 1));
+            return arr;
+        },
+    },
+    {
+        text: "Newest Arrivals",
+        func: (arr) => arr,
+    },
+];
+
+const categories = ["All", "Gifts", "Trousseau", "Festive Occation"];
+
+const productsTemp = Array(5)
+    .fill({ name: "ishaan das mom", price: 30000, category: "Trousseau" })
+    .concat(Array(4).fill({ name: "cock", price: 99900, category: "Gifts" }))
+    .map((a, i) => ({ ...a, key: i }));
 
 const Shop = () => {
-    const [dropState, setDropState] = React.useState(false);
+    const [dropState, setDropState] = useState(false);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [filters, setFilters] = useState({
+        searchQuery: "",
+        dropdownSelection: 0,
+        categorySelection: 0,
+    });
+    const products = useRef([]);
 
-    const dropDown = ()=>{
-        setDropState(!dropState);
-        
-    };
+    useEffect(() => {
+        // TODO : api call
+        products.current = productsTemp;
+        setFilteredProducts(products.current);
+    }, []);
 
+    useEffect(() => {
+        let filtered = products.current;
+        filtered = dropdownOptions[filters.dropdownSelection].func(filtered);
+        filtered = filtered.filter(
+            (prod) =>
+                filters.categorySelection === 0 ||
+                prod.category === categories[filters.categorySelection]
+        );
+        filtered = filtered.filter((prod) =>
+            prod.name.toLowerCase().includes(filters.searchQuery.toLowerCase())
+        );
 
-    return (<>
-    <div className={styles.main}>
-    <div class={styles.header}>
-        <div class={styles.searchBox}>
-            <input type="text" name="search" id="search" placeholder="Search"/>
-            <img src="/images/search.svg"/>
-        </div>
-        <div class={styles.sort} onClick={dropDown}>
-          <p unselectable='on' >Sort By: <span id="sort-label">Relevance</span> </p> 
-            <ul className={classnames(styles.dropList,dropState&&styles.ulExpanded)}>
-                <li className={styles.selected} id="sort-1">Relevance</li>
-                <li id="sort-2">Price: Low to High</li>
-                <li id="sort-3">Price: High to Low</li>
-                <li id="sort-4">Newest Arrivals</li>
-            </ul>
-            <img src="/images/drop.svg" className={dropState?styles.rotate:""} alt=""/>
-        </div>
-    </div>
-    <div className={styles.filter}>
-        <p className={styles.active}>All</p>
-        <p>Gifts</p>
-        <p>Trousseau</p>
-        <p>Festive Ocassion</p>
-    </div>
-</div>
+        setFilteredProducts(filtered);
+    }, [filters]);
 
-<section className={styles.products}>
-        <Product/>
-        <Product/>
-        <Product/>
-        <Product/>
-        <Product/>
-        <Product/>
-        <Product/>
-        <Product/>
-        <Product/>
-        <Product/>
-        <Product/>
-        <Product/>
-        <Product/>
-        <Product/>
-        <Product/>
-        <Product/>
-</section>
-    </>);
-}
+    return (
+        <>
+            <div className={styles.main}>
+                <div className={styles.header}>
+                    <div className={styles.searchBox}>
+                        <input
+                            type="text"
+                            name="search"
+                            id="search"
+                            placeholder="Search"
+                            value={filters.searchQuery}
+                            onChange={(e) =>
+                                setFilters((_filters) => ({
+                                    ..._filters,
+                                    searchQuery: e.target.value,
+                                }))
+                            }
+                        />
+                        <img src="/images/search.svg" />
+                    </div>
+                    <div className={styles.sort} onClick={() => setDropState((x) => !x)}>
+                        <p unselectable="on">
+                            Sort By:{" "}
+                            <span id="sort-label">
+                                {dropdownOptions[filters.dropdownSelection].text}
+                            </span>{" "}
+                        </p>
+                        <ul className={classnames(styles.dropList, dropState && styles.ulExpanded)}>
+                            {dropdownOptions.map((dropdownOption, index) => (
+                                <li
+                                    key={index}
+                                    onClick={() =>
+                                        setFilters((_filters) => ({
+                                            ..._filters,
+                                            dropdownSelection: index,
+                                        }))
+                                    }
+                                    className={
+                                        index === filters.dropdownSelection && styles.selected
+                                    }
+                                >
+                                    {dropdownOption.text}
+                                </li>
+                            ))}
+                        </ul>
+                        <img
+                            src="/images/drop.svg"
+                            className={dropState ? styles.rotate : ""}
+                            alt=""
+                        />
+                    </div>
+                </div>
+                <div className={styles.filter}>
+                    {categories.map((_category, index) => (
+                        <p
+                            className={index === filters.categorySelection && styles.active}
+                            onClick={() =>
+                                setFilters((_filters) => ({
+                                    ..._filters,
+                                    categorySelection: index,
+                                }))
+                            }
+                            key={index}
+                        >
+                            {_category}
+                        </p>
+                    ))}
+                    {/* <p className={styles.active}>All</p>
+                    <p>Gifts</p>
+                    <p>Trousseau</p>
+                    <p>Festive Ocassion</p> */}
+                </div>
+            </div>
 
-export default Shop
+            <section className={styles.products}>
+                {filteredProducts.map((product, index) => (
+                    <Product key={product.key} name={product.name} price={product.price} />
+                ))}
+            </section>
+        </>
+    );
+};
+
+export default Shop;
