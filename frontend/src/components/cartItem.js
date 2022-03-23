@@ -12,8 +12,19 @@ const CartItem = ()=>{
                 <div className={styles.qtyWrap}>
                     <div className={styles.alter} onClick={()=>{
                         setQty((prev)=>prev+1)
-                    }}><i class="fas fa-plus"></i></div>
-                    <input type="number" min={"1"} value={qty}></input>
+                    }} 
+                    ><i class="fas fa-plus"></i></div>
+                    <input type="number" min={"1"} value={qty} onChange={(e)=>{
+                        setQty(e.target.value)
+                        if(e.target.value<1){
+                            setQty("")
+                        }
+                    }}
+                    onBlur={()=>{
+                        if(!(qty>0))
+                        setQty(1)
+                    }}
+                        ></input>
                     <div className={styles.alter} onClick={()=>{
                         setQty((prev)=>prev>1?prev-1:1)
                     }}><i class="fas fa-minus"></i></div>
