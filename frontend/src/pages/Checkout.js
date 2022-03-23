@@ -16,7 +16,7 @@ const Checkout = () => {
                     currency: "INR",
                     name: "Craftworx",
                     description: "Craftworx transaction",
-                    order_id: data.id, 
+                    order_id: data.id,
                     handler: (response) => {
                         fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/confirm`, {
                             method: "POST",
@@ -24,7 +24,7 @@ const Checkout = () => {
                                 "Content-Type": "application/json",
                             },
                             body: JSON.stringify(response),
-                        })
+                        });
                         alert("success!");
                     },
                     prefill: {
@@ -41,7 +41,6 @@ const Checkout = () => {
                 };
                 const razorpay = new window.Razorpay(options);
                 razorpay.on("payment.failed", (response) => {
-                    
                     alert(response.error.code);
                     alert(response.error.description);
                     alert(response.error.source);
@@ -55,7 +54,9 @@ const Checkout = () => {
     };
     return (
         <div>
-            <button onClick={createOrder}>Checkout</button>
+            <button style={{ marginTop: 100 }} onClick={createOrder}>
+                Checkout
+            </button>
         </div>
     );
 };

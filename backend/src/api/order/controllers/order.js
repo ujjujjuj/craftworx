@@ -2,6 +2,7 @@ const axios = require("axios");
 const { v4: uuidv4, NIL: NIL_UUID } = require("uuid");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
+const { promisify } = require("util");
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_ID,
@@ -24,22 +25,15 @@ module.exports = {
       receipt: entry.transactionId,
     };
 
-    return new Promise((resolve, reject) => {
-      razorpay.orders.create(options, (err, order) => {
-        if (err) {
-          return reject(err);
-        }
-        console.log(order);
-        strapi.db.query("api::order.order").update({
-          where: { id: entry.id },
-          data: {
-            orderId: order.id,
-          },
-        });
-        ctx.body = order;
-        resolve();
-      });
+    const createdOrder = await promisify(razorpay.orders.create)(options);
+    console.log(createdOrder);
+    strapi.db.query("api::order.order").update({
+      where: { id: entry.id },
+      data: {
+        orderId: createdOrder.id,
+      },
     });
+    ctx.body = createdOrder;
   },
 
   async confirm(ctx) {

@@ -10,6 +10,7 @@ import { AuthProvider } from "./hooks/auth";
 import Callback from "./pages/Callback";
 import Logout from "./pages/Logout";
 import Checkout from "./pages/Checkout";
+import { CartProvider } from "./hooks/cart";
 
 const App = () => {
     return (

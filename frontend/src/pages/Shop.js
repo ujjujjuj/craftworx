@@ -84,7 +84,7 @@ const Shop = () => {
                                 }))
                             }
                         />
-                        <img src="/images/search.svg" />
+                        <img src="/images/search.svg" alt="search" />
                     </div>
                     <div className={styles.sort} onClick={() => setDropState((x) => !x)}>
                         <p unselectable="on">
@@ -133,10 +133,6 @@ const Shop = () => {
                             {_category}
                         </p>
                     ))}
-                    {/* <p className={styles.active}>All</p>
-                    <p>Gifts</p>
-                    <p>Trousseau</p>
-                    <p>Festive Ocassion</p> */}
                 </div>
             </div>
 

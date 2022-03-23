@@ -8,7 +8,7 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -23,6 +23,12 @@
     },
     "isConfirmed": {
       "type": "boolean"
+    },
+    "address": {
+      "type": "text"
+    },
+    "userId": {
+      "type": "string"
     }
   }
 }
