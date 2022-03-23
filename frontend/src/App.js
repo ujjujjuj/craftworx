@@ -9,14 +9,18 @@ import Shop from "./pages/Shop";
 import { AuthProvider } from "./hooks/auth";
 import Callback from "./pages/Callback";
 import Logout from "./pages/Logout";
+import {CartProvider} from "./hooks/cart"
 import Checkout from "./pages/Checkout";
 import { CartProvider } from "./hooks/cart";
 
 const App = () => {
     return (
         <AuthProvider>
+            <CartProvider>
             <Router>
                 <Navbar />
+                
+                <Cart />
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/shop" element={<Shop />} />
@@ -29,6 +33,7 @@ const App = () => {
                     <Route path="/checkout" element={<Checkout />} />
                 </Routes>
             </Router>
+            </CartProvider>
         </AuthProvider>
     );
 };

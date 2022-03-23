@@ -9,14 +9,12 @@ export const CartProvider = ({ children }) => {
 export const useCart = () => useContext(CartContext);
 
 export const useProvideCart = () => {
-    const [cart, setCart] = useState([]);
-
-    useEffect(() => {
-        let loadedCart = JSON.parse(localStorage.getItem("cart"));
-
-        if (loadedCart === null) return localStorage.setItem("cart", JSON.stringify(cart));
-        setCart(loadedCart);
-    }, []);
-
-    return { cart };
+    const [cart, setCart] = useState({
+        isExpanded: false,
+        items:[]
+        });
+    const toggleCart = ()=>{
+        setCart({...cart,isExpanded:!cart.isExpanded})
+    };
+    return { cart, toggleCart };
 };
