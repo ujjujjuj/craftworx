@@ -2,12 +2,14 @@ import styles from "../styles/components/Navbar.module.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/auth";
 import classnames from 'classnames';
-
+import {useCart} from "../hooks/cart"
 
 const Navbar = () => {
+    const {toggleCart} = useCart();
     const { user } = useAuth();
     return (
          <nav>
+           
          <div className={styles.left}>
          <Link to="/"> <div className={classnames(styles.item,styles.logoNav)}>
              <img src="/images/logo.png" alt=""/>
@@ -27,7 +29,7 @@ const Navbar = () => {
            <input type={"text"} placeholder="Search Products" />
            <img src="/images/search.svg"  alt=""/>
             </div>
-           <div className={classnames(styles.item,styles.cartNav)}>
+           <div className={classnames(styles.item,styles.cartNav)} onClick={toggleCart}>
                <img src="/images/cart.svg" alt=""/>
             &nbsp; Cart
            </div>

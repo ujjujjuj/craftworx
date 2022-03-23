@@ -9,7 +9,12 @@ export const CartProvider = ({ children }) => {
 export const useCart = () => useContext(CartContext);
 
 export const useProvideCart = () => {
-    const [cart, setCart] = useState([]);
-
-    return { cart };
+    const [cart, setCart] = useState({
+        isExpanded: false,
+        items:[]
+        });
+    const toggleCart = ()=>{
+        setCart({...cart,isExpanded:!cart.isExpanded})
+    };
+    return { cart, toggleCart };
 };

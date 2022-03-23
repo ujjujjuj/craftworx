@@ -61,7 +61,7 @@ const Register = () => {
                         value={formData.email}
                         onChange={(e) => setFormData((old) => ({ ...old, username: e.target.value }))}
                     />
-                      <div className={styles.passWrap}><input name="password" placeholder="*******" type={passVisible?"text":"password"} required  onChange={(e) => setFormData((old) => ({ ...old, password: e.target.value }))}/><i class={passVisible?"fas fa-eye-slash":"fas fa-eye"} onClick={togglePass}></i></div>
+                      <div className={styles.passWrap}><input name="password" placeholder="*******" type={passVisible?"text":"password"} required  onChange={(e) => setFormData((old) => ({ ...old, password: e.target.value }))}/><i className={passVisible?"fas fa-eye-slash":"fas fa-eye"} onClick={togglePass}></i></div>
                     <input type="submit" value="Continue" />
                 </form>
 
@@ -76,7 +76,7 @@ const Register = () => {
                     Already have an account? <Link to="/login">Login</Link>
                 </div>
                 <div className={styles.error} style={{paddingBottom:" 30px"}}>
-                {errorMsg.length?<i class="fas fa-exclamation-circle"></i>:<></>}<p id="error-msg">{errorMsg}</p> 
+                {errorMsg.length?<i className="fas fa-exclamation-circle"></i>:<></>}<p id="error-msg">{errorMsg}</p> 
                 </div>
             </main>
             <div ref={divRef} />
