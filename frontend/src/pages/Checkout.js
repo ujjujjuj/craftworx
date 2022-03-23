@@ -30,7 +30,7 @@ const Checkout = () => {
                     prefill: {
                         name: "Ujjwal Dimri",
                         email: "ujjwaldimri123@gmail.com",
-                        contact: "9599580229",
+                        contact: "9599580229"
                     },
                     notes: {
                         address: "Gurgaon",
@@ -55,7 +55,7 @@ const Checkout = () => {
     };
     return (
         <div>
-            <button onClick={createOrder}>Checkout</button>
+            <button onClick={createOrder} style={{marginTop:"100px"}}>Checkout</button>
         </div>
     );
 };

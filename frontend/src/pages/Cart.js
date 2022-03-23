@@ -1,5 +1,6 @@
 import styles from '../styles/components/cart.module.css'
 import classnames from "classnames";
+import CartItem from '../components/cartItem';
 import {useCart} from "../hooks/cart"
 const Cart = () => {
     const {cart,toggleCart} = useCart();
@@ -18,21 +19,12 @@ const Cart = () => {
         </div>
     </div>
     <div className={styles.cartItemList}>
-        <div className={styles.cartItem}>
-            <div className={styles.cartImg}></div>
-            <div className={styles.itemDet}>
-                <p>Trousseau Packaging</p>
-                <small>$430</small>
-            </div>
-        </div>
-        <div className={styles.cartItem}>
-            <div className={styles.cartImg}></div>
-            <div className={styles.itemDet}>
-                <p>Trousseau Packaging</p>
-                <small>$430</small>
-            </div>
-        </div>
-       
+        <CartItem/>
+        <CartItem/>
+        <CartItem/>
+        <CartItem/>
+
+
     </div>
     <hr/>
     <div className={styles.row}>
