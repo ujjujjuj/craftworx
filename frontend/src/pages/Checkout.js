@@ -1,12 +1,15 @@
+import { useCart } from "../hooks/cart";
+
 const Checkout = () => {
-    // const Razorpay = useRazorpay();
+    const { getCheckoutCart } = useCart();
+
     const createOrder = () => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/new`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ 1: 3 }),
+            body: JSON.stringify(getCheckoutCart()),
         })
             .then((res) => res.json())
             .then((data) => {
@@ -54,7 +57,7 @@ const Checkout = () => {
     };
     return (
         <div>
-            <button style={{ marginTop: 100 }} onClick={createOrder}>
+            <button onClick={createOrder} style={{ marginTop: "100px" }}>
                 Checkout
             </button>
         </div>

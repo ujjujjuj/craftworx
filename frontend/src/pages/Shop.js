@@ -2,6 +2,7 @@ import styles from "../styles/components/shop.module.css";
 import Product from "./Product";
 import classnames from "classnames";
 import { useState, useEffect, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const dropdownOptions = [
     {
@@ -30,16 +31,17 @@ const dropdownOptions = [
 
 const categories = ["All", "Gifts", "Trousseau", "Festive Occation"];
 
-const productsTemp = Array(5)
-    .fill({ name: "ishaan das mom", price: 30000, category: "Trousseau" })
-    .concat(Array(4).fill({ name: "cock", price: 99900, category: "Gifts" }))
-    .map((a, i) => ({ ...a, key: i }));
+// const productsTemp = Array(5)
+//     .fill({ name: "ishaan das mom", price: 300, category: "Trousseau" })
+//     .concat(Array(4).fill({ name: "cock", price: 999, category: "Gifts" }))
+//     .map((a, i) => ({ ...a, id: i }));
 
 const Shop = () => {
+    const [searchParams] = useSearchParams();
     const [dropState, setDropState] = useState(false);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [filters, setFilters] = useState({
-        searchQuery: "",
+        searchQuery: searchParams.get("q") || "",
         dropdownSelection: 0,
         categorySelection: 0,
     });
@@ -47,11 +49,23 @@ const Shop = () => {
 
     useEffect(() => {
         // TODO : api call
-        products.current = productsTemp;
-        setFilteredProducts(products.current);
+        fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?fields=name,price,category`)
+            .then((res) => res.json())
+            .then((data) => {
+                products.current = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
+                setFilteredProducts(products.current);
+                applyFilters();
+            });
+
+        // products.current = productsTemp;
+        // setFilteredProducts(products.current);
     }, []);
 
     useEffect(() => {
+        setFilters({ ...filters, searchQuery: searchParams.get("q") || "" });
+    }, [searchParams]);
+
+    const applyFilters = () => {
         let filtered = products.current;
         filtered = dropdownOptions[filters.dropdownSelection].func(filtered);
         filtered = filtered.filter(
@@ -64,6 +78,10 @@ const Shop = () => {
         );
 
         setFilteredProducts(filtered);
+    };
+
+    useEffect(() => {
+        applyFilters();
     }, [filters]);
 
     return (
@@ -137,8 +155,8 @@ const Shop = () => {
             </div>
 
             <section className={styles.products}>
-                {filteredProducts.map((product, index) => (
-                    <Product key={product.key} name={product.name} price={product.price} />
+                {filteredProducts.map((product) => (
+                    <Product key={product.id} product={product} />
                 ))}
             </section>
         </>
