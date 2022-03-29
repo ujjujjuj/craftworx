@@ -1,12 +1,15 @@
+import { useCart } from "../hooks/cart";
+
 const Checkout = () => {
-    // const Razorpay = useRazorpay();
+    const { getCheckoutCart } = useCart();
+
     const createOrder = () => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/new`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ 1: 3 }),
+            body: JSON.stringify(getCheckoutCart()),
         })
             .then((res) => res.json())
             .then((data) => {
@@ -16,7 +19,7 @@ const Checkout = () => {
                     currency: "INR",
                     name: "Craftworx",
                     description: "Craftworx transaction",
-                    order_id: data.id, 
+                    order_id: data.id,
                     handler: (response) => {
                         fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/confirm`, {
                             method: "POST",
@@ -24,13 +27,13 @@ const Checkout = () => {
                                 "Content-Type": "application/json",
                             },
                             body: JSON.stringify(response),
-                        })
+                        });
                         alert("success!");
                     },
                     prefill: {
                         name: "Ujjwal Dimri",
                         email: "ujjwaldimri123@gmail.com",
-                        contact: "9599580229"
+                        contact: "9599580229",
                     },
                     notes: {
                         address: "Gurgaon",
@@ -41,7 +44,6 @@ const Checkout = () => {
                 };
                 const razorpay = new window.Razorpay(options);
                 razorpay.on("payment.failed", (response) => {
-                    
                     alert(response.error.code);
                     alert(response.error.description);
                     alert(response.error.source);
@@ -55,7 +57,9 @@ const Checkout = () => {
     };
     return (
         <div>
-            <button onClick={createOrder} style={{marginTop:"100px"}}>Checkout</button>
+            <button onClick={createOrder} style={{ marginTop: "100px" }}>
+                Checkout
+            </button>
         </div>
     );
 };

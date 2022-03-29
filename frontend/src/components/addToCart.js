@@ -1,34 +1,53 @@
-import styles1 from '../styles/components/cart.module.css';
-import styles from '../styles/components/home.module.css';
+import styles1 from "../styles/components/cart.module.css";
+import styles from "../styles/components/home.module.css";
 
-import { useState } from 'react';
+import { useEffect, useState } from "react";
+import { useCart } from "../hooks/cart";
 
-const AddToCart = () => {
-    const [qty, setQty] = useState(0);
+const AddToCart = ({ product }) => {
+    const { cart, setCartItem } = useCart();
+    const setCartItem2 = setCartItem.bind(this, product);
 
     return (
         <>
-            {qty>0?
-             <div className={styles1.qtyWrap}>
-             <div className={styles1.alter} onClick={() => {
-                 setQty((prev) => prev + 1)
-             }}><i class="fas fa-plus"></i></div>
-             <input type="number" min={"1"} value={qty}></input>
-             <div className={styles1.alter} onClick={() => {
-
-                 setQty((prev) => prev - 1)
-             }}><i class="fas fa-minus"></i></div>
-         </div>:    
-        
-            <div className={styles.addToCart} onClick={
-              ()=>  setQty(1)
-            }>
-                <img src="/images/cart.svg" alt="" />
-                &nbsp;&nbsp; Add to cart
-            </div>
-}
+            {(cart.items[product.id]?.quantity || 0) > 0 ? (
+                <div className={styles1.qtyWrap}>
+                    <div
+                        className={styles1.alter}
+                        onClick={() => {
+                            setCartItem2(1);
+                        }}
+                    >
+                        <i className="fas fa-plus"></i>
+                    </div>
+                    <input
+                        type="number"
+                        min={1}
+                        value={cart.items[product.id]?.quantity}
+                        readOnly
+                    ></input>
+                    <div
+                        className={styles1.alter}
+                        onClick={() => {
+                            setCartItem2(-1);
+                        }}
+                    >
+                        <i className="fas fa-minus"></i>
+                    </div>
+                </div>
+            ) : (
+                <div
+                    className={styles.addToCart}
+                    onClick={() => {
+                        setCartItem2(1);
+                    }}
+                >
+                    <img src="/images/cart.svg" alt="" />
+                    &nbsp;&nbsp; Add to cart
+                </div>
+            )}
         </>
     );
-}
+};
 
 export default AddToCart;
