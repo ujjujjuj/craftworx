@@ -8,25 +8,25 @@ const Home = () => {
         gsap.set(`${styles.container}`, { perspective: 600 })
         gsap.set("img", { xPercent: "-50%", yPercent: "-50%" })
 
-        var total = 15, i;
-        var container = document.getElementById("container"), w = window.innerWidth, h = window.innerHeight;
+        let total = 15, i;
+        let container = document.getElementById("container"), w = window.innerWidth, h = window.innerHeight;
 
         for (i = 0; i < total; i++) {
-            var Div = document.createElement('div');
+            let Div = document.createElement('div');
             gsap.set(Div, { attr: { class: `${styles.dot}`}, x: R(w * 0.3, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
 
         for (i = 0; i < 4; i++) {
-            var Div = document.createElement('div');
+            let Div = document.createElement('div');
             gsap.set(Div, { attr: { class: `${styles.fl1}`}, x: R(w * 0.4, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
 
         for (i = 0; i < 2; i++) {
-            var Div = document.createElement('div');
+            let Div = document.createElement('div');
             gsap.set(Div, { attr: { class: `${styles.fl2}` }, x: R(w * 0.4, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
