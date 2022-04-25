@@ -1,6 +1,6 @@
 nav{
     display: flex;
-    padding: 6px 100px;
+    padding: 10px 100px;
     background-color: #FFFBFB;
     justify-content: space-between;    
     font-size: 0.9rem;
@@ -14,7 +14,7 @@ nav{
 }
 
 nav .left img{
-    width: 3.2em;
+    width: 2.85em;
 }
 
 nav .right img{

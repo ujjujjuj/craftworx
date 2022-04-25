@@ -24,7 +24,7 @@ const Navbar = () => {
                 <Link to="/">
                     {" "}
                     <div className={classnames(styles.item, styles.logoNav)}>
-                        <img src="/images/logo.png" alt="" />
+                        <img src="/images/cw.svg" alt="" />
                     </div>
                 </Link>
                 <Link to="/shop">
