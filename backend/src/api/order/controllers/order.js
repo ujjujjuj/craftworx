@@ -9,18 +9,43 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_SECRET,
 });
 
+// im higH lmao
 module.exports = {
   async create(ctx) {
     console.log(ctx.request.body);
+    let totalPrice = 0;
+    for (let productId in ctx.request.body.cart) {
+      let product = await strapi.db
+        .query("api::product.product")
+        .findOne({ where: { id: parseInt(productId) } });
+      console.log(product);
+      totalPrice += product.price * ctx.request.body.cart[productId];
+    }
+    const tax = Math.round((totalPrice * 18) / 100);
+    totalPrice += tax;
+    let userId = null;
+    if (ctx.request.header.authorization) {
+      try {
+        const user = await strapi.plugins[
+          "users-permissions"
+        ].services.jwt.getToken(ctx);
+        userId = user.id;
+      } catch (err) {}
+    }
+    // ctx.body = { error: false };
+    // return;
     const entry = await strapi.db.query("api::order.order").create({
       data: {
         transactionId: uuidv4(),
-        items: ctx.request.body,
+        items: ctx.request.body.cart,
         isConfirmed: false,
+        userId,
+        userInfo: ctx.request.body.info,
+        amount: totalPrice,
       },
     });
     const options = {
-      amount: 30000,
+      amount: totalPrice * 100,
       currency: "INR",
       receipt: entry.transactionId,
     };
