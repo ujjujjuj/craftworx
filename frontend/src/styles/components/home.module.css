@@ -15,6 +15,11 @@
     margin-top: 24px;
 }
 
+.homeSec1.hidden{
+    visibility: hidden;
+    display: none;
+}
+
 .container a {
     text-decoration: none;
     color: white;
@@ -126,18 +131,28 @@ nav {
     display: grid;
     padding: 30px 0;
     column-gap: 5vw;
-    grid-template-columns: auto auto auto;
+    row-gap: 50px;
+    grid-template-columns: 1fr 1fr 1fr;
 }
-
+.productCard:hover{
+    transform: scale(1.02);
+}
 .productCard {
+    cursor: pointer;
+    transition: all 0.2s ease;
     display: flex;
     flex-direction: column;
+}
+.productCard p.prodName{
+    margin-top: 19px;
 }
 
 .prodImg {
     background-image: url("../images/product-placeholder.png");
-    background-size: cover;
+    background-size: contain;
     border-radius: 8px;
+    background-repeat: no-repeat;
+    background-position: center;
     width: 100%;
     height: 20vw;
 }
@@ -150,6 +165,7 @@ nav {
 
 .promo {
     display: grid;
+    row-gap: 0;
     column-gap: 0;
     grid-template-columns: 1fr 1fr;
 }
@@ -157,6 +173,8 @@ nav {
 .promoImg {
     width: 100%;
     height: 100%;
+    background-size: cover;
+    background-position: bottom;
     background-image: url("../images/promo-placeholder.png");
     background-repeat: no-repeat;
 }
@@ -166,7 +184,7 @@ nav {
     align-items: center;
     padding: 250px 100px;
     flex-direction: column;
-    background-color: #f1dbe3;
+    background-color: #FFFBFB;
 }
 
 .promoContent h2 {
@@ -187,10 +205,6 @@ nav {
     background-color: #fffbfb;
 }
 
-footer {
-    background-color: #54605f;
-    height: 300px;
-}
 
 .shop-btn {
     background-color: #54605f;
@@ -221,11 +235,31 @@ user-select: none; /* Standard */
     margin-top: 12px;
     color: #54605f;
     border: 1.5px #54605f solid;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     align-items: center;
     border-radius: 7px;
     font-size: 0.9em;
     justify-content: center;
+}
+
+.addToCart i{
+    color: #54605f;
+    
+    transition: all 0.2s ease;
+}
+
+.addToCart.added{
+
+    background-color: white;
+    color: #54605f;
+}
+
+.addToCart.added:hover{
+    background-color: #54605f;
+    color: white;
+}
+.addToCart.added:hover i{
+    color: white;
 }
 
 .addToCart:hover img {
@@ -260,20 +294,7 @@ user-select: none; /* Standard */
     color: #54605f;
     border: 1.5px #54605f solid;
 }
-.addToCart {
-    display: flex;
-    background: none;
-    cursor: pointer;
-    padding: 10px 0;
-    margin-top: 12px;
-    color: #54605f;
-    border: 1.5px #54605f solid;
-    transition: all 0.3s ease;
-    align-items: center;
-    border-radius: 7px;
-    font-size: 0.9em;
-    justify-content: center;
-}
+
 
 .addToCart:hover img {
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(112deg) brightness(200%) contrast(105%);
@@ -289,3 +310,161 @@ user-select: none; /* Standard */
     transition: all 0.3s ease;
     filter: none;
 }
+
+.pViewAdd{
+    width: 50%;
+    padding: 10px 0;
+    background-color: #54605f;
+    color: white; 
+    align-self: flex-end    ;
+    height: fit-content;
+}
+.addToCart.pViewAdd i{
+    color: white;
+}
+.addToCart.pViewAdd img{
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(112deg) brightness(200%) contrast(105%);
+
+}
+.pViewAdd:hover{
+    background-color: white;
+    color: #54605f; 
+}
+
+.addToCart.pViewAdd:hover img{
+    filter: none;
+}
+
+.addToCart.pViewAdd.added{
+    background-color: #54605f;
+    color: white; 
+}
+.addToCart.pViewAdd.added:hover{
+    background-color: white;
+    color: #54605f; 
+}
+.addToCart.pViewAdd.added:hover i{
+   color: #54605f;
+}
+.prodName,.prodPrice{
+    display: flex;
+    flex-direction: column;
+    transition: color 0.2s ease;
+    width: fit-content;
+    
+}
+.prodName{
+    font-weight: 500;
+}
+.prodPrice{
+    font-size: 1em;
+}
+.prodPrice::after{
+    content: "";
+    height: 1px;
+    width: 0%;
+    transition: width 0.15s ease;
+    background-color: black;
+}
+.prodName::after{
+    content: "";
+    height: 1.5px;
+    width: 0%;
+    /* transition: width 0.15s ease; */
+    background-color: black;
+}
+.productCard:hover .prodName{
+    color: #54605F;
+}
+.productCard:hover .prodPrice{
+    color: #54605F;
+}
+
+
+.productCard.shimmer:hover .prodName::after,.productCard.shimmer:hover .prodPrice::after{
+    width: 0%;
+}
+
+.productCard.shimmer .prodImg{
+    animation : shimmer 2s infinite;
+    background: linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);
+    background-size: 1000px 100%;
+}
+.productCard.shimmer .prodName{
+    border-radius: 5px;
+    width: 70%;
+    height: 30px;
+    animation : shimmer 2s infinite;
+    background: linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);
+    background-size: 1000px 100%;
+}
+.productCard.shimmer .prodPrice{
+    animation : shimmer 2s infinite;
+    background: linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);
+    background-size: 1000px 100%;
+    border-radius: 5px;
+    width: 40%;
+    height: 20px;
+}
+.productCard.shimmer .shimmerAdd{
+    animation : shimmer 2s infinite;
+    background: linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);
+    background-size: 1000px 100%;
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 5px;
+    height: 50px;
+}
+
+.animate {
+    animation : shimmer 2s infinite;
+    background: linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);
+    background-size: 1000px 100%;
+ }
+@media (min-width: 1650px ) {
+    .popProducts{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    
+}
+
+.userTestimonial{
+    background-color: #54605F;
+    border-radius: 40px;
+    font-style: normal;
+    line-height: 26px;
+    padding: 60px 100px;
+    font-weight: 400;
+    font-size: 16px;
+    color: white;
+}
+
+.userTestimonial .userWrap{
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+}
+.userTestimonial .imgWrap{
+    min-width: 50px;
+    background-color: #e2e2e2;
+    border-radius: 50%;
+    min-height: 50px;
+    margin-right: 20px;
+}
+
+.productCard .prodDetWrap{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.productCard .spacer{
+    flex: 1;
+}
+@keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }

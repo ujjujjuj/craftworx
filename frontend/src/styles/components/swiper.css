@@ -1,0 +1,28 @@
+.swiper{
+    width: 85%;
+    background-color: white;
+}
+.swiper-slide{
+    width: 70%;
+    padding: 65px 80px;
+}
+
+.swiper-wrap{
+    background-color: white;
+    padding: 50px;
+}
+
+.swiper-button-prev,.swiper-button-next{
+    color: #54605F;
+}
+
+.swiper-pagination-bullet{
+    background-color: white;
+    border: 1px solid #54605F;
+    opacity: 1;
+}
+.swiper-pagination-bullet-active{
+    opacity: 1;
+    background-color: #54605F;
+    border: none;
+}

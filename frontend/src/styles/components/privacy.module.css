@@ -1,0 +1,25 @@
+.privacyWrap{
+    padding: 100px 100px;
+    color: black;
+}
+
+.privacyWrap h1{
+    font-family: 'Poppins';
+font-weight: 600;
+color: #54605F;
+margin-bottom: 10px;
+/* green */
+
+
+}
+
+.privacyWrap h2{
+    font-weight: 600;
+    margin: 10px 0;
+    color: #54605F;
+
+}
+
+.privacyWrap p{
+    color: black;
+}
