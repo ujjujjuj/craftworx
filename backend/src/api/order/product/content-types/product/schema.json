@@ -16,7 +16,7 @@
       "type": "string"
     },
     "price": {
-      "type": "integer"
+      "type": "decimal"
     },
     "images": {
       "type": "media",
@@ -33,7 +33,12 @@
       "type": "text"
     },
     "category": {
-      "type": "string"
+      "type": "enumeration",
+      "enum": [
+        "Gifts",
+        "Trousseau",
+        "Festive Occasion"
+      ]
     }
   }
 }

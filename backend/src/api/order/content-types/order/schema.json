@@ -27,8 +27,14 @@
     "address": {
       "type": "text"
     },
+    "amount": {
+      "type": "integer"
+    },
+    "userInfo": {
+      "type": "json"
+    },
     "userId": {
-      "type": "string"
+      "type": "integer"
     }
   }
 }
