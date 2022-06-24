@@ -13,12 +13,16 @@ nav{
     border-bottom: 1px solid rgba(84, 96, 95,50%);
 }
 
+nav a:focus{
+    color: #eba0bc;
+}
+
 nav .left img{
     width: 2.85em;
 }
 
 nav .right img{
-    width: 1.7em;
+    width: 1.8em;
     cursor: pointer;
 }
 
@@ -43,7 +47,7 @@ input:focus{
 }
 
 nav .item{
-    margin-left:28px;
+    margin-inline:14px;
     transition: all 0.2s ease;
     cursor: pointer;
     display: flex;
@@ -97,3 +101,33 @@ nav a{
   ::-ms-input-placeholder { /* Microsoft Edge */
     color: #54605F;
   } 
+
+.cartWrap{
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+.cartIndicator{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    right: -9px;
+    z-index: 9999;
+    top: -9px;
+    height: 20px;
+    background-color: #FB7979;
+}
+
+.hide{
+    visibility: hidden;
+    display: none;    
+}
+.show{
+    visibility: visible;
+    display: flex;
+}

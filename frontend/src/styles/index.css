@@ -4,7 +4,14 @@
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
+html{
+    scroll-behavior: smooth;
+}
 body {
     font-family: "Poppins";
-    background-color: #fffbfb;
+    background-color: white;
+}
+#root{
+    position: relative;
+    
 }

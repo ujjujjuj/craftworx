@@ -43,6 +43,13 @@ export const useProvideCart = () => {
         });
     };
 
+    const emptyCart = ()=>{
+        setCart((cart)=>{
+            cart.items={}
+            return cart
+        })
+    }
+
     const getCheckoutCart = () => {
         let checkoutCart = {};
         Object.entries(cart.items).forEach(([productId, product]) => {
@@ -51,10 +58,20 @@ export const useProvideCart = () => {
         return checkoutCart;
     };
 
+    const getCartSize = ()=>{
+        let n=0;
+        Object.entries(cart.items).forEach((x)=>{
+            n= n+x[1].quantity;
+        })
+        return n;
+    }
+
     useEffect(() => {
         let storedCart = localStorage.getItem("cart");
-        if (storedCart.length > 0) {
-            setCart(JSON.parse(storedCart));
+        if (storedCart && storedCart.length > 0) {
+            let jsonCart = JSON.parse(storedCart);
+            jsonCart.isExpanded = false;
+            setCart(jsonCart);
         }
     }, []);
 
@@ -63,5 +80,5 @@ export const useProvideCart = () => {
         localStorage.setItem("cart", JSON.stringify(cart));
     }, [cart]);
 
-    return { cart, toggleCart, setCartItem, deleteCartItem, getCheckoutCart };
+    return { cart, toggleCart, setCartItem, deleteCartItem, getCheckoutCart ,getCartSize,emptyCart};
 };

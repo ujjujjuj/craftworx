@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from '../styles/components/auth.module.css';
 import { useAuth } from "../hooks/auth";
 
@@ -12,6 +12,9 @@ const Login = () => {
     const togglePass = ()=>{
         setPassVisible(!passVisible);
     }
+    useEffect(()=>{
+        window.scrollTo(0,0);
+    },[]);
     const formSubmit = (e) => {
         e.preventDefault();
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/auth/local/`, {

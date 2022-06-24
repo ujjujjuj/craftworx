@@ -29,14 +29,10 @@ const dropdownOptions = [
     },
 ];
 
-const categories = ["All", "Gifts", "Trousseau", "Festive Occation"];
-
-// const productsTemp = Array(5)
-//     .fill({ name: "ishaan das mom", price: 300, category: "Trousseau" })
-//     .concat(Array(4).fill({ name: "cock", price: 999, category: "Gifts" }))
-//     .map((a, i) => ({ ...a, id: i }));
+const categories = ["All", "Gifts", "Trousseau", "Festive Occasion"];
 
 const Shop = () => {
+    const [init,setInit] = useState(true);
     const [searchParams] = useSearchParams();
     const [dropState, setDropState] = useState(false);
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -49,12 +45,15 @@ const Shop = () => {
 
     useEffect(() => {
         // TODO : api call
-        fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?fields=name,price,category`)
+        window.scrollTo(0,0);
+        fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?fields=name,price,category,discount,weight,material,length,breadth,height&populate=images`)
             .then((res) => res.json())
             .then((data) => {
+                console.log(data)
                 products.current = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
                 setFilteredProducts(products.current);
                 applyFilters();
+                setInit(false)
             });
 
         // products.current = productsTemp;
@@ -103,6 +102,11 @@ const Shop = () => {
                             }
                         />
                         <img src="/images/search.svg" alt="search" />
+                        <div className={styles.suggestion}>
+                            <p>Lorem Ipsum ipsum ipsum ipsum ipsum </p>
+                            <p>Lorem Ipsum ipsum ipsum ipsum ipsum </p>
+                            <p>Lorem Ipsum ipsum ipsum ipsum ipsum </p>
+                        </div>
                     </div>
                     <div className={styles.sort} onClick={() => setDropState((x) => !x)}>
                         <p unselectable="on">
@@ -155,8 +159,17 @@ const Shop = () => {
             </div>
 
             <section className={styles.products}>
-                {filteredProducts.map((product) => (
-                    <Product key={product.id} product={product} />
+                
+                {filteredProducts.length===0&&(init===true)?
+                <><Product shimmer="true"/>
+                <Product shimmer="true"/>
+                <Product shimmer="true"/>
+                {window.innerWidth>1650?                
+                    <Product shimmer="true"/>:<></>
+                }
+                </>:
+                filteredProducts.map((product) => (
+                    <Product key={product.id} shimmer={false} product={product} />
                 ))}
             </section>
         </>

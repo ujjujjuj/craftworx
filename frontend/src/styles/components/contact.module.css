@@ -1,0 +1,124 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    padding: 100px 0;
+}
+
+.main h3{
+    font-weight: 600;
+    font-size: 2em;
+    color: #54605F;
+}
+
+.formSection{
+    margin-top: 30px;
+    width: 41%;
+}
+.formSection form{
+    width: 100%;
+}
+.formHead{
+    display: flex;
+    width: 100%;
+}
+.inputWrap{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    color: #54605F;
+}
+.message.inputWrap{
+    width: 100%;
+    margin-top: 20px;
+}
+.formHead div:nth-child(2){
+    margin-left: 20px;
+}
+.formHead div:nth-child(1){
+    margin-right: 20px;
+}
+.inputWrap label{
+    font-weight: 500;
+    margin-bottom: 7px;
+    font-size: 0.9em;
+    color: #54605F;
+}
+.formSection input{
+    border: 1px solid #8D8D8D;
+    border-radius: 4px;
+    padding: 12px;
+    font-family: 'Poppins';
+}
+.formSection input:focus{
+    outline: none;
+}
+.formSection textarea:focus{
+    outline: none;
+}
+.formSection textarea{
+    border: 1px solid #8D8D8D;
+    border-radius: 4px;
+    padding: 12px;
+    font-family: 'Poppins';
+    resize: none;
+}
+.formSection button{
+    border: none;
+    background: #54605F;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    width: 65%;
+    margin-top: 40px;
+    font-family: 'Poppins';
+    padding: 12px 0;
+}
+
+
+
+
+.container {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    background-color: #fffbfb;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.dot {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    background: url("../images/Square leaf.png");
+    background-size: 100% 100%;
+}
+.dot1 {
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    background: url("../images/Square leaf.png");
+    background-size: 100% 100%;
+}
+.dot2 {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    background: url("../images/Square leaf.png");
+    background-size: 100% 100%;
+}
+
+.main ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    opacity: 0.7; /* Firefox */
+  }
+  
+ .main :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    opacity: 0.7; /* Firefox */
+  }
+  
+ .main ::-ms-input-placeholder { /* Microsoft Edge */
+    opacity: 0.7; /* Firefox */
+  }

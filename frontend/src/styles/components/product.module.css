@@ -1,0 +1,157 @@
+.header{
+    padding: 0 100px;
+    padding-top: 90px;
+    background-color: white;
+    display: grid;
+    column-gap: 70px;
+    grid-template-columns: 0.7fr 1.3fr;
+}
+.header .details{
+    display: flex;
+    flex-direction: column;
+}
+.details .heading{
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+
+.details .heading h1{
+    font-weight: 500;
+    max-width: 75%;
+    font-size: 1.6em;
+}
+
+.details .heading p{
+    align-self: flex-end;
+    text-decoration: underline;
+    cursor: pointer;
+
+}
+
+.details .rating{
+    display: flex;
+    padding-top: 8px;
+    align-items: center;
+}
+.details .rating img{
+    padding-right: 10px;
+    width: 39px;
+}
+.details .rating p{
+    margin-left: 20px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.cost{
+    display: flex;
+    padding-top: 20px;
+    flex-direction: column;
+    color: #54605f;
+    font-size: 1.1em;
+
+}
+.cost h1{
+    font-weight: 500;
+    color: black;
+    font-size: 1.5rem;
+    padding-right: 15px;
+}
+
+.cost .slash{
+    text-decoration: line-through;
+    padding-right: 15px;
+    font-size: 1em;
+    font-weight: 400;
+}
+
+.details .desc{
+    padding-top: 20px;
+    font-size: 1em;
+    width: 80%;
+}
+
+.gallery{
+    display: flex;
+    flex-direction: column;
+}
+.gallery .mainImg{
+    background-image: url("../images/product-placeholder.png");
+    background-size: contain;
+    border-radius: 12px;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 24vw;
+}
+
+.imgList{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding-top: 40px;
+    column-gap: 20px;
+    row-gap: 20px;
+    justify-items: stretch;
+    flex-wrap: wrap;
+   width: 100%;
+}
+
+.smallImg{
+    background-image: url("../images/product-placeholder.png");
+    width: 100%;
+    background-size: cover;
+    transition: all 0.2s ease;
+
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 6vw;
+    border: 2.5px solid white;
+    border-radius: 6px;
+}
+.smallImg.selected{
+    border: 2.5px solid #54605f;
+}
+.foot{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.qtyWrap{
+    display: flex;
+    margin-top: 10px;
+}
+.qtyWrap input{
+    font-family: 'Poppins';
+    margin-right: 5px;
+    width: 32px;
+    font-size: 1em;
+    padding: 1px;
+    height: 32px;
+    text-align: center;
+}
+.qtyWrap >*{
+    border: 1px solid #000000;
+    border-radius: 2px;
+}
+.qtyWrap .alter{
+    background-color: #fff;
+    width: 32px;
+    display: flex;
+    margin-right: 5px;
+    font-weight: 100;
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 2px;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    text-align: center;
+}
+
+.discWrap{
+    display: flex;
+    align-items: center;
+}

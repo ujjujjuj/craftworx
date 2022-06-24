@@ -3,14 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/auth";
 import classnames from "classnames";
 import { useCart } from "../hooks/cart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from 'react-router-dom'
 
 const Navbar = () => {
-    const { toggleCart } = useCart();
+    const { cart, toggleCart, getCartSize } = useCart();
     const { user } = useAuth();
+    const location = useLocation();
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
-
     const checkEnter = (e) => {
         if (e.key === "Enter") {
             setSearch("");
@@ -18,21 +19,35 @@ const Navbar = () => {
         }
     };
 
+    useEffect(() => {
+        console.log(cart)
+    }, [cart]); 
+
+
     return (
-        <nav>
+        <nav className={location.pathname.includes("checkout")?styles.hide:styles.show}>
             <div className={styles.left}>
                 <Link to="/">
-                    {" "}
                     <div className={classnames(styles.item, styles.logoNav)}>
-                        <img src="/images/cw.svg" alt="" />
+                        <img src="/images/CW.svg" alt="" />
                     </div>
                 </Link>
                 <Link to="/shop">
                     {" "}
                     <div className={styles.item}>Shop</div>
                 </Link>
-                <div className={styles.item}>About Us</div>
+                <Link to="/bespoke">
+                    <div className={styles.item}>Bespoke</div>
+                </Link>
+                <Link to="/corporate">
+                    <div className={styles.item}>Corporate</div>
+                </Link>
+                <Link to="/about">
+                    <div className={styles.item}>About Us</div>
+                </Link>
+                <Link to="/contact">
                 <div className={styles.item}>Contact</div>
+                </Link>
             </div>
             <div className={styles.right}>
                 <div className={classnames(styles.item, styles.navSearch)}>
@@ -46,7 +61,10 @@ const Navbar = () => {
                     <img src="/images/search.svg" alt="" />
                 </div>
                 <div className={classnames(styles.item, styles.cartNav)} onClick={toggleCart}>
-                    <img src="/images/cart.svg" alt="" />
+                    <div className={styles.cartWrap}>
+                        {Object.keys(cart.items).length ? <span className={styles.cartIndicator}>{getCartSize()}</span> : <></>}
+                        <img src="/images/cart.svg" alt="" />
+                    </div>
                     &nbsp; Cart
                 </div>
                 <div className={styles.item}>
