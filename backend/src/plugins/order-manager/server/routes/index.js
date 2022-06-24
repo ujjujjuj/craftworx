@@ -11,7 +11,16 @@ module.exports = [
   {
     method: "GET",
     path: "/getOrders",
-    handler: "orderManager.fetchOrders",
+    handler: "orderManager.getOrders",
+    config: {
+      auth: false,
+      policies: [],
+    },
+  },
+  {
+    method: "POST",
+    path: "/getProducts",
+    handler: "orderManager.getProducts",
     config: {
       auth: false,
       policies: [],

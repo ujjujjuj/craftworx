@@ -11,3 +11,17 @@ export const getOrders = async () => {
     return null;
   }
 };
+
+export const getProducts = async (ids) => {
+  try {
+    const data = await request(`/${pluginId}/getProducts`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ productIds: ids }),
+    });
+    return data;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
