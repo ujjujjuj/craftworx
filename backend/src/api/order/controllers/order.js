@@ -9,20 +9,90 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_SECRET,
 });
 
+const getShiprocketToken = (() => {
+  let shipRocketToken = null;
+  return async () => {
+    if (shipRocketToken === null) {
+      let req = await axios.post(
+        "https://apiv2.shiprocket.in/v1/external/auth/login",
+        {
+          email: process.env.SHIPROCKET_EMAIL,
+          password: process.env.SHIPROCKET_PASSWORD,
+        }
+      );
+      shipRocketToken = req.data.token;
+      setTimeout(() => (shipRocketToken = null), 1000 * 60 * 60 * 24 * 9); // renew token every 9 days
+    }
+
+    return shipRocketToken;
+  };
+})();
+
+const getShiprocketOptions = async (pinCode, weight) => {
+  let params = {
+    pickup_postcode: "282005",
+    delivery_postcode: pinCode,
+    cod: 0,
+    weight,
+  };
+  return await axios
+    .get(
+      "https://apiv2.shiprocket.in/v1/external/courier/serviceability?" +
+        new URLSearchParams(params),
+      {
+        headers: {
+          Authorization: `Bearer ${await getShiprocketToken()}`,
+        },
+      }
+    )
+    .then((res) => {
+      return { error: false, ...res.data };
+    })
+    .catch((err) => {
+      return { error: true, ...err.response.data };
+    });
+};
+
 // im higH lmao
 module.exports = {
   async create(ctx) {
-    console.log(ctx.request.body);
-    let totalPrice = 0;
-    for (let productId in ctx.request.body.cart) {
-      let product = await strapi.db
-        .query("api::product.product")
-        .findOne({ where: { id: parseInt(productId) } });
-      console.log(product);
-      totalPrice += product.price * ctx.request.body.cart[productId];
-    }
-    const tax = Math.round((totalPrice * 18) / 100);
-    totalPrice += tax;
+    let products = await strapi.db.query("api::product.product").findMany({
+      where: {
+        $or: Object.keys(ctx.request.body.cart).map((id) => {
+          return { id };
+        }),
+      },
+    });
+
+    let totalPrice = Math.ceil(
+      products.reduce(
+        (prev, next) =>
+          prev +
+          Math.ceil(
+            ctx.request.body.cart[next.id] *
+              next.price *
+              (1 - next.discount / 100)
+          ),
+        0
+      ) * 1.18
+    );
+
+    const totalWeight =
+      products.reduce(
+        (prev, next) => prev + ctx.request.body.cart[next.id] * next.weight,
+        0
+      ) / 1000;
+
+    const shipOptions = await getShiprocketOptions(
+      ctx.request.body.info.zipcode,
+      totalWeight
+    );
+    const selectedShipOption =
+      shipOptions.data.available_courier_companies.filter(
+        (company) => company.id === ctx.request.body.shipping
+      )[0];
+    totalPrice += Math.ceil(selectedShipOption.rate);
+
     let userId = null;
     if (ctx.request.header.authorization) {
       try {
@@ -32,8 +102,7 @@ module.exports = {
         userId = user.id;
       } catch (err) {}
     }
-    // ctx.body = { error: false };
-    // return;
+
     const entry = await strapi.db.query("api::order.order").create({
       data: {
         transactionId: uuidv4(),
@@ -84,5 +153,14 @@ module.exports = {
     } else {
       ctx.body = { error: true };
     }
+  },
+
+  async getShipOptions(ctx) {
+    let res = await getShiprocketOptions(
+      ctx.request.body.delivery_postcode,
+      ctx.request.body.weight / 1000
+    );
+
+    ctx.body = res;
   },
 };

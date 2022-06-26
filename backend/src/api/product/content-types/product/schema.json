@@ -34,6 +34,24 @@
     },
     "category": {
       "type": "string"
+    },
+    "discount": {
+      "type": "integer"
+    },
+    "weight": {
+      "type": "integer"
+    },
+    "material": {
+      "type": "string"
+    },
+    "length": {
+      "type": "integer"
+    },
+    "breadth": {
+      "type": "integer"
+    },
+    "height": {
+      "type": "integer"
     }
   }
 }

@@ -16,5 +16,13 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: "POST",
+      path: "/orders/getShipOptions",
+      handler: "order.getShipOptions",
+      config: {
+        auth: false,
+      },
+    },
   ],
 };
