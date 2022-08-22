@@ -45,8 +45,9 @@ export const useProvideCart = () => {
 
     const emptyCart = ()=>{
         setCart((cart)=>{
-            cart.items={}
-            return cart
+            let newCart = Object.assign({}, cart);
+            newCart.items={}
+            return newCart
         })
     }
 
@@ -76,8 +77,8 @@ export const useProvideCart = () => {
     }, []);
 
     useEffect(() => {
-        console.log(cart);
         localStorage.setItem("cart", JSON.stringify(cart));
+        console.log(cart)
     }, [cart]);
 
     return { cart, toggleCart, setCartItem, deleteCartItem, getCheckoutCart ,getCartSize,emptyCart};

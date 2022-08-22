@@ -22,6 +22,7 @@ const Cart = () => {
         const tax = Math.round((amount * 18) / 100);
         setPrices({ amount, tax });
     }, [cart]);
+
     return (
         <>
             <div

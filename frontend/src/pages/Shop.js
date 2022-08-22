@@ -44,7 +44,6 @@ const Shop = () => {
     const products = useRef([]);
 
     useEffect(() => {
-        // TODO : api call
         window.scrollTo(0,0);
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?fields=name,price,category,discount,weight,material,length,breadth,height&populate=images`)
             .then((res) => res.json())
@@ -158,7 +157,7 @@ const Shop = () => {
                 </div>
             </div>
 
-            <section className={styles.products}>
+            <section className={classnames(styles.products,styles.shopPage)}>
                 
                 {filteredProducts.length===0&&(init===true)?
                 <><Product shimmer="true"/>
