@@ -54,7 +54,7 @@ const Checkout = () => {
                 console.log(data);
                 const options = {
                     key: process.env.REACT_APP_RAZORPAY_ID,
-                    amount: data.amount, 
+                    amount: data.amount,
                     currency: "INR",
                     name: "Craftworx",
                     description: "Craftworx transaction",
@@ -71,9 +71,10 @@ const Checkout = () => {
                             }
                         );
                         alert("success!");
+                        emptyCart();
                     },
                     prefill: {
-                        name: `${userPayInfo.fName} ${userPayInfo.lName}` ,
+                        name: `${userPayInfo.fName} ${userPayInfo.lName}`,
                         email: `${userPayInfo.email}`,
                         contact: `${userPayInfo.phnNo}`,
                     },
