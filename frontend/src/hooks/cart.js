@@ -78,7 +78,6 @@ export const useProvideCart = () => {
 
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(cart));
-        console.log(cart)
     }, [cart]);
 
     return { cart, toggleCart, setCartItem, deleteCartItem, getCheckoutCart ,getCartSize,emptyCart};

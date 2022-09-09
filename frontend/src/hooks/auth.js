@@ -25,9 +25,9 @@ const useProvideAuth = () => {
         if (loadedUser.isLoggedIn) return loginUser(loadedUser);
     }, []);
 
-    useEffect(() => {
-        // console.log(user);
-    }, [user]);
+    // useEffect(() => {
+    //     // console.log(user);
+    // }, [user]);
 
     return {
         user,

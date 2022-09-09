@@ -35,6 +35,7 @@ const getShiprocketOptions = async (pinCode, weight) => {
     cod: 0,
     weight,
   };
+  console.log(params)
   return await axios
     .get(
       "https://apiv2.shiprocket.in/v1/external/courier/serviceability?" +

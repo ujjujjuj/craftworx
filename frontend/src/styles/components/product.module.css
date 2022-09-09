@@ -5,6 +5,7 @@
     display: grid;
     column-gap: 70px;
     grid-template-columns: 0.7fr 1.3fr;
+    margin-bottom: 100px;
 }
 .header .details{
     display: flex;
@@ -103,7 +104,7 @@
     width: 100%;
     background-size: cover;
     transition: all 0.2s ease;
-
+    image-rendering: pixelated;
     background-repeat: no-repeat;
     background-position: center;
     height: 6vw;

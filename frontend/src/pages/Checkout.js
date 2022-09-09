@@ -23,7 +23,7 @@ const Checkout = () => {
         currentSelected: -1,
         data: [],
     });
-    const [placeText,setPlaceText] = useState("Place Order")
+    const [placeText, setPlaceText] = useState("Place Order")
     const [userPayInfo, setUserPayInfo] = useState({
         country: "",
         state: "",
@@ -38,9 +38,9 @@ const Checkout = () => {
     const [processState, setProcessState] = useState("");
     const [checkoutModalState, setCheckoutModalState] = useState(false);
     const [transactionModal, setTransactionModal] = useState({
-        visible:false,
-        message:"",
-        label:""
+        visible: false,
+        message: "",
+        label: ""
     });
 
     const createOrder = () => {
@@ -61,73 +61,98 @@ const Checkout = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                const options = {
-                    key: process.env.REACT_APP_RAZORPAY_ID,
-                    amount: data.amount,
-                    currency: "INR",
-                    name: "Craftworx",
-                    description: "Craftworx transaction",
-                    order_id: data.id,
-                    handler: (response) => {
-                        fetch(
-                            `${process.env.REACT_APP_SERVER_URL}/api/orders/confirm`,
-                            {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify(response),
+                console.log(data)
+                if (data) {
+                    const options = {
+                        key: process.env.REACT_APP_RAZORPAY_ID,
+                        amount: data.amount,
+                        currency: "INR",
+                        name: "Craftworx",
+                        description: "Craftworx transaction",
+                        order_id: data.id,
+                        handler: (response) => {
+                            fetch(
+                                `${process.env.REACT_APP_SERVER_URL}/api/orders/confirm`,
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify(response),
+                                }
+                            ).then(async (res) => {
+                                let resp = await res.json();
+                                if (!resp.error) {
+                                    emptyCart();
+                                    navigate('/success', {
+                                        state: {
+                                            id: data.id
+                                        },
+                                        replace: true
+                                    })
+                                } else {
+                                    setTransactionModal({
+                                        visible: true,
+                                        message: "Unknown Error",
+                                        label: "Transaction Failed"
+                                    });
+                                }
+                            });
+                            setTransactionModal({
+                                visible: true,
+                                message: "Please wait while we place your order",
+                                label: "Transaction Successful"
+                            });
+                        },
+                        prefill: {
+                            name: `${userPayInfo.fName} ${userPayInfo.lName}`,
+                            email: `${userPayInfo.email}`,
+                            contact: `${userPayInfo.phnNo}`,
+                        },
+                        notes: {
+                            address: userPayInfo.zipcode,
+                        },
+                        theme: {
+                            color: "#000000",
+                        },
+                        "modal": {
+                            "ondismiss": function () {
+                                setPlaceText("Place Order")
                             }
-                        );
-                        setTransactionModal({
-                            visible:true,
-                            message:"Please wait while we place your order...",
-                            label:"Transaction Successful"
-                          });
-                    },
-                    prefill: {
-                        name: `${userPayInfo.fName} ${userPayInfo.lName}`,
-                        email: `${userPayInfo.email}`,
-                        contact: `${userPayInfo.phnNo}`,
-                    },
-                    notes: {
-                        address: userPayInfo.zipcode,
-                    },
-                    theme: {
-                        color: "#000000",
-                    },
-                    "modal": {
-                        "ondismiss": function () {
-                          setPlaceText("Place Order")
                         }
-                      }
-                };
-                const razorpay = new window.Razorpay(options);
-                razorpay.on("payment.failed", (response) => {
-                  setTransactionModal({
-                    visible:true,
-                    message:response.error.description,
-                    label:"Transaction Failed"
-                  });
-                });
-                razorpay.open();
+                    };
+                    const razorpay = new window.Razorpay(options);
+                    razorpay.on("payment.failed", (response) => {
+                        setTransactionModal({
+                            visible: true,
+                            message: response.error.description,
+                            label: "Transaction Failed"
+                        });
+                    });
+                    razorpay.open();
+                }else{
+                    setTransactionModal({
+                        visible: true,
+                        message: "Unable to process your request at the moment",
+                        label: "Transaction Failed"
+                    });
+                }
             });
     };
 
     const [prices, setPrices] = useState({ amount: 0, tax: 0 });
     const navigate = useNavigate();
 
-    useEffect(()=>{
-        if(Object.entries(cart.items).length===0){
-            cartTimeOut= setTimeout(() => {
+    useEffect(() => {
+        if (Object.entries(cart.items).length === 0) {
+            cartTimeOut = setTimeout(() => {
                 navigate('/shop');
             }, 500);
         }
-        else{
+        else {
             clearTimeout(cartTimeOut)
         }
-        // navigate('/shop');
-    },[cart]);
+    }, [cart]);
 
 
     useEffect(() => {
@@ -153,17 +178,17 @@ const Checkout = () => {
     useEffect(() => {
         setProcessState(user.isLoggedIn ? "auth" : "initUnAuth");
         let address = sessionStorage.getItem("userInfo")
-        if(address){
+        if (address) {
             setUserPayInfo(JSON.parse(address))
         }
     }, [user]);
 
-    useEffect(()=>{
-        if(refresh.current>0){
-        sessionStorage.setItem("userInfo",JSON.stringify(userPayInfo))
-         }
-         refresh.current++ 
-    },[userPayInfo,refresh])
+    useEffect(() => {
+        if (refresh.current > 0) {
+            sessionStorage.setItem("userInfo", JSON.stringify(userPayInfo))
+        }
+        refresh.current++
+    }, [userPayInfo, refresh])
 
     const selectShipElement = (e, rate, index) => {
         setShipOptions((shipOptions) => ({
@@ -185,7 +210,6 @@ const Checkout = () => {
             .classList.remove(styles1.hide);
         let [interval, loadElem] = loadShipStatus();
         loadElem.classList.remove(styles1.error);
-        console.log(cart.items);
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/getShipOptions`, {
             method: "post",
             headers: {
@@ -203,7 +227,7 @@ const Checkout = () => {
             .then((data) => {
                 clearInterval(interval);
                 console.log(data);
-                if (!data.error && data.status!==404) {
+                if (!data.error && data.status !== 404) {
                     loadElem.classList.add(styles1.hidden);
                     setShipOptions((shipOptions) => ({
                         ...shipOptions,
@@ -241,17 +265,17 @@ const Checkout = () => {
         return [loadInterval, elem];
     };
 
-    const emptyCartHandler = ()=>{
+    const emptyCartHandler = () => {
         emptyCart();
         setCheckoutModalState(false);
         navigate("/shop");
-    }   
+    }
 
     return (
         <>
             <section className={styles1.main}>
-                {checkoutModalState?<Popup line="Are you sure you want to empty your cart?" posHandler={emptyCartHandler} posLabel="Empty Cart" negLabel="Cancel" negHandler={()=>{setCheckoutModalState(false)}} />:<></>}
-                {transactionModal.visible?<Popup line={transactionModal.label} sub_line={transactionModal.message} posHandler={()=>{setTransactionModal(false); setPlaceText("Place Order")}} posLabel="Retry" negLabel="Cancel" negHandler={()=>{navigate('/shop')}} />:<></>}
+                {checkoutModalState ? <Popup line="Are you sure you want to empty your cart?" posHandler={emptyCartHandler} posLabel="Empty Cart" negLabel="Cancel" negHandler={() => { setCheckoutModalState(false) }} /> : <></>}
+                {transactionModal.visible ? <Popup line={transactionModal.label} sub_line={transactionModal.message} posHandler={() => { setTransactionModal(false); setPlaceText("Place Order") }} posLabel="Retry" negLabel="Cancel" negHandler={() => { navigate('/shop') }} /> : <></>}
                 <section className={styles1.leftSec}>
                     <div className={styles1.head}>
                         <p>Checkout</p>
@@ -304,11 +328,11 @@ const Checkout = () => {
                                     }}
                                 >
                                     <div className={styles1.selectWrap}>
-                                        <Countries states={setStates} currentValue={userPayInfo.country} updateUserInfo ={setUserPayInfo} />
+                                        <Countries states={setStates} currentValue={userPayInfo.country} updateUserInfo={setUserPayInfo} />
                                     </div>
                                     <div className={styles1.halfInputForm}>
                                         <div className={styles1.selectWrap}>
-                                            <States states={states} currentValue={userPayInfo.state} updateUserInfo ={setUserPayInfo}/>
+                                            <States states={states} currentValue={userPayInfo.state} updateUserInfo={setUserPayInfo} />
                                         </div>
                                         <input
                                             type={"text"}
@@ -423,7 +447,7 @@ const Checkout = () => {
                                     />
                                 </form>
                                 <div className={styles1.endForm}>
-                                    <p onClick={()=>{
+                                    <p onClick={() => {
                                         setUserPayInfo({
                                             country: "",
                                             state: "",

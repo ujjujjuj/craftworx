@@ -20,7 +20,6 @@ const Callback = () => {
                 navigate("/shop");
             })
             .catch((e) => {
-                console.log(e);
                 navigate("/login");
             });
     }, []);

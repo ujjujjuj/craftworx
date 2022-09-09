@@ -43,7 +43,7 @@ const App = () => {
                     <Route path="/logout" element={<Logout />} />
                     <Route path="/bespoke" element={<Bespoke />} />
                     <Route path="/corporate" element={<Corporate />} />
-                    <Route path="/success" element={<OrderSuccess />} />
+                    <Route path="/success" replace element={<OrderSuccess />} />
                     <Route path="/checkout" element={<Checkout />} />
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="/contact" element={<ContactUs />}/>    

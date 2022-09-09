@@ -91,9 +91,14 @@
 .popup.successPop p:nth-child(1){
     width: auto;
 }
-.popup.popup.successPop .popUpMsg{
+.popup.successPop .popUpMsg{
     margin-bottom: 0;
 }
+
+.popup.successPop > :nth-child(2){
+    margin-top: 15px;
+}
+
 .popup .button{
     margin: 0;
     border-radius: 8px;

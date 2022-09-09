@@ -48,7 +48,6 @@ const Shop = () => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?fields=name,price,category,discount,weight,material,length,breadth,height&populate=images`)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data)
                 products.current = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
                 setFilteredProducts(products.current);
                 applyFilters();
@@ -114,7 +113,7 @@ const Shop = () => {
                                 {dropdownOptions[filters.dropdownSelection].text}
                             </span>{" "}
                         </p>
-                        <ul className={classnames(styles.dropList, dropState && styles.ulExpanded)}>
+                        <ul className={classnames(styles.dropList, dropState ? styles.ulExpanded : "")}>
                             {dropdownOptions.map((dropdownOption, index) => (
                                 <li
                                     key={index}
@@ -125,7 +124,7 @@ const Shop = () => {
                                         }))
                                     }
                                     className={
-                                        index === filters.dropdownSelection && styles.selected
+                                        index === filters.dropdownSelection ? styles.selected : ""
                                     }
                                 >
                                     {dropdownOption.text}
@@ -142,7 +141,7 @@ const Shop = () => {
                 <div className={styles.filter}>
                     {categories.map((_category, index) => (
                         <p
-                            className={index === filters.categorySelection && styles.active}
+                            className={index === filters.categorySelection ? styles.active : ""}
                             onClick={() =>
                                 setFilters((_filters) => ({
                                     ..._filters,

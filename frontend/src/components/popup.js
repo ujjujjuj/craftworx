@@ -1,6 +1,8 @@
 import styles1 from "../styles/components/checkout.module.css";
 import classnames from "classnames";
 import styles from "../styles/components/cart.module.css";
+// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { ThreeDots } from  'react-loader-spinner'
 
 
 const Popup = ({line, posHandler,sub_line, negHandler, posLabel, negLabel}) => {
@@ -17,7 +19,18 @@ const Popup = ({line, posHandler,sub_line, negHandler, posLabel, negLabel}) => {
                     </p>
                 </div>
 
-               {line.includes("Success")?<></>:<div className={styles1.buttonWrap}>
+               {line.includes("Success")?<>
+               <ThreeDots 
+                    height="20" 
+                    width="50" 
+                    radius="9"
+                    color="#54605F" 
+                    ariaLabel="three-dots-loading"
+                    wrapperStyle={{}}
+                    wrapperClassName=""
+                    visible={true}
+                    />
+               </>:<div className={styles1.buttonWrap}>
                     <div
                         className={styles1.button}
                         onClick={posHandler}

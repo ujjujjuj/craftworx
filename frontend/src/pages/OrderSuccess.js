@@ -2,9 +2,12 @@ import { useEffect } from "react";
 import styles from '../styles/components/ordersuccess.module.css'
 import gsap, { Linear, Sine } from "gsap";
 import CartItem from "../components/cartItem";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const OrderSuccess = () => {
 
+    const {state} = useLocation();
+    const navigate = useNavigate();
     const init = () => {
         gsap.set(`${styles.container}`, { perspective: 600 });
         gsap.set("img", { xPercent: "-50%", yPercent: "-50%" });
@@ -54,9 +57,15 @@ const OrderSuccess = () => {
         }
     };
     useEffect(() => {
-        window.scrollTo(0, 0);
-        init();
-    }, []);
+        console.log(state)
+        if(!state){
+            navigate('/shop')
+        }else{
+            window.scrollTo(0, 0);
+            getOrderData();
+            init();
+        }
+    }, [state]);
     let sampleProduct = {
         "id": 7,
         "attributes": {
@@ -202,6 +211,12 @@ const OrderSuccess = () => {
             }
         }
     }
+
+    const getOrderData = ()=>{
+        fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders?fields=*`)
+        .then((res) => res.json()).then((data)=>(console.log(data)))
+    }
+
     return (
         <>
             <div className={styles.container} id="container"></div>

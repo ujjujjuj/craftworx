@@ -41,8 +41,7 @@ const ProductShow = () => {
                 }, {
                     encodeValuesOnly: true,
                 });
-                fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?${query}&fields=name,price,category&populate=images`).then((res) => res.json()).then((data1) => {
-                    console.log(data1.data.length)
+                fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?${query}&fields=name,price,category&populate=images&pagination[pageSize]=7`).then((res) => res.json()).then((data1) => {
                     if(data1.data.length===1){
                         setPopVisible(false)
                     }

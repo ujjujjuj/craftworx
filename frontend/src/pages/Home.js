@@ -129,7 +129,6 @@ const Home = () => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?fields=name,price,category,discount&populate=images`)
         .then((res) => res.json())
         .then((data) => {
-            console.log(data)
             let products = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
             if(products.length>3)
             setPopProducts(products.slice(0,3));
