@@ -11,21 +11,22 @@ const razorpay = new Razorpay({
 
 const getShiprocketToken = (() => {
   let shipRocketToken = null;
-  return async () => {
-    if (shipRocketToken === null) {
-      let req = await axios.post(
-        "https://apiv2.shiprocket.in/v1/external/auth/login",
-        {
-          email: process.env.SHIPROCKET_EMAIL,
-          password: process.env.SHIPROCKET_PASSWORD,
-        }
-      );
-      shipRocketToken = req.data.token;
-      setTimeout(() => (shipRocketToken = null), 1000 * 60 * 60 * 24 * 9); // renew token every 9 days
-    }
-
-    return shipRocketToken;
+  const setShiprocketToken = async () => {
+    let req = await axios.post(
+      "https://apiv2.shiprocket.in/v1/external/auth/login",
+      {
+        email: process.env.SHIPROCKET_EMAIL,
+        password: process.env.SHIPROCKET_PASSWORD,
+      }
+    );
+    shipRocketToken = req.data.token;
   };
+  setShiprocketToken();
+  setInterval(() => {
+    setShiprocketToken();
+  }, 1000 * 60 * 60 * 24 * 9);
+
+  return () => shipRocketToken;
 })();
 
 const getShiprocketOptions = async (pinCode, weight) => {
@@ -53,9 +54,9 @@ const getShiprocketOptions = async (pinCode, weight) => {
       return { error: true, ...err.response.data };
     });
 };
+const { createCoreController } = require("@strapi/strapi").factories;
 
-// im higH lmao
-module.exports = {
+module.exports = createCoreController("api::order.order", ({ strapi }) => ({
   async create(ctx) {
     let products = await strapi.db.query("api::product.product").findMany({
       where: {
@@ -164,4 +165,4 @@ module.exports = {
 
     ctx.body = res;
   },
-};
+}));
