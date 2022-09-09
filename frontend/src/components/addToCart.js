@@ -1,34 +1,35 @@
 import styles from "../styles/components/home.module.css";
 import classnames from "classnames";
 import { useCart } from "../hooks/cart";
+import { useEffect, useState } from "react";
 
 const AddToCart = ({ product, ctx, qty }) => {
     const { cart, setCartItem, deleteCartItem } = useCart();
     const setCartItem2 = setCartItem.bind(this, product);
-    
+    const [btnText,setBtnText] = useState('Add to cart')
+    useEffect(()=>{
+        if(btnText==='Added'){
+            setTimeout(() => {
+                setBtnText("Add to cart")
+            }, 500);
+        }
+    },[btnText])
     return (
         <>
-            <div className={classnames(styles.addToCart, (cart.items[product.id]?.quantity || 0) > 0 ? styles.added : "", (ctx === "pView") ? styles.pViewAdd : "")}
+            <div className={classnames(styles.addToCart, btnText==='Added'  ? styles.added : "", (ctx === "pView") ? styles.pViewAdd : "")}
                 onClick={(e) => {
                     e.stopPropagation();
                     if (!ctx) {
-                        if ((cart.items[product.id]?.quantity || 0) <= 0)
-                            setCartItem2(1);
-                        else
-                            deleteCartItem(product.id);
+                        setCartItem2(1)
                     }else{
-                        if((cart.items[product.id]?.quantity || 0) > 0)
-                        {
-                            deleteCartItem(product.id);
-                        }
-                        else
                         setCartItem2(qty)
                     }
+                    setBtnText("Added");
                 }}
             >
-                {(cart.items[product.id]?.quantity || 0) > 0 ? <i className="fas fa-check"></i> :
+                {btnText==='Added' ? <i className="fas fa-check"></i> :
                     <img src="/images/cart.svg" alt="" />}
-                &nbsp;&nbsp; {(cart.items[product.id]?.quantity || 0) > 0 ? "Added" : "Add to cart"}
+                &nbsp;&nbsp; {btnText}
             </div>
 
         </>

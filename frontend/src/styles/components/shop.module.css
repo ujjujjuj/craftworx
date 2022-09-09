@@ -21,7 +21,11 @@ body{
 .filter p{
     cursor: pointer;
     transition: color 0.2s ease;
-    padding-right: 20px;
+    margin-right: 20px;
+    position: relative;
+}
+.filter p:nth-last-child(1){
+    margin-right: 0;
 }
 
 .filter p:hover{
@@ -30,6 +34,23 @@ body{
 
 .filter p.active{
     color: #E19EAC;
+}
+.filter p::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    right:0;
+    bottom: -2px;
+    transition: all 0.2s ease;
+    width: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 40px;
+    height: 2px;
+    background-color: #E19EAC;
+}
+.filter p.active::after{
+    width: 75%;
 }
 
 .searchBox{
@@ -191,9 +212,103 @@ input:focus{
     
 }
 
+@media (max-width:1090px) {
+    .main{
+        padding: 0 60px;
+    }
+    .products{
+        padding-inline: 60px;
+    }
+}
+
+
+@media (max-width:975px) {
+    .main{
+        padding: 0px 30px;
+    }
+    .products{
+        padding-inline: 30px;
+    }
+}
+
 @media (max-width: 990px ) {
+    .products{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .filter p{
+        font-size: 0.9em;
+    }
+}
+
+
+@media (max-width: 800px ) {
     .products{
         grid-template-columns: 1fr 1fr;
     }
-    
+
+}
+
+@media (max-width:577px) {
+    .searchBox input{
+        width: 10em;
+    }
+}
+
+@media (max-width: 531px ) {
+    .products{
+        grid-template-columns: 1fr;
+        justify-items: center;
+        row-gap: 35px;
+    }
+    .filter{
+        justify-content: center;
+    }
+    .header{
+        justify-content: center;
+    }
+    .sort{
+        margin-left: 18px;
+        width: 18em;
+    }
+    .sort p{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        min-width: -moz-fit-content;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+}
+@media (max-width:478px) {
+    .header{
+        flex-direction: column;
+        align-items: center;
+    }
+    .header >*{
+        width: 100%;
+        margin: 0;
+    }
+    .header .searchBox input{
+        width: 100%;
+    }
+    .sort{
+        margin-top: 15px;
+    }
+    .main{
+        margin-top: 80px;
+    }
+}
+@media (max-width:380px) {
+    .filter p{
+        margin-inline: 8px;
+        margin-top: 5px;
+    }
+    .filter p:nth-last-child(1){
+        margin-inline: 8px;
+    }
+    .filter{
+        padding-top: 15px;
+        flex-wrap: wrap;
+    }
 }

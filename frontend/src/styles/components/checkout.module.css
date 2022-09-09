@@ -34,17 +34,18 @@
     justify-content: space-between;
 }
 
-.leftSec .popup{
+.popup{
     background-color: white;
     display: flex;
     flex-direction: column;
     position: fixed;
     font-weight: 500;
-    z-index: 100000;
-    padding: 34px 70px;
+    z-index: 11;
+    padding: 34px 30px;
     justify-content: center;
     align-items: center;
     border-radius: 11px;
+    user-select: none;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
@@ -64,21 +65,45 @@
     cursor: pointer;
     margin: 0 30px;
 }
-.popup p{
+
+.popup .popUpMsg{
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+.popup p:nth-child(1){
     text-align: center;
     font-size: 1.1em;
-    margin-bottom: 27px;
-line-height: 26px;
+    line-height: 27px;
+    width: 60%;
 }
-.leftSec .popup .button{
+.popup p:nth-child(2){
+    font-weight: 400;
+    font-size: 0.95em;
+    color: #54605F;
+    overflow-wrap: break-word;
+    display: block;
+    text-align: center;
+    line-height: 20px;
+}
+.popup.successPop p:nth-child(1){
+    width: auto;
+}
+.popup.popup.successPop .popUpMsg{
+    margin-bottom: 0;
+}
+.popup .button{
     margin: 0;
     border-radius: 8px;
     font-weight: 400;
     width: fit-content;
     font-family: 'Poppins';
-    padding: 10.5px 20px;
+    min-width: 110px;
+    padding: 9px 20px;
 }
-.leftSec .button{
+.button{
     background-color: #54605F;
     padding: 10.5px 40px;
     border-radius: 7px;
@@ -91,7 +116,7 @@ line-height: 26px;
     max-width: 300px;
     text-align: center;
     color: white;
-    z-index: 999;
+    z-index: 1;
 }
 
 .leftSec .endForm{
@@ -168,7 +193,7 @@ line-height: 26px;
     padding: 13px 16px;
     font-size: 0.95em;
     font-family: 'Poppins';
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0);
     width: 100%;
     margin-top: 23px;
     background-color: white;
@@ -286,6 +311,10 @@ line-height: 26px;
 .leftSec .shipPartner label{
     font-weight: 500;
     width: 100%;
+}
+
+.leftSec .shipPartner label small{
+    font-weight: 400;
 }
 
 

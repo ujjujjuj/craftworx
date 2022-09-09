@@ -20,6 +20,7 @@ import Bespoke from "./pages/Bespoke";
 import Corporate from "./pages/Corporate";
 import Terms from "./pages/Terms";
 import Refund from "./pages/Refund";
+import OrderSuccess from "./pages/OrderSuccess";
 
 const App = () => {
     return (
@@ -33,7 +34,6 @@ const App = () => {
                     <Route path="/shop" element={<Shop />} />
                     <Route path="/terms" element={<Terms />} />
                     <Route path="/returnpolicy" element={<Refund />} />
-
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/cart" element={<Cart />} />
@@ -43,7 +43,7 @@ const App = () => {
                     <Route path="/logout" element={<Logout />} />
                     <Route path="/bespoke" element={<Bespoke />} />
                     <Route path="/corporate" element={<Corporate />} />
-
+                    <Route path="/success" element={<OrderSuccess />} />
                     <Route path="/checkout" element={<Checkout />} />
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="/contact" element={<ContactUs />}/>    

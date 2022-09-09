@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "../hooks/cart";
 import styles1 from "../styles/components/checkout.module.css";
 import styles from "../styles/components/cart.module.css";
@@ -8,18 +8,22 @@ import CartItem from "../components/cartItem";
 import { useAuth } from "../hooks/auth";
 import Countries from "../components/countries";
 import States from "../components/states";
-import countriesJson from "../utils/countries.json";
+import Popup from "../components/popup";
+
+let cartTimeOut = null;
 
 const Checkout = () => {
-    let authTokenShipRocket;
     const { getCheckoutCart } = useCart();
+    const { cart, getCartSize, emptyCart } = useCart();
     const { user } = useAuth();
+    const refresh = useRef(0)
     const [states, setStates] = useState([]);
     const [shippingCost, setShippingCost] = useState(0);
     const [shippingOptions, setShipOptions] = useState({
         currentSelected: -1,
         data: [],
     });
+    const [placeText,setPlaceText] = useState("Place Order")
     const [userPayInfo, setUserPayInfo] = useState({
         country: "",
         state: "",
@@ -33,14 +37,20 @@ const Checkout = () => {
     });
     const [processState, setProcessState] = useState("");
     const [checkoutModalState, setCheckoutModalState] = useState(false);
+    const [transactionModal, setTransactionModal] = useState({
+        visible:false,
+        message:"",
+        label:""
+    });
+
     const createOrder = () => {
+        setPlaceText("Processing..")
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/new`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${
-                    JSON.parse(localStorage.getItem("user"))?.jwt
-                }`,
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem("user"))?.jwt
+                    }`,
             },
             body: JSON.stringify({
                 info: userPayInfo,
@@ -51,7 +61,6 @@ const Checkout = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 const options = {
                     key: process.env.REACT_APP_RAZORPAY_ID,
                     amount: data.amount,
@@ -70,8 +79,11 @@ const Checkout = () => {
                                 body: JSON.stringify(response),
                             }
                         );
-                        alert("success!");
-                        emptyCart();
+                        setTransactionModal({
+                            visible:true,
+                            message:"Please wait while we place your order...",
+                            label:"Transaction Successful"
+                          });
                     },
                     prefill: {
                         name: `${userPayInfo.fName} ${userPayInfo.lName}`,
@@ -84,24 +96,39 @@ const Checkout = () => {
                     theme: {
                         color: "#000000",
                     },
+                    "modal": {
+                        "ondismiss": function () {
+                          setPlaceText("Place Order")
+                        }
+                      }
                 };
                 const razorpay = new window.Razorpay(options);
                 razorpay.on("payment.failed", (response) => {
-                    alert(response.error.code);
-                    alert(response.error.description);
-                    alert(response.error.source);
-                    alert(response.error.step);
-                    alert(response.error.reason);
-                    alert(response.error.metadata.order_id);
-                    alert(response.error.metadata.payment_id);
+                  setTransactionModal({
+                    visible:true,
+                    message:response.error.description,
+                    label:"Transaction Failed"
+                  });
                 });
                 razorpay.open();
             });
     };
 
-    const { cart, getCartSize, emptyCart } = useCart();
     const [prices, setPrices] = useState({ amount: 0, tax: 0 });
     const navigate = useNavigate();
+
+    useEffect(()=>{
+        if(Object.entries(cart.items).length===0){
+            cartTimeOut= setTimeout(() => {
+                navigate('/shop');
+            }, 500);
+        }
+        else{
+            clearTimeout(cartTimeOut)
+        }
+        // navigate('/shop');
+    },[cart]);
+
 
     useEffect(() => {
         const amount = Object.values(cart.items).reduce(
@@ -111,7 +138,7 @@ const Checkout = () => {
                     Math.ceil(b.price - (b.discount * b.price) / 100).toFixed(
                         2
                     ) *
-                        b.quantity,
+                    b.quantity,
             }),
             {
                 price: 0,
@@ -125,7 +152,18 @@ const Checkout = () => {
 
     useEffect(() => {
         setProcessState(user.isLoggedIn ? "auth" : "initUnAuth");
-    }, []);
+        let address = sessionStorage.getItem("userInfo")
+        if(address){
+            setUserPayInfo(JSON.parse(address))
+        }
+    }, [user]);
+
+    useEffect(()=>{
+        if(refresh.current>0){
+        sessionStorage.setItem("userInfo",JSON.stringify(userPayInfo))
+         }
+         refresh.current++ 
+    },[userPayInfo,refresh])
 
     const selectShipElement = (e, rate, index) => {
         setShipOptions((shipOptions) => ({
@@ -136,13 +174,6 @@ const Checkout = () => {
     };
 
     const startShipProcess = () => {
-        setUserPayInfo((userPayInfo) => ({
-            ...userPayInfo,
-            state: document.getElementById("state").value,
-            country:
-                countriesJson.data[document.getElementById("country").value]
-                    .name,
-        }));
         document
             .querySelector(`.${styles1.addressFormWrap}`)
             .classList.add(styles1.hide);
@@ -172,7 +203,7 @@ const Checkout = () => {
             .then((data) => {
                 clearInterval(interval);
                 console.log(data);
-                if (!data.error) {
+                if (!data.error && data.status!==404) {
                     loadElem.classList.add(styles1.hidden);
                     setShipOptions((shipOptions) => ({
                         ...shipOptions,
@@ -210,48 +241,18 @@ const Checkout = () => {
         return [loadInterval, elem];
     };
 
+    const emptyCartHandler = ()=>{
+        emptyCart();
+        setCheckoutModalState(false);
+        navigate("/shop");
+    }   
+
     return (
         <>
             <section className={styles1.main}>
-                {checkoutModalState ? (
-                    <div
-                        className={classnames(styles.modal, styles.visible)}
-                    ></div>
-                ) : (
-                    <></>
-                )}
+                {checkoutModalState?<Popup line="Are you sure you want to empty your cart?" posHandler={emptyCartHandler} posLabel="Empty Cart" negLabel="Cancel" negHandler={()=>{setCheckoutModalState(false)}} />:<></>}
+                {transactionModal.visible?<Popup line={transactionModal.label} sub_line={transactionModal.message} posHandler={()=>{setTransactionModal(false); setPlaceText("Place Order")}} posLabel="Retry" negLabel="Cancel" negHandler={()=>{navigate('/shop')}} />:<></>}
                 <section className={styles1.leftSec}>
-                    {checkoutModalState ? (
-                        <div className={classnames(styles1.popup)}>
-                            <p>
-                                Are you sure you want to
-                                <br />
-                                empty your cart?
-                            </p>
-                            <div className={styles1.buttonWrap}>
-                                <div
-                                    className={styles1.button}
-                                    onClick={() => {
-                                        emptyCart();
-                                        setCheckoutModalState(false);
-                                        navigate("/shop");
-                                    }}
-                                >
-                                    Empty Cart
-                                </div>
-                                <div
-                                    className={classnames(styles1.popupAlt)}
-                                    onClick={() => {
-                                        setCheckoutModalState(false);
-                                    }}
-                                >
-                                    Cancel
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <></>
-                    )}
                     <div className={styles1.head}>
                         <p>Checkout</p>
                         <Link to="/shop">Back to shop</Link>
@@ -303,13 +304,11 @@ const Checkout = () => {
                                     }}
                                 >
                                     <div className={styles1.selectWrap}>
-                                        {" "}
-                                        <Countries states={setStates} />
+                                        <Countries states={setStates} currentValue={userPayInfo.country} updateUserInfo ={setUserPayInfo} />
                                     </div>
                                     <div className={styles1.halfInputForm}>
                                         <div className={styles1.selectWrap}>
-                                            {" "}
-                                            <States states={states} />{" "}
+                                            <States states={states} currentValue={userPayInfo.state} updateUserInfo ={setUserPayInfo}/>
                                         </div>
                                         <input
                                             type={"text"}
@@ -424,7 +423,19 @@ const Checkout = () => {
                                     />
                                 </form>
                                 <div className={styles1.endForm}>
-                                    <p>Go Back</p>
+                                    <p onClick={()=>{
+                                        setUserPayInfo({
+                                            country: "",
+                                            state: "",
+                                            city: "",
+                                            zipcode: "",
+                                            fName: "",
+                                            lName: "",
+                                            address: "",
+                                            phnNo: "",
+                                            email: "",
+                                        })
+                                    }}>Clear</p>
                                     <button
                                         className={styles1.button}
                                         type="submit"
@@ -480,7 +491,7 @@ const Checkout = () => {
                                                 document
                                                     .querySelector(
                                                         "." +
-                                                            styles1.shipLoadStatus
+                                                        styles1.shipLoadStatus
                                                     )
                                                     .classList.add(
                                                         styles1.hidden
@@ -546,8 +557,8 @@ const Checkout = () => {
                                                                 className={classnames(
                                                                     styles1.shipOption,
                                                                     n ===
-                                                                        shippingOptions.currentSelected &&
-                                                                        styles1.selected
+                                                                    shippingOptions.currentSelected &&
+                                                                    styles1.selected
                                                                 )}
                                                                 key={n}
                                                             >
@@ -688,8 +699,9 @@ const Checkout = () => {
                             )}
                             onClick={createOrder}
                         >
-                            Place Order
+                            {placeText}
                         </div>
+                        <p></p>
                     </section>
                 </section>
             </section>

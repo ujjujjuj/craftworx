@@ -26,3 +26,36 @@
     background-color: #54605F;
     border: none;
 }
+
+@media (max-width:1160px) {
+    .swiper-wrap{
+        padding: 50px 0;
+    }
+
+        .swiper-slide{
+            padding: 65px 70px;
+        }
+}
+
+@media (max-width:975px) {
+
+    .swiper{
+        width: 100%;
+    }
+    .swiper-slide{
+        padding: 65px 40px;
+    }
+    .swiper-wrap{
+        padding-top: 0;
+    }
+}
+
+@media (max-width:576px) {
+
+    .swiper{
+        width: 100%;
+    }
+    .swiper-slide{
+        padding: 65px 15px;
+    }
+}

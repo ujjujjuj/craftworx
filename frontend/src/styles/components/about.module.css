@@ -1,17 +1,106 @@
 .aboutHead{
     display: flex;
-    align-items: center;
     width: 100%;
     background-color: #FFFBFB;
     height: 100vh;
+    align-items: center;
+}
+.container {
+    position: absolute;
+    top: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background-color: #54605F;
+    z-index: -1;
 }
 
+.dot {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    background: url("../images/Square leaf.png");
+    background-size: 100% 100%;
+}
+.dot1 {
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    background: url("../images/Square leaf.png");
+    background-size: 100% 100%;
+}
+.dot2 {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    background: url("../images/Square leaf.png");
+    background-size: 100% 100%;
+}
 
 .aboutContent{
     display: flex;
     flex-direction: column;
     width: 60%;
     padding: 0 7vw;
+    position: relative;
+    height: 100%;
+    justify-content: center;
+}
+.aboutContent .scrollIndicator{
+   position: absolute;
+   cursor: pointer;
+   bottom: 20px;
+   opacity: 0.5;
+   left: 50%;
+   display: flex;
+   animation: up-down 1s ease-in-out infinite alternate-reverse;
+   flex-direction: column;
+   align-items: center;
+   transform: translateX(-50%) translateY(-10px);
+}
+
+@keyframes up-down {
+    from{
+        transform: translateX(-50%) translateY(-10px);
+    }
+    to{
+        transform: translateX(-50%) translateY(0px);
+    }
+}
+
+.ourVision{
+    width: 100%;
+    padding: 80px 0;
+    position: relative;
+}
+
+.ourVision .contentWrap{
+    margin: auto;
+    color: white;
+    width: 60%;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.ourVision .contentWrap >*{
+    text-align: center;
+}
+.ourVision .contentWrap h4{
+    font-weight: 400;
+    font-size: 1.35em;
+}
+.ourVision .contentWrap h2{
+    font-weight: 500;
+    font-size: 1.8em;
+    margin-top: 18px;
+}
+.ourVision .contentWrap p{
+    margin-top: 22px;
+    font-size: 0.9em;
+    width: 80%;
+    font-weight: 400;
 }
 .aboutContent h3{
     font-weight: 600;
@@ -28,7 +117,7 @@
     height: 100%;
     background-size: cover;
     background-repeat: no-repeat;
-    background-image: url('../images/promo-placeholder.png');
+    background-image: url('../images/bg2.png');
 }
 
 .founderSec{
@@ -42,11 +131,12 @@
 .founderImg{
     width: 32%;
     height: 300px;
-    background-image: url('../images/product-placeholder.png');
+    background-image: url('../images/bg3.png');
     margin: 0 100px;
     margin-left: 0;
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     border-radius: 12px;
     background-color: aliceblue;
 }
@@ -60,4 +150,45 @@
 }
 .founderContent p{
     margin-top: 15px;
+}
+
+.founderContent b{
+    font-weight: 600;
+}
+
+.uniqueSec{
+ padding: 100px 100px;   
+ width: 100%;
+ background-color: #FFFBFB;
+ position: relative;
+ overflow: hidden;
+}
+.uniqueSecWrap{
+    width: 63%;
+}
+.uniqueSecWrap h3{
+    font-weight: 600;
+    color: #54605F;
+    font-size: 2em;
+}
+.uniqueSecWrap p{
+    margin-top: 20px;
+}
+.uniqueSec img{
+    position: absolute;
+    bottom: 0;
+    width: 400px;
+    right: 0;
+    transform: translate(38%,13%) rotate(0);
+    animation: rotate 12s linear infinite;
+}
+
+@keyframes rotate {
+    from{
+        transform: translate(38%,13%) rotate(0);
+    }
+    to{
+        transform: translate(38%,13%) rotate(360deg);
+
+    }
 }

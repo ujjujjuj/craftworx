@@ -1,0 +1,120 @@
+.container {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    background-color: #FFFBFB;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+.dot {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    background: url("../images/Square leaf.png");
+    background-size: 100% 100%;
+}
+.dot1 {
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    background: url("../images/Square leaf.png");
+    background-size: 100% 100%;
+}
+.dot2 {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    background: url("../images/Square leaf.png");
+    background-size: 100% 100%;
+}
+
+.thanks{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top:110px;
+    padding-bottom: 57px;
+}
+.thanks h1{
+    font-family: "Sacramento";
+    font-size: 3.3rem;
+    font-weight: 400;
+    margin-top: 20px;
+}
+.orderDet{
+    background-color: white;
+    padding: 60px 100px;
+}
+.orderDet .orderHead{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.orderDet .orderHead p{
+    font-weight: 500;
+    font-size: 1.35em;
+}
+.orderDet .orderHead a{
+    font-weight: 400;
+    font-size: 1.05em;
+}
+.orderDet .orderItems{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap: 20px;
+
+}
+.orderDetWrap{
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+}
+.orderDet .orderSummary{
+    display: flex;
+    flex-direction: column;
+    width: 27%;
+    align-self: flex-end;
+}
+
+.orderSummary .orderSmRow{
+    display: flex;
+    padding: 9px 0;
+    justify-content: space-between;
+    font-size: 0.9em;
+}
+.orderSummary .orderSmRow.tot{
+    font-size: 1.1em;
+    font-weight: 500;
+}
+.orderSummary .orderSmRow :nth-last-child(1){
+    font-weight: 500;
+}
+.orderAdrWrp{
+    display: flex;
+    margin-top: 30px;
+    justify-content: space-between;
+}
+.orderAdrWrp .orderAdr>p{
+    font-weight: 500;
+    margin-bottom: 7px;
+    font-size: 1.1em;
+}
+.orderAdrWrp .trckOrd{
+    background-color: #54605F;
+    padding: 10.5px 55px;
+    height: fit-content;
+    font-size: 0.85em;
+    border-radius: 8px;
+    border: 1.5px #54605F solid;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    align-self: flex-start;
+    text-align: center;
+    color: white;
+}
+.orderAdrWrp .trckOrd:hover{
+    color: #54605F;
+    background-color: white;
+}
