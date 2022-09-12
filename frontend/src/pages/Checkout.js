@@ -1,21 +1,21 @@
 import { useEffect, useRef, useState } from "react";
-import { useCart } from "../hooks/cart";
 import styles1 from "../styles/components/checkout.module.css";
 import styles from "../styles/components/cart.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import classnames from "classnames";
 import CartItem from "../components/cartItem";
-import { useAuth } from "../hooks/auth";
 import Countries from "../components/countries";
 import States from "../components/states";
 import Popup from "../components/popup";
-
-let cartTimeOut = null;
+import { getCartSize, getCheckoutCart, emptyCart } from "../app/cartSlice"
+import { useSelector, useDispatch } from "react-redux"
 
 const Checkout = () => {
-    const { getCheckoutCart } = useCart();
-    const { cart, getCartSize, emptyCart } = useCart();
-    const { user } = useAuth();
+    const cart = useSelector(state => state.cartState.cart);
+    const user = useSelector(state => state.authState.user);
+    const cartSize = useSelector(getCartSize);
+    const dispatch = useDispatch();
+    const checkoutCart = useSelector(getCheckoutCart)
     const refresh = useRef(0)
     const [states, setStates] = useState([]);
     const [shippingCost, setShippingCost] = useState(0);
@@ -49,19 +49,17 @@ const Checkout = () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem("user"))?.jwt
-                    }`,
+                Authorization: `Bearer ${user.jwt}`,
             },
             body: JSON.stringify({
                 info: userPayInfo,
-                cart: getCheckoutCart(),
+                cart: checkoutCart,
                 shipping:
                     shippingOptions.data[shippingOptions.currentSelected].id,
             }),
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data)
                 if (data) {
                     const options = {
                         key: process.env.REACT_APP_RAZORPAY_ID,
@@ -83,7 +81,7 @@ const Checkout = () => {
                             ).then(async (res) => {
                                 let resp = await res.json();
                                 if (!resp.error) {
-                                    emptyCart();
+                                    dispatch(emptyCart());
                                     navigate('/success', {
                                         state: {
                                             id: data.id
@@ -130,7 +128,7 @@ const Checkout = () => {
                         });
                     });
                     razorpay.open();
-                }else{
+                } else {
                     setTransactionModal({
                         visible: true,
                         message: "Unable to process your request at the moment",
@@ -145,13 +143,9 @@ const Checkout = () => {
 
     useEffect(() => {
         if (Object.entries(cart.items).length === 0) {
-            cartTimeOut = setTimeout(() => {
-                navigate('/shop');
-            }, 500);
+            navigate("/shop")
         }
-        else {
-            clearTimeout(cartTimeOut)
-        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cart]);
 
 
@@ -226,7 +220,6 @@ const Checkout = () => {
             .then((res) => res.json())
             .then((data) => {
                 clearInterval(interval);
-                console.log(data);
                 if (!data.error && data.status !== 404) {
                     loadElem.classList.add(styles1.hidden);
                     setShipOptions((shipOptions) => ({
@@ -266,7 +259,7 @@ const Checkout = () => {
     };
 
     const emptyCartHandler = () => {
-        emptyCart();
+        dispatch(emptyCart());
         setCheckoutModalState(false);
         navigate("/shop");
     }
@@ -286,7 +279,11 @@ const Checkout = () => {
                             <div
                                 className={styles1.button}
                                 onClick={() => {
-                                    navigate("/login");
+                                    navigate("/login",{
+                                        state:{
+                                            fromCheckout : true
+                                        }
+                                    });
                                 }}
                             >
                                 Login
@@ -512,18 +509,10 @@ const Checkout = () => {
                                                     data: [],
                                                 });
                                                 setShippingCost(0);
-                                                document
-                                                    .querySelector(
-                                                        "." +
-                                                        styles1.shipLoadStatus
-                                                    )
-                                                    .classList.add(
-                                                        styles1.hidden
-                                                    );
-                                                document
-                                                    .querySelector(
-                                                        `.${styles1.addressFormWrap}`
-                                                    )
+                                                document.querySelector(`.${styles1.shipLoadStatus}`).classList.add(styles1.hidden);
+                                                document.querySelector(
+                                                    `.${styles1.addressFormWrap}`
+                                                )
                                                     .classList.remove(
                                                         styles1.hide
                                                     );
@@ -542,11 +531,10 @@ const Checkout = () => {
                                 </div>
                             </div>
 
-                            <div
-                                className={classnames(
-                                    styles1.shipPartner,
-                                    styles1.hide
-                                )}
+                            <div className={classnames(
+                                styles1.shipPartner,
+                                styles1.hide
+                            )}
                             >
                                 <h3
                                     className={classnames(
@@ -643,7 +631,7 @@ const Checkout = () => {
                             <div className={styles.left}>
                                 <img src="/images/cart.svg" alt="" />
                                 <p>Your Cart</p>
-                                <small>{getCartSize()} items</small>
+                                <small>{cartSize} items</small>
                             </div>
                         </div>
                         <div className={styles.cartItemList}>

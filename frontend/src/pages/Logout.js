@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/auth";
-
+import { logoutUser } from "../app/authSlice";
+import { useDispatch } from "react-redux"
 const Logout = () => {
     const navigate = useNavigate();
-    const { logoutUser } = useAuth();
-
-    useEffect(() => {
-        logoutUser();
+    const dispatch = useDispatch();
+    useEffect(() => {   
+        dispatch(logoutUser());
         navigate("/login");
     });
     useEffect(()=>{

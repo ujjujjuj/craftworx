@@ -1,15 +1,19 @@
 import styles from "../styles/components/cart.module.css";
 import classnames from "classnames";
 import CartItem from "../components/cartItem";
-import { useCart } from "../hooks/cart";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import {useSelector,useDispatch} from "react-redux";
+import { getCartSize , toggleCart } from "../app/cartSlice";
 
 const Cart = () => {
-    const { cart, toggleCart, getCartSize } = useCart();
+    const cart = useSelector(state=>state.cartState.cart)
+    const cartSize = useSelector(getCartSize)
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [prices, setPrices] = useState({ amount: 0, tax: 0 });
     const location = useLocation();
+
     useEffect(() => {
         const amount = Object.values(cart.items).reduce(
             (a, b) => ({ price: a.price + Math.floor((b.price - (b.discount * b.price / 100))).toFixed(2) * b.quantity }),
@@ -27,22 +31,26 @@ const Cart = () => {
         <>
             <div
                 className={classnames(styles.modal, cart.isExpanded && !location.pathname.includes("checkout") ? styles.visible : "")}
-                onClick={toggleCart}
+                onClick={()=>{
+                    dispatch(toggleCart())
+                }}
             ></div>
             <section className={classnames(styles.cart, cart.isExpanded ? styles.visible : "")}>
                 <div className={styles.cartHeader}>
                     <div className={styles.left}>
                         <img src="/images/cart.svg" alt="" />
                         <p>Your Cart</p>
-                        <small>{getCartSize()} items</small>
+                        <small>{cartSize} items</small>
                     </div>
-                    <div className={styles.right} onClick={toggleCart}>
+                    <div className={styles.right} onClick={()=>{
+                    dispatch(toggleCart())
+                }}>
                         <img src="/images/close.svg" alt="" />
                     </div>
                 </div>
                 <div className={styles.cartItemList}>
-                    {getCartSize()?<></>:<><div className={styles.emptyCart} onClick={()=>{
-                        toggleCart()
+                    {cartSize?<></>:<><div className={styles.emptyCart} onClick={()=>{
+                        dispatch(toggleCart())
                         navigate('/shop')
                     }}>
                         <img src="/images/fl0.svg" alt="empty cart" />
@@ -53,7 +61,7 @@ const Cart = () => {
                         return <CartItem key={productId} product={product} />;
                     })}
                 </div>
-                {getCartSize() ? <><hr />
+                {cartSize ? <><hr />
                     <div className={styles.row}>
                         <p>Subtotal</p>
                         <p>₹{prices.amount.toFixed(2)}</p>
@@ -71,11 +79,11 @@ const Cart = () => {
                         <p>₹{(prices.amount + prices.tax).toFixed(2)}</p>
                     </div>
                     <div
-                        title={getCartSize() ? "" : "Add products to cart first"}
-                        className={classnames(styles.checkout, getCartSize() ? "" : styles.disabled)}
+                        title={cartSize ? "" : "Add products to cart first"}
+                        className={classnames(styles.checkout, cartSize ? "" : styles.disabled)}
                         onClick={() => {
-                            if (getCartSize()) {
-                                toggleCart();
+                            if (cartSize) {
+                                dispatch(toggleCart());
                                 navigate("/checkout");
                             }
                         }}

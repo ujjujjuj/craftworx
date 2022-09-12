@@ -1,7 +1,6 @@
 import styles1 from "../styles/components/checkout.module.css";
 import classnames from "classnames";
 import styles from "../styles/components/cart.module.css";
-// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from  'react-loader-spinner'
 
 

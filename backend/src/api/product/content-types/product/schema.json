@@ -52,6 +52,9 @@
     },
     "height": {
       "type": "integer"
+    },
+    "color": {
+      "type": "string"
     }
   }
 }

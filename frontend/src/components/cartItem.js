@@ -1,11 +1,15 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useCart } from "../hooks/cart";
 import styles from "../styles/components/cart.module.css";
+import {useDispatch,useSelector} from "react-redux";
+import { deleteCartItem, getCartSize, setCartItem, toggleCart } from "../app/cartSlice";
 
 const CartItem = ({ product,checkoutModalState,isSm }) => {
-    const { setCartItem, deleteCartItem, cart, toggleCart,getCartSize } = useCart();
+    // const { setCartItem, deleteCartItem, cart, toggleCart,getCartSize } = useCart();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
+    const cart = useSelector(state=>state.cartState.cart);
+    const cartSize = useSelector(getCartSize);
     const setCartItem2 = setCartItem.bind(this, product);
     let productFinalAmt = Math.floor((product.price - (product.discount * product.price / 100))).toFixed(2)
     return (
@@ -14,14 +18,14 @@ const CartItem = ({ product,checkoutModalState,isSm }) => {
                 <div className={styles.cartImg} onClick={
                     (e) => {
                         navigate(`/product/${product.id}`)
-                        !isSm && toggleCart()
+                        !isSm && dispatch(toggleCart())
                     }
                 } style={{ backgroundImage: `url('${process.env.REACT_APP_SERVER_URL + product.images.data[0].attributes.url}')` }}></div>
                 <div className={styles.itemDet}>
                     <p onClick={
                         (e) => {
                             navigate(`/product/${product.id}`)
-                            !isSm && toggleCart()
+                            !isSm && dispatch(toggleCart())
                         }
                     }>{product.name}</p>
                     <small>₹{productFinalAmt}</small>
@@ -32,11 +36,12 @@ const CartItem = ({ product,checkoutModalState,isSm }) => {
                    <div className={styles.qtyWrap}>
                         <div className={styles.alter} onClick={() => 
                             {
-                                if(location.pathname.includes("checkout") && getCartSize()===1){
+                                if(location.pathname.includes("checkout") && cartSize===1){
                                     checkoutModalState(true)
                                 }
                                 else
-                                setCartItem2(-1)}}>
+                                    dispatch(setCartItem({amount: -1, product}))
+                            }}>
                             <i className="fas fa-minus"></i>
                         </div>
                         <input
@@ -44,7 +49,7 @@ const CartItem = ({ product,checkoutModalState,isSm }) => {
                             value={cart.items[product.id]?.quantity || 0}
                             readOnly
                         ></input>
-                        <div className={styles.alter} onClick={() => setCartItem2(1)}>
+                        <div className={styles.alter} onClick={() =>  dispatch(setCartItem({amount: 1, product}))}>
                             <i className="fas fa-plus"></i>
                         </div>
                     </div>}
@@ -54,7 +59,7 @@ const CartItem = ({ product,checkoutModalState,isSm }) => {
                         if(location.pathname.includes("checkout") && Object.keys(cart.items).length===1){
                             checkoutModalState(true)
                         }else
-                        deleteCartItem(product.id)
+                        dispatch(deleteCartItem(product.id))
                     }}></i>
                 </div>}
             </div>

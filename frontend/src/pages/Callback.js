@@ -1,22 +1,22 @@
 import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/auth";
+import {useDispatch} from "react-redux"
+import { loginUser } from "../app/authSlice";
 
 const Callback = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const { loginUser } = useAuth();
-
+    const dispatch = useDispatch();
+    
     useEffect(() => {
         let accessToken = searchParams.get("access_token");
         if (!accessToken) return navigate("/login");
-
         fetch(
             `${process.env.REACT_APP_SERVER_URL}/api/auth/google/callback?access_token=${accessToken}`
         )
             .then((res) => res.json())
             .then((data) => {
-                loginUser(data);
+                dispatch(loginUser(data));
                 navigate("/shop");
             })
             .catch((e) => {

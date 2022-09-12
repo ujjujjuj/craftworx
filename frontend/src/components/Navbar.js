@@ -1,29 +1,29 @@
 import styles from "../styles/components/Navbar.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/auth";
 import classnames from "classnames";
-import { useCart } from "../hooks/cart";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useLocation } from 'react-router-dom'
 import useWindowDimensions from "../hooks/windowDimensions";
+import { useSelector, useDispatch } from "react-redux";
+import { getCartSize, toggleCart } from "../app/cartSlice";
+
 
 const Navbar = () => {
-    const { cart, toggleCart, getCartSize } = useCart();
-    const { user } = useAuth();
+    const cart = useSelector(state => state.cartState.cart)
+    const cartSize = useSelector(getCartSize)
+    const dispatch = useDispatch();
+    const user = useSelector(state=>state.authState.user)
     const location = useLocation();
     const [isNavExpanded, setNavExpanded] = useState(false)
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
-    const { height, width } = useWindowDimensions();
+    const {  width } = useWindowDimensions();
     const checkEnter = (e) => {
         if (e.key === "Enter") {
             setSearch("");
             navigate(`/shop?q=${search}`);
         }
     };
-
-    useEffect(() => {
-    }, [cart]);
 
 
     return (
@@ -75,9 +75,11 @@ const Navbar = () => {
                         />
                         <img src="/images/search.svg" alt="" />
                     </div> : <></>}
-                    <div className={classnames(styles.item, styles.cartNav)} onClick={toggleCart}>
+                    <div className={classnames(styles.item, styles.cartNav)} onClick={() => {
+                        dispatch(toggleCart())
+                    }}>
                         <div className={styles.cartWrap}>
-                            {Object.keys(cart.items).length ? <span className={styles.cartIndicator}>{getCartSize()}</span> : <></>}
+                            {Object.keys(cart.items).length ? <span className={styles.cartIndicator}>{cartSize}</span> : <></>}
                             <img src="/images/cart.svg" alt="" />
                         </div>
                         {width > 974 ? <>&nbsp; Cart</> : ''}

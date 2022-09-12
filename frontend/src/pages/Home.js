@@ -16,7 +16,7 @@ import useWindowDimensions from "../hooks/windowDimensions";
 
 const Home = () => {
     const navigate = useNavigate();
-    const { height, width } = useWindowDimensions();
+    const {  width } = useWindowDimensions();
     const init = () => {
         gsap.set(`${styles.container}`, { perspective: 600 });
         gsap.set("img", { xPercent: "-50%", yPercent: "-50%" });

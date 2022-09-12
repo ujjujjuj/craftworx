@@ -102,7 +102,7 @@ const ProductShow = () => {
                         {product.discount > 0 ? <> <h1 className={styles.slash}>₹ {product.price.toFixed(2)}</h1>
                         </> : <></>}
                         <div className={styles.discWrap}>
-                            <h1>₹ {product.price?productFinalAmt:"100" }</h1>   {product.discount > 0 ? <p>{product.discount}% off</p> : <></>}
+                            <h1>₹ {product.price?productFinalAmt:"" }</h1>   {product.discount > 0 ? <p>{product.discount}% off</p> : <></>}
 
                         </div>
 

@@ -213,7 +213,7 @@ const OrderSuccess = () => {
     }
 
     const getOrderData = ()=>{
-        fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders?fields=*`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders?filters[orderId][$eq]=${state.id}`)
         .then((res) => res.json()).then((data)=>(console.log(data)))
     }
 

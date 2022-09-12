@@ -1,12 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState,useRef } from "react";
+import { useState,useRef, useEffect } from "react";
 import styles from '../styles/components/auth.module.css';
-import { useAuth } from "../hooks/auth";
+import {useDispatch, useSelector} from "react-redux"
+import { loginUser } from "../app/authSlice";
 
 const Register = () => {
     const [formData, setFormData] = useState({ username: "", password: "" , firstName:"",lastName:""});
-    const { loginUser } = useAuth();
     const [passVisible, setPassVisible] = useState(false); 
+    const user = useSelector(state=>state.authState.user);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const divRef = useRef(null);
     const [errorMsg,setError] = useState('');
@@ -34,7 +36,7 @@ const Register = () => {
                     setError(data.error.message)
                     return console.log(data);
                 }
-                loginUser(data);
+                dispatch(loginUser(data));
                 navigate("/shop");
             })
             .catch((e) => {
@@ -42,6 +44,12 @@ const Register = () => {
             });
     };
 
+    useEffect(() => {
+        if(user?.isLoggedIn){
+            navigate("/shop")
+        }
+    }, [user]);
+    
     return (
         <>
             <main>
