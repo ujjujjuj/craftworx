@@ -4,11 +4,12 @@ import styles from "../styles/components/cart.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import classnames from "classnames";
 import CartItem from "../components/cartItem";
-import Countries from "../components/countries";
-import States from "../components/states";
 import Popup from "../components/popup";
 import { getCartSize, getCheckoutCart, emptyCart } from "../app/cartSlice"
 import { useSelector, useDispatch } from "react-redux"
+import { fetchOrder, initRazorPay, confirmOrder } from "../api/checkout"
+import CheckoutForm from "../components/checkoutForm";
+import ShipOption from "../components/shipOption";
 
 const Checkout = () => {
     const cart = useSelector(state => state.cartState.cart);
@@ -43,99 +44,54 @@ const Checkout = () => {
         label: ""
     });
 
-    const createOrder = () => {
-        setPlaceText("Processing..")
-        fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/new`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${user.jwt}`,
-            },
-            body: JSON.stringify({
-                info: userPayInfo,
-                cart: checkoutCart,
-                shipping:
-                    shippingOptions.data[shippingOptions.currentSelected].id,
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data) {
-                    const options = {
-                        key: process.env.REACT_APP_RAZORPAY_ID,
-                        amount: data.amount,
-                        currency: "INR",
-                        name: "Craftworx",
-                        description: "Craftworx transaction",
-                        order_id: data.id,
-                        handler: (response) => {
-                            fetch(
-                                `${process.env.REACT_APP_SERVER_URL}/api/orders/confirm`,
-                                {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                    },
-                                    body: JSON.stringify(response),
-                                }
-                            ).then(async (res) => {
-                                let resp = await res.json();
-                                if (!resp.error) {
-                                    dispatch(emptyCart());
-                                    navigate('/success', {
-                                        state: {
-                                            id: data.id
-                                        },
-                                        replace: true
-                                    })
-                                } else {
-                                    setTransactionModal({
-                                        visible: true,
-                                        message: "Unknown Error",
-                                        label: "Transaction Failed"
-                                    });
-                                }
-                            });
-                            setTransactionModal({
-                                visible: true,
-                                message: "Please wait while we place your order",
-                                label: "Transaction Successful"
-                            });
-                        },
-                        prefill: {
-                            name: `${userPayInfo.fName} ${userPayInfo.lName}`,
-                            email: `${userPayInfo.email}`,
-                            contact: `${userPayInfo.phnNo}`,
-                        },
-                        notes: {
-                            address: userPayInfo.zipcode,
-                        },
-                        theme: {
-                            color: "#000000",
-                        },
-                        "modal": {
-                            "ondismiss": function () {
-                                setPlaceText("Place Order")
-                            }
-                        }
-                    };
-                    const razorpay = new window.Razorpay(options);
-                    razorpay.on("payment.failed", (response) => {
-                        setTransactionModal({
-                            visible: true,
-                            message: response.error.description,
-                            label: "Transaction Failed"
-                        });
-                    });
-                    razorpay.open();
-                } else {
-                    setTransactionModal({
-                        visible: true,
-                        message: "Unable to process your request at the moment",
-                        label: "Transaction Failed"
-                    });
-                }
+    const successCallback = async (resp, order) => {
+        setTransactionModal({
+            visible: true,
+            message: "Please wait while we place your order",
+            label: "Transaction Successful"
+        });
+        let confirm = await confirmOrder(resp);
+        if (!confirm.error) {
+            dispatch(emptyCart());
+            navigate('/success', {
+                state: {
+                    id: order.id
+                },
+                replace: true
+            })
+        } else {
+            setTransactionModal({
+                visible: true,
+                message: "If any money has been deducted, kindly reach out to us.",
+                label: "Couldn't place your order"
             });
+        }
+    }
+
+    const dismissCallback = () => {
+        setPlaceText("Place Order")
+    }
+
+    const failureCallback = (response) => {
+        setTransactionModal({
+            visible: true,
+            message: response.error.description,
+            label: "Transaction Failed"
+        });
+    }
+
+    const createOrder = async () => {
+        setPlaceText("Processing..")
+        let order = await fetchOrder(user, userPayInfo, checkoutCart, shippingOptions);
+        if (order) {
+            initRazorPay(order, userPayInfo, successCallback, dismissCallback, failureCallback);
+        } else {
+            setTransactionModal({
+                visible: true,
+                message: "Unable to process your request at the moment",
+                label: "Transaction Failed"
+            });
+        }
     };
 
     const [prices, setPrices] = useState({ amount: 0, tax: 0 });
@@ -147,7 +103,6 @@ const Checkout = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cart]);
-
 
     useEffect(() => {
         const amount = Object.values(cart.items).reduce(
@@ -264,6 +219,20 @@ const Checkout = () => {
         navigate("/shop");
     }
 
+    const emptyForm = () => {
+        setUserPayInfo({
+            country: "",
+            state: "",
+            city: "",
+            zipcode: "",
+            fName: "",
+            lName: "",
+            address: "",
+            phnNo: "",
+            email: "",
+        })
+    }
+
     return (
         <>
             <section className={styles1.main}>
@@ -279,9 +248,9 @@ const Checkout = () => {
                             <div
                                 className={styles1.button}
                                 onClick={() => {
-                                    navigate("/login",{
-                                        state:{
-                                            fromCheckout : true
+                                    navigate("/login", {
+                                        state: {
+                                            fromCheckout: true
                                         }
                                     });
                                 }}
@@ -315,148 +284,10 @@ const Checkout = () => {
                         <>
                             <div className={styles1.addressFormWrap}>
                                 <h3>Where &amp; who to ship to?</h3>
-                                <form
-                                    className={styles1.addressForm}
-                                    id="address-form"
-                                    name="address-form"
-                                    onSubmit={(e) => {
-                                        e.preventDefault();
-                                        startShipProcess();
-                                    }}
-                                >
-                                    <div className={styles1.selectWrap}>
-                                        <Countries states={setStates} currentValue={userPayInfo.country} updateUserInfo={setUserPayInfo} />
-                                    </div>
-                                    <div className={styles1.halfInputForm}>
-                                        <div className={styles1.selectWrap}>
-                                            <States states={states} currentValue={userPayInfo.state} updateUserInfo={setUserPayInfo} />
-                                        </div>
-                                        <input
-                                            type={"text"}
-                                            placeholder={"City"}
-                                            value={userPayInfo.city}
-                                            onChange={(e) =>
-                                                setUserPayInfo(
-                                                    (userPayInfo) => ({
-                                                        ...userPayInfo,
-                                                        city: e.target.value,
-                                                    })
-                                                )
-                                            }
-                                            name="city"
-                                            id="city"
-                                            required
-                                        />
-                                    </div>
-                                    <div className={styles1.halfInputForm}>
-                                        <input
-                                            type={"text"}
-                                            placeholder={"Address"}
-                                            value={userPayInfo.address}
-                                            onChange={(e) =>
-                                                setUserPayInfo(
-                                                    (userPayInfo) => ({
-                                                        ...userPayInfo,
-                                                        address: e.target.value,
-                                                    })
-                                                )
-                                            }
-                                            name="address"
-                                            id="address"
-                                            required
-                                        />
-                                        <input
-                                            type={"number"}
-                                            placeholder={"Zip Code"}
-                                            value={userPayInfo.zipcode}
-                                            onChange={(e) =>
-                                                setUserPayInfo((zipcode) => ({
-                                                    ...userPayInfo,
-                                                    zipcode: e.target.value,
-                                                }))
-                                            }
-                                            name="pincode"
-                                            id="pincode"
-                                            required
-                                        />
-                                    </div>
-                                    <div className={styles1.halfInputForm}>
-                                        <input
-                                            type={"text"}
-                                            placeholder={"First Name"}
-                                            value={userPayInfo.fName}
-                                            onChange={(e) =>
-                                                setUserPayInfo(
-                                                    (userPayInfo) => ({
-                                                        ...userPayInfo,
-                                                        fName: e.target.value,
-                                                    })
-                                                )
-                                            }
-                                            name="fname"
-                                            id="fname"
-                                            required
-                                        />
-                                        <input
-                                            type={"text"}
-                                            placeholder={"Last Name"}
-                                            value={userPayInfo.lName}
-                                            onChange={(e) =>
-                                                setUserPayInfo(
-                                                    (userPayInfo) => ({
-                                                        ...userPayInfo,
-                                                        lName: e.target.value,
-                                                    })
-                                                )
-                                            }
-                                            name="lname"
-                                            id="lname"
-                                            required
-                                        />
-                                    </div>
-                                    <input
-                                        type={"tel"}
-                                        placeholder={"Phone Number"}
-                                        value={userPayInfo.phnNo}
-                                        onChange={(e) =>
-                                            setUserPayInfo((userPayInfo) => ({
-                                                ...userPayInfo,
-                                                phnNo: e.target.value,
-                                            }))
-                                        }
-                                        name="phone"
-                                        id="phone"
-                                        required
-                                    />
-                                    <input
-                                        type={"email"}
-                                        placeholder={"Email"}
-                                        value={userPayInfo.email}
-                                        onChange={(e) =>
-                                            setUserPayInfo((userPayInfo) => ({
-                                                ...userPayInfo,
-                                                email: e.target.value,
-                                            }))
-                                        }
-                                        name="email"
-                                        id="email"
-                                        required
-                                    />
-                                </form>
+                                <CheckoutForm startShipProcess={startShipProcess} setStates={setStates} userPayInfo={userPayInfo} setUserPayInfo={setUserPayInfo} states={states}>
+                                </CheckoutForm>
                                 <div className={styles1.endForm}>
-                                    <p onClick={() => {
-                                        setUserPayInfo({
-                                            country: "",
-                                            state: "",
-                                            city: "",
-                                            zipcode: "",
-                                            fName: "",
-                                            lName: "",
-                                            address: "",
-                                            phnNo: "",
-                                            email: "",
-                                        })
-                                    }}>Clear</p>
+                                    <p onClick={emptyForm}>Clear</p>
                                     <button
                                         className={styles1.button}
                                         type="submit"
@@ -534,8 +365,7 @@ const Checkout = () => {
                             <div className={classnames(
                                 styles1.shipPartner,
                                 styles1.hide
-                            )}
-                            >
+                            )} >
                                 <h3
                                     className={classnames(
                                         styles1.shipLoadStatus,
@@ -554,62 +384,7 @@ const Checkout = () => {
                                         >
                                             {shippingOptions.data.map(
                                                 (elem, n) => {
-                                                    return (
-                                                        <>
-                                                            <div
-                                                                onClick={(
-                                                                    e
-                                                                ) => {
-                                                                    selectShipElement(
-                                                                        e,
-                                                                        elem.rate,
-                                                                        n
-                                                                    );
-                                                                }}
-                                                                className={classnames(
-                                                                    styles1.shipOption,
-                                                                    n ===
-                                                                    shippingOptions.currentSelected &&
-                                                                    styles1.selected
-                                                                )}
-                                                                key={n}
-                                                            >
-                                                                <label
-                                                                    htmlFor={
-                                                                        "ship-" +
-                                                                        n
-                                                                    }
-                                                                    key={n}
-                                                                >
-                                                                    {
-                                                                        elem.courier_name
-                                                                    }{" "}
-                                                                    : ₹{" "}
-                                                                    {Math.ceil(
-                                                                        elem.rate
-                                                                    ).toFixed(
-                                                                        2
-                                                                    )}
-                                                                    <br />
-                                                                    <small>
-                                                                        (
-                                                                        Estimated
-                                                                        shipping
-                                                                        in{" "}
-                                                                        {
-                                                                            elem.estimated_delivery_days
-                                                                        }
-                                                                        -
-                                                                        {parseInt(
-                                                                            elem.estimated_delivery_days
-                                                                        ) +
-                                                                            2}{" "}
-                                                                        days )
-                                                                    </small>
-                                                                </label>
-                                                            </div>
-                                                        </>
-                                                    );
+                                                    return <ShipOption index={n} ship={elem} selectShipElement={selectShipElement} shippingOptions={shippingOptions}/>
                                                 }
                                             )}
                                         </div>
