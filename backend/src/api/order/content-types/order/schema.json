@@ -24,9 +24,6 @@
     "isConfirmed": {
       "type": "boolean"
     },
-    "address": {
-      "type": "text"
-    },
     "amount": {
       "type": "integer"
     },
@@ -34,6 +31,9 @@
       "type": "json"
     },
     "userId": {
+      "type": "integer"
+    },
+    "shipping": {
       "type": "integer"
     }
   }

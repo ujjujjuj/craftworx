@@ -36,7 +36,7 @@ const getShiprocketOptions = async (pinCode, weight) => {
     cod: 0,
     weight,
   };
-  console.log(params)
+  console.log(params);
   return await axios
     .get(
       "https://apiv2.shiprocket.in/v1/external/courier/serviceability?" +
@@ -57,6 +57,31 @@ const getShiprocketOptions = async (pinCode, weight) => {
 const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController("api::order.order", ({ strapi }) => ({
+  async get(ctx) {
+    if (!ctx.request.query?.id) return;
+    const order = await strapi.db
+      .query("api::order.order")
+      .findOne({ where: { orderId: ctx.request.query.id } });
+    if (order === null) return;
+
+    let products = await strapi.db.query("api::product.product").findMany({
+      where: {
+        $or: Object.keys(order.items).map((id) => {
+          return { id };
+        }),
+      },
+      populate: {
+        images: true,
+      },
+    });
+
+    const cart = Object.keys(order.items).map((item) => ({
+      ...products.find((prod) => prod.id === parseInt(item)),
+      qty: order.items[item],
+    }));
+    ctx.body = { order, cart };
+  },
+
   async create(ctx) {
     let products = await strapi.db.query("api::product.product").findMany({
       where: {
@@ -113,6 +138,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         userId,
         userInfo: ctx.request.body.info,
         amount: totalPrice,
+        shipping: Math.ceil(selectedShipOption.rate),
       },
     });
     const options = {
