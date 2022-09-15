@@ -61,9 +61,11 @@ const About = () => {
             setIsAnim(true)
         }
     }, []);
+    
     return (
         <>
-            <div className={styles.aboutHead}>
+        <div className={styles.slider}>
+            <section className={styles.aboutHead}>
                 <div className={styles.aboutContent}>
                     <h3>Handmade products specifically for you.</h3>
                     <p>Craftworx by Ankita Gupta is an Agra based brand, established in 2019, which has taken a pledge to serve you with the best quality products overloaded with top-notch creativity. We are a one stop destination for all kinds of products, goodies, presents and mementos to make a special occasion an extraordinary one. We specialise in crafting customised and personalised products for all kinds of events, be it big or small, casual or formal, traditional or western. A go to gifting solution for all your special days. </p>
@@ -76,7 +78,7 @@ const About = () => {
                     </div>
                 </div>
                 <div className={styles.aboutImg}></div>
-            </div>
+            </section>
             <section className={styles.ourVision}  ref={visionRef}>
                 <div className={styles.container} id="container"></div>
                 <div className={styles.contentWrap}>
@@ -95,12 +97,13 @@ const About = () => {
             </section>
 
 
-            <div className={styles.founderSec}>
+            <section className={styles.founderSec}>
                 <div className={styles.founderImg}></div>
                 <div className={styles.founderContent}>
                     <h3>From the Founder's Desk</h3>
                     <p>Welcome to my world. I am <b>Ankita Gupta</b>, a crafting enthusiast. My passion for designing products based on creative concepts pushed me to start my brand which stands for making perfect presents and trousseau packaging. When I embarked upon this beautiful journey, I used to pull all-nighters to complete my orders as I used to work alone but gradually I have built a team of 10+ members and no combination of words is enough to express my gratitude for my wonderful clients. They say that when you do what you love, it doesn't feel like you are working and believe me the feeling is surreal. I pour my heart into my designs and each and every product I create is very close to my heart. My team wishes to delight more and more customers with our exclusive range of hampers, trousseau packing, adorned trays and a lot more other exciting products. </p>
                 </div>
+            </section>
             </div>
         </>
     );

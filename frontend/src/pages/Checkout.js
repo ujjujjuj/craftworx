@@ -233,6 +233,11 @@ const Checkout = () => {
         })
     }
 
+    const updateStateLoc = (state) =>{
+        setStates(state);
+    }
+
+        
     return (
         <>
             <section className={styles1.main}>
@@ -284,7 +289,7 @@ const Checkout = () => {
                         <>
                             <div className={styles1.addressFormWrap}>
                                 <h3>Where &amp; who to ship to?</h3>
-                                <CheckoutForm startShipProcess={startShipProcess} setStates={setStates} userPayInfo={userPayInfo} setUserPayInfo={setUserPayInfo} states={states}>
+                                <CheckoutForm startShipProcess={startShipProcess} setStates={updateStateLoc} userPayInfo={userPayInfo} setUserPayInfo={setUserPayInfo} states={states}>
                                 </CheckoutForm>
                                 <div className={styles1.endForm}>
                                     <p onClick={emptyForm}>Clear</p>
@@ -297,8 +302,7 @@ const Checkout = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div
-                                className={classnames(
+                            <div className={classnames(
                                     styles1.shippingTo,
                                     styles1.hide
                                 )}
@@ -315,19 +319,13 @@ const Checkout = () => {
                                         <br />
                                         {userPayInfo.country}
                                     </p>
-                                    <div
-                                        style={{
+                                    <div style={{
                                             display: "flex",
                                             flexDirection: "row",
                                             alignItems: "center",
-                                        }}
-                                    >
-                                        <img
-                                            src="/images/edit_icon.svg"
-                                            alt="edit icon"
-                                        />
-                                        <p
-                                            style={{
+                                        }} >
+                                        <img src="/images/edit_icon.svg" alt="edit icon" />
+                                        <p style={{
                                                 color: "#54605F",
                                                 textDecoration: "underline",
                                                 marginLeft: 8,
@@ -354,34 +352,21 @@ const Checkout = () => {
                                                     .classList.add(
                                                         styles1.hide
                                                     );
-                                            }}
-                                        >
+                                            }} >
                                             Edit
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className={classnames(
-                                styles1.shipPartner,
-                                styles1.hide
-                            )} >
-                                <h3
-                                    className={classnames(
-                                        styles1.shipLoadStatus,
-                                        styles1.hidden
-                                    )}
-                                >
+                            <div className={classnames(styles1.shipPartner, styles1.hide )} >
+                                <h3 className={classnames( styles1.shipLoadStatus,styles1.hidden)}>
                                     Getting Shipping Options
                                 </h3>
                                 {shippingOptions.data.length ? (
                                     <>
                                         <h3>Select Shipping Option</h3>
-                                        <div
-                                            className={classnames(
-                                                styles1.shipOptionsWrap
-                                            )}
-                                        >
+                                        <div className={classnames(styles1.shipOptionsWrap)}>
                                             {shippingOptions.data.map(
                                                 (elem, n) => {
                                                     return <ShipOption index={n} ship={elem} selectShipElement={selectShipElement} shippingOptions={shippingOptions}/>

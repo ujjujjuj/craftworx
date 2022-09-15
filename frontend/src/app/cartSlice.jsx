@@ -1,19 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-// const initCart = () => {
-//     let defaultCart = {
-//         isExpanded: false,
-//         items: {},
-//     };
-
-//     let storedCart = JSON.parse(localStorage.getItem("cart"));
-
-//     if (storedCart) {
-//         storedCart.isExpanded = false;
-//         return storedCart;
-//     }
-//     return defaultCart;
-// }
 
 const cartSlice = createSlice({
     name: 'cartState',

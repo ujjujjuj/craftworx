@@ -21,6 +21,7 @@ import Corporate from "./pages/Corporate";
 import Terms from "./pages/Terms";
 import Refund from "./pages/Refund";
 import OrderSuccess from "./pages/OrderSuccess";
+import User from "./pages/User";
 
 const App = () => {
     return (
@@ -45,6 +46,7 @@ const App = () => {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/contact" element={<ContactUs />} />
+                <Route path="/user" element={<User />} />
                 <Route exact path="/product/:id" element={<ProductShow />} />
             </Routes>
             <Footer></Footer>

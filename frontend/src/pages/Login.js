@@ -34,7 +34,7 @@ const Login = () => {
                     return console.log(data);
                 }
                 dispatch(loginUser(data))
-                if(state.fromCheckout)
+                if(state?.fromCheckout)
                     navigate("/checkout");
                 else
                     navigate("/shop")

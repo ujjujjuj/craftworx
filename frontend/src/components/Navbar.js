@@ -15,6 +15,7 @@ const Navbar = () => {
     const user = useSelector(state=>state.authState.user)
     const location = useLocation();
     const [isNavExpanded, setNavExpanded] = useState(false)
+    const [isUserExpanded,setUserExpanded] = useState(false)
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
     const {  width } = useWindowDimensions();
@@ -84,9 +85,17 @@ const Navbar = () => {
                         </div>
                         {width > 974 ? <>&nbsp; Cart</> : ''}
                     </div>
-                    {width > 974 ? <div className={styles.item} style={{ marginRight: 0 }}>
+                    {width > 974 ? <div className={classnames(styles.item,styles.userMenuWrap)} style={{ marginRight: 0 }}>
                         {user.isLoggedIn ? (
-                            <Link to="/logout">Logout</Link>
+                            <>
+                              <img src="/images/user-icon.svg" alt="user icon" onClick={()=>{setUserExpanded((current)=>!current)}} />
+                                <div className={styles.parent}>
+                                <div className={classnames(styles.userMenu,isUserExpanded?styles.expanded:"")}  onClick={()=>{setUserExpanded((current)=>!current)}}>
+                                        <Link to="/user">My Account</Link>
+                                        <Link to="/logout">Logout</Link>
+                                </div>
+                                </div>
+                            </>
                         ) : (
                             <Link to="/login">Login</Link>
                         )}
