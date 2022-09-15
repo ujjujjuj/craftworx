@@ -1,19 +1,19 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import styles from '../styles/components/auth.module.css';
-import {  useDispatch  } from 'react-redux'
+import styles from "../styles/components/auth.module.css";
+import { useDispatch } from "react-redux";
 import { loginUser } from "../app/authSlice";
 
 const Login = () => {
     const [formData, setFormData] = useState({ identifier: "", password: "" });
     const [passVisible, setPassVisible] = useState(false);
     const navigate = useNavigate();
-    const {state} = useLocation();
-    const [errorMsg, setError] = useState('');
+    const { state } = useLocation();
+    const [errorMsg, setError] = useState("");
     const togglePass = () => {
         setPassVisible(!passVisible);
-    }
-    const dispatch = useDispatch()
+    };
+    const dispatch = useDispatch();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -30,14 +30,13 @@ const Login = () => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.data === null) {
-                    setError('Invalid Email & Password combination')
+                    setError("Invalid Email & Password combination");
                     return console.log(data);
                 }
-                dispatch(loginUser(data))
-                if(state?.fromCheckout)
-                    navigate("/checkout");
-                else
-                    navigate("/shop")
+                console.log(data, "sending dispatch");
+                dispatch(loginUser(data));
+                if (state?.fromCheckout) navigate("/checkout");
+                else navigate("/shop");
             })
             .catch((e) => {
                 console.log(e);
@@ -50,9 +49,24 @@ const Login = () => {
                 <h1>Craftworx Agra</h1>
                 <h2>Log in</h2>
                 <form onSubmit={formSubmit}>
-                    <input name="email" placeholder="E-mail" type="email" required value={formData.email}
-                        onChange={(e) => setFormData((old) => ({ ...old, identifier: e.target.value }))} />
-                    <div className={styles.passWrap}><input name="password" placeholder="*******" type={passVisible ? "text" : "password"} required onChange={(e) => setFormData((old) => ({ ...old, password: e.target.value }))} /><i className={passVisible ? "fas fa-eye-slash" : "fas fa-eye"} onClick={togglePass}></i></div>
+                    <input
+                        name="email"
+                        placeholder="E-mail"
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData((old) => ({ ...old, identifier: e.target.value }))}
+                    />
+                    <div className={styles.passWrap}>
+                        <input
+                            name="password"
+                            placeholder="*******"
+                            type={passVisible ? "text" : "password"}
+                            required
+                            onChange={(e) => setFormData((old) => ({ ...old, password: e.target.value }))}
+                        />
+                        <i className={passVisible ? "fas fa-eye-slash" : "fas fa-eye"} onClick={togglePass}></i>
+                    </div>
                     <input type="submit" value="Continue" />
                 </form>
                 <div className={styles.forgot}>
@@ -68,7 +82,8 @@ const Login = () => {
                     Don't have an account? <Link to="/register">Sign up</Link>
                 </div>
                 <div className={styles.error}>
-                    {errorMsg.length ? <i className="fas fa-exclamation-circle"></i> : <></>}<p id="error-msg">{errorMsg}</p>
+                    {errorMsg.length ? <i className="fas fa-exclamation-circle"></i> : <></>}
+                    <p id="error-msg">{errorMsg}</p>
                 </div>
             </main>
         </>

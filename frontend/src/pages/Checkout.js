@@ -5,26 +5,26 @@ import { Link, useNavigate } from "react-router-dom";
 import classnames from "classnames";
 import CartItem from "../components/cartItem";
 import Popup from "../components/popup";
-import { getCartSize, getCheckoutCart, emptyCart } from "../app/cartSlice"
-import { useSelector, useDispatch } from "react-redux"
-import { fetchOrder, initRazorPay, confirmOrder } from "../api/checkout"
+import { getCartSize, getCheckoutCart, emptyCart } from "../app/cartSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchOrder, initRazorPay, confirmOrder } from "../api/checkout";
 import CheckoutForm from "../components/checkoutForm";
 import ShipOption from "../components/shipOption";
 
 const Checkout = () => {
-    const cart = useSelector(state => state.cartState.cart);
-    const user = useSelector(state => state.authState.user);
+    const cart = useSelector((state) => state.cartState);
+    const user = useSelector((state) => state.authState);
     const cartSize = useSelector(getCartSize);
     const dispatch = useDispatch();
-    const checkoutCart = useSelector(getCheckoutCart)
-    const refresh = useRef(0)
+    const checkoutCart = useSelector(getCheckoutCart);
+    const refresh = useRef(0);
     const [states, setStates] = useState([]);
     const [shippingCost, setShippingCost] = useState(0);
     const [shippingOptions, setShipOptions] = useState({
         currentSelected: -1,
         data: [],
     });
-    const [placeText, setPlaceText] = useState("Place Order")
+    const [placeText, setPlaceText] = useState("Place Order");
     const [userPayInfo, setUserPayInfo] = useState({
         country: "",
         state: "",
@@ -41,47 +41,48 @@ const Checkout = () => {
     const [transactionModal, setTransactionModal] = useState({
         visible: false,
         message: "",
-        label: ""
+        label: "",
     });
 
     const successCallback = async (resp, order) => {
         setTransactionModal({
             visible: true,
             message: "Please wait while we place your order",
-            label: "Transaction Successful"
+            label: "Transaction Successful",
         });
         let confirm = await confirmOrder(resp);
         if (!confirm.error) {
             dispatch(emptyCart());
-            navigate('/success', {
+            navigate("/success", {
                 state: {
-                    id: order.id
+                    id: order.id,
                 },
-                replace: true
-            })
+                replace: true,
+            });
         } else {
             setTransactionModal({
                 visible: true,
                 message: "If any money has been deducted, kindly reach out to us.",
-                label: "Couldn't place your order"
+                label: "Couldn't place your order",
             });
         }
-    }
+    };
 
     const dismissCallback = () => {
-        setPlaceText("Place Order")
-    }
+        setPlaceText("Place Order");
+    };
 
     const failureCallback = (response) => {
         setTransactionModal({
             visible: true,
             message: response.error.description,
-            label: "Transaction Failed"
+            label: "Transaction Failed",
         });
-    }
+    };
 
     const createOrder = async () => {
-        setPlaceText("Processing..")
+        console.log(user, userPayInfo, checkoutCart, shippingOptions);
+        setPlaceText("Processing..");
         let order = await fetchOrder(user, userPayInfo, checkoutCart, shippingOptions);
         if (order) {
             initRazorPay(order, userPayInfo, successCallback, dismissCallback, failureCallback);
@@ -89,7 +90,7 @@ const Checkout = () => {
             setTransactionModal({
                 visible: true,
                 message: "Unable to process your request at the moment",
-                label: "Transaction Failed"
+                label: "Transaction Failed",
             });
         }
     };
@@ -99,7 +100,7 @@ const Checkout = () => {
 
     useEffect(() => {
         if (Object.entries(cart.items).length === 0) {
-            navigate("/shop")
+            navigate("/shop");
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cart]);
@@ -107,12 +108,7 @@ const Checkout = () => {
     useEffect(() => {
         const amount = Object.values(cart.items).reduce(
             (a, b) => ({
-                price:
-                    a.price +
-                    Math.ceil(b.price - (b.discount * b.price) / 100).toFixed(
-                        2
-                    ) *
-                    b.quantity,
+                price: a.price + Math.ceil(b.price - (b.discount * b.price) / 100).toFixed(2) * b.quantity,
             }),
             {
                 price: 0,
@@ -126,18 +122,18 @@ const Checkout = () => {
 
     useEffect(() => {
         setProcessState(user.isLoggedIn ? "auth" : "initUnAuth");
-        let address = sessionStorage.getItem("userInfo")
+        let address = sessionStorage.getItem("userInfo");
         if (address) {
-            setUserPayInfo(JSON.parse(address))
+            setUserPayInfo(JSON.parse(address));
         }
-    }, [user]);
+    }, [user.isLoggedIn]);
 
     useEffect(() => {
         if (refresh.current > 0) {
-            sessionStorage.setItem("userInfo", JSON.stringify(userPayInfo))
+            sessionStorage.setItem("userInfo", JSON.stringify(userPayInfo));
         }
-        refresh.current++
-    }, [userPayInfo, refresh])
+        refresh.current++;
+    }, [userPayInfo, refresh]);
 
     const selectShipElement = (e, rate, index) => {
         setShipOptions((shipOptions) => ({
@@ -148,15 +144,9 @@ const Checkout = () => {
     };
 
     const startShipProcess = () => {
-        document
-            .querySelector(`.${styles1.addressFormWrap}`)
-            .classList.add(styles1.hide);
-        document
-            .querySelector(`.${styles1.shippingTo}`)
-            .classList.remove(styles1.hide);
-        document
-            .querySelector(`.${styles1.shipPartner}`)
-            .classList.remove(styles1.hide);
+        document.querySelector(`.${styles1.addressFormWrap}`).classList.add(styles1.hide);
+        document.querySelector(`.${styles1.shippingTo}`).classList.remove(styles1.hide);
+        document.querySelector(`.${styles1.shipPartner}`).classList.remove(styles1.hide);
         let [interval, loadElem] = loadShipStatus();
         loadElem.classList.remove(styles1.error);
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/getShipOptions`, {
@@ -166,16 +156,14 @@ const Checkout = () => {
             },
             body: JSON.stringify({
                 delivery_postcode: userPayInfo.zipcode,
-                weight: Object.values(cart.items).reduce(
-                    (prev, next) => prev + next.weight * next.quantity,
-                    0
-                ),
+                weight: Object.values(cart.items).reduce((prev, next) => prev + next.weight * next.quantity, 0),
             }),
         })
             .then((res) => res.json())
             .then((data) => {
                 clearInterval(interval);
-                if (!data.error && data.status !== 404) {
+                console.log(data);
+                if (!data.error && ![404, 422].includes(data.status)) {
                     loadElem.classList.add(styles1.hidden);
                     setShipOptions((shipOptions) => ({
                         ...shipOptions,
@@ -183,12 +171,7 @@ const Checkout = () => {
                     }));
                 } else {
                     loadElem.classList.add(styles1.error);
-
-                    if (data.status_code === 422)
-                        loadElem.innerHTML = "Invalid delivery code.";
-                    else
-                        loadElem.innerHTML =
-                            "Delivery postcode not serviceable.";
+                    loadElem.innerText = data.message;
                 }
             });
     };
@@ -203,10 +186,7 @@ const Checkout = () => {
                 elem.innerHTML += ".";
                 n++;
             } else {
-                elem.innerHTML = elem.innerHTML.slice(
-                    0,
-                    elem.innerHTML.length - 3
-                );
+                elem.innerHTML = elem.innerHTML.slice(0, elem.innerHTML.length - 3);
                 n = 0;
             }
         }, 400);
@@ -217,7 +197,7 @@ const Checkout = () => {
         dispatch(emptyCart());
         setCheckoutModalState(false);
         navigate("/shop");
-    }
+    };
 
     const emptyForm = () => {
         setUserPayInfo({
@@ -230,19 +210,47 @@ const Checkout = () => {
             address: "",
             phnNo: "",
             email: "",
-        })
-    }
+        });
+    };
 
-    const updateStateLoc = (state) =>{
+    const updateStateLoc = (state) => {
         setStates(state);
     }
 
-        
+
     return (
         <>
             <section className={styles1.main}>
-                {checkoutModalState ? <Popup line="Are you sure you want to empty your cart?" posHandler={emptyCartHandler} posLabel="Empty Cart" negLabel="Cancel" negHandler={() => { setCheckoutModalState(false) }} /> : <></>}
-                {transactionModal.visible ? <Popup line={transactionModal.label} sub_line={transactionModal.message} posHandler={() => { setTransactionModal(false); setPlaceText("Place Order") }} posLabel="Retry" negLabel="Cancel" negHandler={() => { navigate('/shop') }} /> : <></>}
+                {checkoutModalState ? (
+                    <Popup
+                        line="Are you sure you want to empty your cart?"
+                        posHandler={emptyCartHandler}
+                        posLabel="Empty Cart"
+                        negLabel="Cancel"
+                        negHandler={() => {
+                            setCheckoutModalState(false);
+                        }}
+                    />
+                ) : (
+                    <></>
+                )}
+                {transactionModal.visible ? (
+                    <Popup
+                        line={transactionModal.label}
+                        sub_line={transactionModal.message}
+                        posHandler={() => {
+                            setTransactionModal(false);
+                            setPlaceText("Place Order");
+                        }}
+                        posLabel="Retry"
+                        negLabel="Cancel"
+                        negHandler={() => {
+                            navigate("/shop");
+                        }}
+                    />
+                ) : (
+                    <></>
+                )}
                 <section className={styles1.leftSec}>
                     <div className={styles1.head}>
                         <p>Checkout</p>
@@ -255,8 +263,8 @@ const Checkout = () => {
                                 onClick={() => {
                                     navigate("/login", {
                                         state: {
-                                            fromCheckout: true
-                                        }
+                                            fromCheckout: true,
+                                        },
                                     });
                                 }}
                             >
@@ -264,10 +272,7 @@ const Checkout = () => {
                             </div>
                             <p>or</p>
                             <div
-                                className={classnames(
-                                    styles1.button,
-                                    styles1.buttonAlt
-                                )}
+                                className={classnames(styles1.button, styles1.buttonAlt)}
                                 onClick={() => {
                                     setProcessState("unAuth");
                                 }}
@@ -293,20 +298,12 @@ const Checkout = () => {
                                 </CheckoutForm>
                                 <div className={styles1.endForm}>
                                     <p onClick={emptyForm}>Clear</p>
-                                    <button
-                                        className={styles1.button}
-                                        type="submit"
-                                        form="address-form"
-                                    >
+                                    <button className={styles1.button} type="submit" form="address-form">
                                         Continue
                                     </button>
                                 </div>
                             </div>
-                            <div className={classnames(
-                                    styles1.shippingTo,
-                                    styles1.hide
-                                )}
-                            >
+                            <div className={classnames(styles1.shippingTo, styles1.hide)}>
                                 <h3>Shipping to</h3>
                                 <div className={styles1.flex}>
                                     <p id="user-address">
@@ -314,64 +311,64 @@ const Checkout = () => {
                                         <br />
                                         {userPayInfo.address}
                                         <br />
-                                        {userPayInfo.city}, {userPayInfo.state}{" "}
-                                        - {userPayInfo.zipcode}
+                                        {userPayInfo.city}, {userPayInfo.state} - {userPayInfo.zipcode}
                                         <br />
                                         {userPayInfo.country}
                                     </p>
                                     <div style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                        }} >
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                    }} >
                                         <img src="/images/edit_icon.svg" alt="edit icon" />
                                         <p style={{
-                                                color: "#54605F",
-                                                textDecoration: "underline",
-                                                marginLeft: 8,
-                                                fontWeight: "500",
-                                                cursor: "pointer",
-                                            }}
+                                            color: "#54605F",
+                                            textDecoration: "underline",
+                                            marginLeft: 8,
+                                            fontWeight: "500",
+                                            cursor: "pointer",
+                                        }}
                                             onClick={() => {
                                                 setShipOptions({
                                                     currentSelected: -1,
                                                     data: [],
                                                 });
                                                 setShippingCost(0);
-                                                document.querySelector(`.${styles1.shipLoadStatus}`).classList.add(styles1.hidden);
-                                                document.querySelector(
-                                                    `.${styles1.addressFormWrap}`
-                                                )
-                                                    .classList.remove(
-                                                        styles1.hide
-                                                    );
                                                 document
-                                                    .querySelector(
-                                                        `.${styles1.shippingTo}`
-                                                    )
-                                                    .classList.add(
-                                                        styles1.hide
-                                                    );
-                                            }} >
+                                                    .querySelector(`.${styles1.shipLoadStatus}`)
+                                                    .classList.add(styles1.hidden);
+                                                document
+                                                    .querySelector(`.${styles1.addressFormWrap}`)
+                                                    .classList.remove(styles1.hide);
+                                                document
+                                                    .querySelector(`.${styles1.shippingTo}`)
+                                                    .classList.add(styles1.hide);
+                                            }}
+                                        >
                                             Edit
                                         </p>
                                     </div>
                                 </div>
                             </div>
-
-                            <div className={classnames(styles1.shipPartner, styles1.hide )} >
-                                <h3 className={classnames( styles1.shipLoadStatus,styles1.hidden)}>
+                            <div className={classnames(styles1.shipPartner, styles1.hide)}>
+                                <h3 className={classnames(styles1.shipLoadStatus, styles1.hidden)}>
                                     Getting Shipping Options
                                 </h3>
                                 {shippingOptions.data.length ? (
                                     <>
                                         <h3>Select Shipping Option</h3>
                                         <div className={classnames(styles1.shipOptionsWrap)}>
-                                            {shippingOptions.data.map(
-                                                (elem, n) => {
-                                                    return <ShipOption index={n} ship={elem} selectShipElement={selectShipElement} shippingOptions={shippingOptions}/>
-                                                }
-                                            )}
+                                            {shippingOptions.data.map((elem, n) => {
+                                                return (
+                                                    <ShipOption
+                                                        key={n}
+                                                        index={n}
+                                                        ship={elem}
+                                                        selectShipElement={selectShipElement}
+                                                        shippingOptions={shippingOptions}
+                                                    />
+                                                );
+                                            })}
                                         </div>
                                     </>
                                 ) : (
@@ -384,9 +381,7 @@ const Checkout = () => {
                     )}
                 </section>
                 <section className={styles1.rightSec}>
-                    <section
-                        className={classnames(styles.cart, styles.checkoutCart)}
-                    >
+                    <section className={classnames(styles.cart, styles.checkoutCart)}>
                         <div className={styles.cartHeader}>
                             <div className={styles.left}>
                                 <img src="/images/cart.svg" alt="" />
@@ -395,19 +390,15 @@ const Checkout = () => {
                             </div>
                         </div>
                         <div className={styles.cartItemList}>
-                            {Object.entries(cart.items).map(
-                                ([productId, product]) => {
-                                    return (
-                                        <CartItem
-                                            key={productId}
-                                            checkoutModalState={
-                                                setCheckoutModalState
-                                            }
-                                            product={product}
-                                        />
-                                    );
-                                }
-                            )}
+                            {Object.entries(cart.items).map(([productId, product]) => {
+                                return (
+                                    <CartItem
+                                        key={productId}
+                                        checkoutModalState={setCheckoutModalState}
+                                        product={product}
+                                    />
+                                );
+                            })}
                         </div>
                         <hr />
                         <div className={styles.row}>
@@ -424,21 +415,9 @@ const Checkout = () => {
                                     <p>Shipping</p>
                                     <p>₹{shippingCost.toFixed(2)}</p>
                                 </div>
-                                <div
-                                    className={classnames(
-                                        styles.row,
-                                        styles.total
-                                    )}
-                                >
+                                <div className={classnames(styles.row, styles.total)}>
                                     <p>Total</p>
-                                    <p>
-                                        ₹
-                                        {(
-                                            prices.amount +
-                                            prices.tax +
-                                            shippingCost
-                                        ).toFixed(2)}
-                                    </p>
+                                    <p>₹{(prices.amount + prices.tax + shippingCost).toFixed(2)}</p>
                                 </div>
                             </>
                         ) : (
@@ -447,28 +426,15 @@ const Checkout = () => {
                                     <p>Shipping (to be calculated)</p>
                                     <p>-</p>
                                 </div>
-                                <div
-                                    className={classnames(
-                                        styles.row,
-                                        styles.total
-                                    )}
-                                >
+                                <div className={classnames(styles.row, styles.total)}>
                                     <p>Estimated Total</p>
-                                    <p>
-                                        ₹
-                                        {(prices.amount + prices.tax).toFixed(
-                                            2
-                                        )}
-                                    </p>
+                                    <p>₹{(prices.amount + prices.tax).toFixed(2)}</p>
                                 </div>
                             </>
                         )}
                         <div
                             title={"Place Order"}
-                            className={classnames(
-                                styles.checkout,
-                                shippingCost > 0 ? "" : styles.disabled
-                            )}
+                            className={classnames(styles.checkout, shippingCost > 0 ? "" : styles.disabled)}
                             onClick={createOrder}
                         >
                             {placeText}

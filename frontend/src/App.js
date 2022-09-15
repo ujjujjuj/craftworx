@@ -6,10 +6,8 @@ import Login from "./pages/Login";
 import Product from "./pages/Product";
 import Register from "./pages/Register";
 import Shop from "./pages/Shop";
-import { AuthProvider } from "./hooks/auth";
 import Callback from "./pages/Callback";
 import Logout from "./pages/Logout";
-import { CartProvider } from "./hooks/cart"
 import ProductShow from "./pages/productShow"
 import Checkout from "./pages/Checkout";
 import Footer from "./components/footer";
