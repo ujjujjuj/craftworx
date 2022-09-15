@@ -1,30 +1,28 @@
 import styles from "../styles/components/Navbar.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import classnames from "classnames";
-import {  useState } from "react";
-import { useLocation } from 'react-router-dom'
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import useWindowDimensions from "../hooks/windowDimensions";
 import { useSelector, useDispatch } from "react-redux";
 import { getCartSize, toggleCart } from "../app/cartSlice";
 
-
 const Navbar = () => {
-    const cart = useSelector(state => state.cartState.cart)
-    const cartSize = useSelector(getCartSize)
+    const cart = useSelector((state) => state.cartState);
+    const cartSize = useSelector(getCartSize);
     const dispatch = useDispatch();
-    const user = useSelector(state=>state.authState.user)
+    const user = useSelector((state) => state.authState.user);
     const location = useLocation();
-    const [isNavExpanded, setNavExpanded] = useState(false)
+    const [isNavExpanded, setNavExpanded] = useState(false);
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
-    const {  width } = useWindowDimensions();
+    const { width } = useWindowDimensions();
     const checkEnter = (e) => {
         if (e.key === "Enter") {
             setSearch("");
             navigate(`/shop?q=${search}`);
         }
     };
-
 
     return (
         <>
@@ -35,7 +33,9 @@ const Navbar = () => {
                             <img src="/images/CW.svg" alt="" />
                         </div>
                     </Link>
-                    {width < 975 ? <></> :
+                    {width < 975 ? (
+                        <></>
+                    ) : (
                         <>
                             <Link to="/shop">
                                 <div className={styles.item}>Shop</div>
@@ -52,20 +52,11 @@ const Navbar = () => {
                             <Link to="/contact">
                                 <div className={styles.item}>Contact</div>
                             </Link>
-                        </>}
+                        </>
+                    )}
                 </div>
-                {width < 975 ? <div className={classnames(styles.item, styles.navSearch, styles.stretch)}>
-                    <input
-                        type={"text"}
-                        placeholder="Search Products"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        onKeyDown={checkEnter}
-                    />
-                    <img src="/images/search.svg" alt="" />
-                </div> : <></>}
-                <div className={styles.right}>
-                    {width > 974 ? <div className={classnames(styles.item, styles.navSearch)}>
+                {width < 975 ? (
+                    <div className={classnames(styles.item, styles.navSearch, styles.stretch)}>
                         <input
                             type={"text"}
                             placeholder="Search Products"
@@ -74,68 +65,97 @@ const Navbar = () => {
                             onKeyDown={checkEnter}
                         />
                         <img src="/images/search.svg" alt="" />
-                    </div> : <></>}
-                    <div className={classnames(styles.item, styles.cartNav)} onClick={() => {
-                        dispatch(toggleCart())
-                    }}>
+                    </div>
+                ) : (
+                    <></>
+                )}
+                <div className={styles.right}>
+                    {width > 974 ? (
+                        <div className={classnames(styles.item, styles.navSearch)}>
+                            <input
+                                type={"text"}
+                                placeholder="Search Products"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                onKeyDown={checkEnter}
+                            />
+                            <img src="/images/search.svg" alt="" />
+                        </div>
+                    ) : (
+                        <></>
+                    )}
+                    <div
+                        className={classnames(styles.item, styles.cartNav)}
+                        onClick={() => {
+                            dispatch(toggleCart());
+                        }}
+                    >
                         <div className={styles.cartWrap}>
-                            {Object.keys(cart.items).length ? <span className={styles.cartIndicator}>{cartSize}</span> : <></>}
+                            {Object.keys(cart.items).length ? (
+                                <span className={styles.cartIndicator}>{cartSize}</span>
+                            ) : (
+                                <></>
+                            )}
                             <img src="/images/cart.svg" alt="" />
                         </div>
-                        {width > 974 ? <>&nbsp; Cart</> : ''}
+                        {width > 974 ? <>&nbsp; Cart</> : ""}
                     </div>
-                    {width > 974 ? <div className={styles.item} style={{ marginRight: 0 }}>
-                        {user.isLoggedIn ? (
-                            <Link to="/logout">Logout</Link>
-                        ) : (
-                            <Link to="/login">Login</Link>
-                        )}
-                    </div> : <><div style={{ zIndex: 10000, display: "flex", alignItems: "center" }}>
-
-                        <div className={classnames(styles.mobileNav, isNavExpanded ? styles.expanded : "")}>
+                    {width > 974 ? (
+                        <div className={styles.item} style={{ marginRight: 0 }}>
+                            {user ? <Link to="/logout">Logout</Link> : <Link to="/login">Login</Link>}
                         </div>
-                        <div className={classnames(styles.mobileNavList)}>
-                            <Link to='/'><h1>Craftworx Agra</h1></Link>
-                            <Link to="/shop">
-                                <div className={styles.itemWrap}>
-                                    <div className={styles.item}>Shop</div>
+                    ) : (
+                        <>
+                            <div style={{ zIndex: 10000, display: "flex", alignItems: "center" }}>
+                                <div
+                                    className={classnames(styles.mobileNav, isNavExpanded ? styles.expanded : "")}
+                                ></div>
+                                <div className={classnames(styles.mobileNavList)}>
+                                    <Link to="/">
+                                        <h1>Craftworx Agra</h1>
+                                    </Link>
+                                    <Link to="/shop">
+                                        <div className={styles.itemWrap}>
+                                            <div className={styles.item}>Shop</div>
+                                        </div>
+                                    </Link>
+                                    <Link to="/bespoke">
+                                        <div className={styles.itemWrap}>
+                                            <div className={styles.item}>Bespoke</div>
+                                        </div>
+                                    </Link>
+                                    <Link to="/corporate">
+                                        <div className={styles.itemWrap}>
+                                            <div className={styles.item}>Corporate</div>
+                                        </div>
+                                    </Link>
+                                    <Link to="/about">
+                                        <div className={styles.itemWrap}>
+                                            <div className={styles.item}>About Us</div>
+                                        </div>
+                                    </Link>
+                                    <Link to="/contact">
+                                        <div className={styles.itemWrap}>
+                                            <div className={styles.item}>Contact</div>
+                                        </div>
+                                    </Link>
                                 </div>
-                            </Link>
-                            <Link to="/bespoke">
-                                <div className={styles.itemWrap}>
-
-                                    <div className={styles.item}>Bespoke</div>
-                                </div>
-                            </Link>
-                            <Link to="/corporate">
-                                <div className={styles.itemWrap}>
-
-                                    <div className={styles.item}>Corporate</div>
-                                </div>
-                            </Link>
-                            <Link to="/about">
-                                <div className={styles.itemWrap}>
-
-                                    <div className={styles.item}>About Us</div>
-                                </div>
-                            </Link>
-                            <Link to="/contact">
-                                <div className={styles.itemWrap}>
-
-                                    <div className={styles.item}>Contact</div>
-                                </div>
-                            </Link>
-                        </div>
-                        <img src={isNavExpanded ? "/images/close.svg" : "/images/hamburger.svg"} className={styles.crossExpanded} onClick={() => {
-                            setNavExpanded((navExpanded) => {
-                                return !navExpanded
-                            })
-                        }} style={{ marginLeft: 10, zIndex: 10000 }} alt="" />
-                    </div>
-                    </>}
+                                <img
+                                    src={isNavExpanded ? "/images/close.svg" : "/images/hamburger.svg"}
+                                    className={styles.crossExpanded}
+                                    onClick={() => {
+                                        setNavExpanded((navExpanded) => {
+                                            return !navExpanded;
+                                        });
+                                    }}
+                                    style={{ marginLeft: 10, zIndex: 10000 }}
+                                    alt=""
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
             </nav>
-
         </>
     );
 };

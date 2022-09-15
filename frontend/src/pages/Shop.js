@@ -32,7 +32,7 @@ const dropdownOptions = [
 const categories = ["All", "Gifts", "Trousseau", "Festive Occasion"];
 
 const Shop = () => {
-    const [init,setInit] = useState(true);
+    const [init, setInit] = useState(true);
     const [searchParams] = useSearchParams();
     const [dropState, setDropState] = useState(false);
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -44,14 +44,16 @@ const Shop = () => {
     const products = useRef([]);
 
     useEffect(() => {
-        window.scrollTo(0,0);
-        fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?fields=name,price,category,discount,weight,material,length,breadth,height&populate=images`)
+        window.scrollTo(0, 0);
+        fetch(
+            `${process.env.REACT_APP_SERVER_URL}/api/products?fields=name,price,category,discount,weight,material,length,breadth,height&populate=images&pagination[page]=1&pagination[pageSize]=999`
+        )
             .then((res) => res.json())
             .then((data) => {
                 products.current = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
                 setFilteredProducts(products.current);
                 applyFilters();
-                setInit(false)
+                setInit(false);
             });
 
         // products.current = productsTemp;
@@ -66,13 +68,9 @@ const Shop = () => {
         let filtered = products.current;
         filtered = dropdownOptions[filters.dropdownSelection].func(filtered);
         filtered = filtered.filter(
-            (prod) =>
-                filters.categorySelection === 0 ||
-                prod.category === categories[filters.categorySelection]
+            (prod) => filters.categorySelection === 0 || prod.category === categories[filters.categorySelection]
         );
-        filtered = filtered.filter((prod) =>
-            prod.name.toLowerCase().includes(filters.searchQuery.toLowerCase())
-        );
+        filtered = filtered.filter((prod) => prod.name.toLowerCase().includes(filters.searchQuery.toLowerCase()));
 
         setFilteredProducts(filtered);
     };
@@ -108,10 +106,7 @@ const Shop = () => {
                     </div>
                     <div className={styles.sort} onClick={() => setDropState((x) => !x)}>
                         <p unselectable="on">
-                            Sort By:{" "}
-                            <span id="sort-label">
-                                {dropdownOptions[filters.dropdownSelection].text}
-                            </span>{" "}
+                            Sort By: <span id="sort-label">{dropdownOptions[filters.dropdownSelection].text}</span>{" "}
                         </p>
                         <ul className={classnames(styles.dropList, dropState ? styles.ulExpanded : "")}>
                             {dropdownOptions.map((dropdownOption, index) => (
@@ -123,19 +118,13 @@ const Shop = () => {
                                             dropdownSelection: index,
                                         }))
                                     }
-                                    className={
-                                        index === filters.dropdownSelection ? styles.selected : ""
-                                    }
+                                    className={index === filters.dropdownSelection ? styles.selected : ""}
                                 >
                                     {dropdownOption.text}
                                 </li>
                             ))}
                         </ul>
-                        <img
-                            src="/images/drop.svg"
-                            className={dropState ? styles.rotate : ""}
-                            alt=""
-                        />
+                        <img src="/images/drop.svg" className={dropState ? styles.rotate : ""} alt="" />
                     </div>
                 </div>
                 <div className={styles.filter}>
@@ -156,19 +145,17 @@ const Shop = () => {
                 </div>
             </div>
 
-            <section className={classnames(styles.products,styles.shopPage)}>
-                
-                {filteredProducts.length===0&&(init===true)?
-                <><Product shimmer="true"/>
-                <Product shimmer="true"/>
-                <Product shimmer="true"/>
-                {window.innerWidth>1650?                
-                    <Product shimmer="true"/>:<></>
-                }
-                </>:
-                filteredProducts.map((product) => (
-                    <Product key={product.id} shimmer={false} product={product} />
-                ))}
+            <section className={classnames(styles.products, styles.shopPage)}>
+                {filteredProducts.length === 0 && init === true ? (
+                    <>
+                        <Product shimmer="true" />
+                        <Product shimmer="true" />
+                        <Product shimmer="true" />
+                        {window.innerWidth > 1650 ? <Product shimmer="true" /> : <></>}
+                    </>
+                ) : (
+                    filteredProducts.map((product) => <Product key={product.id} shimmer={false} product={product} />)
+                )}
             </section>
         </>
     );

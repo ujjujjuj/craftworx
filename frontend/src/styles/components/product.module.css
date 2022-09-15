@@ -1,4 +1,4 @@
-.header{
+.header {
     padding: 0 100px;
     padding-top: 90px;
     background-color: white;
@@ -7,78 +7,74 @@
     grid-template-columns: 0.7fr 1.3fr;
     margin-bottom: 100px;
 }
-.header .details{
+.header .details {
     display: flex;
     flex-direction: column;
 }
-.details .heading{
+.details .heading {
     display: flex;
     justify-content: space-between;
-    
 }
 
-
-.details .heading h1{
+.details .heading h1 {
     font-weight: 500;
     max-width: 75%;
     font-size: 1.6em;
 }
 
-.details .heading p{
+.details .heading p {
     align-self: flex-end;
     text-decoration: underline;
     cursor: pointer;
-
 }
 
-.details .rating{
+.details .rating {
     display: flex;
     padding-top: 8px;
     align-items: center;
 }
-.details .rating img{
+.details .rating img {
     padding-right: 10px;
     width: 39px;
 }
-.details .rating p{
+.details .rating p {
     margin-left: 20px;
     cursor: pointer;
     text-decoration: underline;
 }
 
-.cost{
+.cost {
     display: flex;
     padding-top: 20px;
     flex-direction: column;
     color: #54605f;
     font-size: 1.1em;
-
 }
-.cost h1{
+.cost h1 {
     font-weight: 500;
     color: black;
     font-size: 1.5rem;
     padding-right: 15px;
 }
 
-.cost .slash{
+.cost .slash {
     text-decoration: line-through;
     padding-right: 15px;
     font-size: 1em;
     font-weight: 400;
 }
 
-.details .desc{
+.details .desc {
     padding-top: 20px;
     font-size: 1em;
     width: 80%;
 }
 
-.gallery{
+.gallery {
     display: flex;
     flex-direction: column;
 }
-.gallery .mainImg{
+.gallery .mainImg {
     background-image: url("../images/product-placeholder.png");
     background-size: contain;
     border-radius: 12px;
@@ -88,7 +84,7 @@
     height: 24vw;
 }
 
-.imgList{
+.imgList {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     padding-top: 40px;
@@ -96,10 +92,10 @@
     row-gap: 20px;
     justify-items: stretch;
     flex-wrap: wrap;
-   width: 100%;
+    width: 100%;
 }
 
-.smallImg{
+.smallImg {
     background-image: url("../images/product-placeholder.png");
     width: 100%;
     background-size: cover;
@@ -111,33 +107,34 @@
     border: 2.5px solid white;
     border-radius: 6px;
 }
-.smallImg.selected{
+.smallImg.selected {
     border: 2.5px solid #54605f;
 }
-.foot{
+.foot {
     display: flex;
     justify-content: space-between;
     margin-top: 40px;
 }
 
-.qtyWrap{
+.qtyWrap {
     display: flex;
     margin-top: 10px;
 }
-.qtyWrap input{
-    font-family: 'Poppins';
+.qtyWrap input {
+    font-family: "Poppins";
     margin-right: 5px;
     width: 32px;
     font-size: 1em;
     padding: 1px;
     height: 32px;
     text-align: center;
+    -moz-appearance: textfield;
 }
-.qtyWrap >*{
+.qtyWrap > * {
     border: 1px solid #000000;
     border-radius: 2px;
 }
-.qtyWrap .alter{
+.qtyWrap .alter {
     background-color: #fff;
     width: 32px;
     display: flex;
@@ -152,7 +149,7 @@
     text-align: center;
 }
 
-.discWrap{
+.discWrap {
     display: flex;
     align-items: center;
 }
