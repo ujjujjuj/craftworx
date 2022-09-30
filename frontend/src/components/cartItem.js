@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../styles/components/cart.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCartItem, getCartSize, setCartItem, toggleCart } from "../app/cartSlice";
+import { useEffect } from "react";
 
 const CartItem = ({ product, checkoutModalState, isSm }) => {
     // const { setCartItem, deleteCartItem, cart, toggleCart,getCartSize } = useCart();
@@ -10,34 +11,35 @@ const CartItem = ({ product, checkoutModalState, isSm }) => {
     const location = useLocation();
     const cart = useSelector((state) => state.cartState);
     const cartSize = useSelector(getCartSize);
-    let productFinalAmt = Math.floor(product.price - (product.discount * product.price) / 100).toFixed(2);
+    let productFinalAmt = (product.price - ((product.discount ?? 0) * product.price) / 100);
     return (
         <>
             <div className={styles.cartItem}>
                 <div
                     className={styles.cartImg}
                     onClick={(e) => {
+                        e.stopPropagation()
                         navigate(`/product/${product.id}`);
                         !isSm && dispatch(toggleCart());
                     }}
                     style={{
-                        backgroundImage: `url('${
-                            process.env.REACT_APP_SERVER_URL + product.images.data[0].attributes.url
-                        }')`,
+                        backgroundImage: `url('${process.env.REACT_APP_SERVER_URL + (isSm ? product.images[0].url : product.images.data[0].attributes.url)
+                            }')`,
                     }}
                 ></div>
                 <div className={styles.itemDet}>
                     <p
                         onClick={(e) => {
+                            e.stopPropagation()
                             navigate(`/product/${product.id}`);
                             !isSm && dispatch(toggleCart());
                         }}
                     >
                         {product.name}
                     </p>
-                    <small>₹{productFinalAmt}</small>
+                    <small>₹{(productFinalAmt / 100).toFixed(2)}</small>
                     {isSm ? (
-                        <div className={styles.smQty}>x{cart.items[product.id]?.quantity}</div>
+                        <div className={styles.smQty}>x{product.qty}</div>
                     ) : (
                         <div className={styles.qtyWrap}>
                             <div

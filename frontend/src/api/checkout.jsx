@@ -29,6 +29,7 @@ const confirmOrder = async (response) => {
 };
 
 const initRazorPay = (order, userPayInfo, success, dismiss, failed) => {
+    console.log(order.amount)
     const options = {
         key: process.env.REACT_APP_RAZORPAY_ID,
         amount: order.amount,

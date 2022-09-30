@@ -35,6 +35,9 @@
     },
     "shipping": {
       "type": "integer"
+    },
+    "userEmail": {
+      "type": "email"
     }
   }
 }

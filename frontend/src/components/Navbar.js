@@ -11,7 +11,7 @@ const Navbar = () => {
     const cart = useSelector((state) => state.cartState);
     const cartSize = useSelector(getCartSize);
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.authState.user);
+    const user = useSelector((state) => state.authState);
     const location = useLocation();
     const [isNavExpanded, setNavExpanded] = useState(false)
     const [isUserExpanded, setUserExpanded] = useState(false)
@@ -107,7 +107,7 @@ const Navbar = () => {
                                 <img src="/images/user-icon.svg" alt="user icon" onClick={() => { setUserExpanded((current) => !current) }} />
                                 <div className={styles.parent}>
                                     <div className={classnames(styles.userMenu, isUserExpanded ? styles.expanded : "")} onClick={() => { setUserExpanded((current) => !current) }}>
-                                        <Link to="/user">My Account</Link>
+                                        <Link to="/user/profile">My Account</Link>
                                         <Link to="/logout">Logout</Link>
                                     </div>
                                 </div>

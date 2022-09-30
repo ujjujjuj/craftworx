@@ -55,7 +55,7 @@ const ProductShow = () => {
             });
     }, [id]);
 
-    let productFinalAmt =Math.floor((product.price-(product.discount*product.price/100))).toFixed(2)
+    let productFinalAmt =(product.price-(product.discount*product.price/100))
 
 
 
@@ -99,10 +99,10 @@ const ProductShow = () => {
                         <p>42 Reviews</p>
                     </div>
                     <div className={styles.cost}>
-                        {product.discount > 0 ? <> <h1 className={styles.slash}>₹ {product.price.toFixed(2)}</h1>
+                        {product.discount > 0 ? <> <h1 className={styles.slash}>₹ {(product.price/100).toFixed(2)}</h1>
                         </> : <></>}
                         <div className={styles.discWrap}>
-                            <h1>₹ {product.price?productFinalAmt:"" }</h1>   {product.discount > 0 ? <p>{product.discount}% off</p> : <></>}
+                            <h1>₹ {product.price?(productFinalAmt/100).toFixed(2):"" }</h1>   {product.discount > 0 ? <p>{product.discount}% off</p> : <></>}
 
                         </div>
 

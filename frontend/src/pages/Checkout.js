@@ -81,7 +81,6 @@ const Checkout = () => {
     };
 
     const createOrder = async () => {
-        console.log(user, userPayInfo, checkoutCart, shippingOptions);
         setPlaceText("Processing..");
         let order = await fetchOrder(user, userPayInfo, checkoutCart, shippingOptions);
         if (order) {
@@ -99,7 +98,7 @@ const Checkout = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (Object.entries(cart.items).length === 0) {
+        if (Object.entries(cart.items).length === 0 && processState === "") {
             navigate("/shop");
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,7 +107,7 @@ const Checkout = () => {
     useEffect(() => {
         const amount = Object.values(cart.items).reduce(
             (a, b) => ({
-                price: a.price + Math.ceil(b.price - (b.discount * b.price) / 100).toFixed(2) * b.quantity,
+                price: a.price + (b.price - (b.discount * b.price) / 100) * b.quantity,
             }),
             {
                 price: 0,
@@ -116,13 +115,14 @@ const Checkout = () => {
                 discount: 0,
             }
         ).price;
-        const tax = Math.ceil((amount * 18) / 100);
+        const tax = ((amount * 18) / 100);
         setPrices({ amount, tax });
     }, [cart]);
 
     useEffect(() => {
         setProcessState(user.isLoggedIn ? "auth" : "initUnAuth");
         let address = sessionStorage.getItem("userInfo");
+        console.log(JSON.parse(address))
         if (address) {
             setUserPayInfo(JSON.parse(address));
         }
@@ -162,7 +162,6 @@ const Checkout = () => {
             .then((res) => res.json())
             .then((data) => {
                 clearInterval(interval);
-                console.log(data);
                 if (!data.error && ![404, 422].includes(data.status)) {
                     loadElem.classList.add(styles1.hidden);
                     setShipOptions((shipOptions) => ({
@@ -403,11 +402,11 @@ const Checkout = () => {
                         <hr />
                         <div className={styles.row}>
                             <p>Subtotal</p>
-                            <p>₹{prices.amount.toFixed(2)}</p>
+                            <p>₹{(prices.amount / 100).toFixed(2)}</p>
                         </div>
                         <div className={styles.row}>
-                            <p>Tax</p>
-                            <p>₹{prices.tax.toFixed(2)}</p>
+                            <p>Tax (GST)</p>
+                            <p>₹{(prices.tax / 100).toFixed(2)}</p>
                         </div>
                         {shippingCost > 0 ? (
                             <>
@@ -417,7 +416,7 @@ const Checkout = () => {
                                 </div>
                                 <div className={classnames(styles.row, styles.total)}>
                                     <p>Total</p>
-                                    <p>₹{(prices.amount + prices.tax + shippingCost).toFixed(2)}</p>
+                                    <p>₹{((prices.amount + prices.tax) / 100 + shippingCost).toFixed(2)}</p>
                                 </div>
                             </>
                         ) : (
@@ -428,7 +427,7 @@ const Checkout = () => {
                                 </div>
                                 <div className={classnames(styles.row, styles.total)}>
                                     <p>Estimated Total</p>
-                                    <p>₹{(prices.amount + prices.tax).toFixed(2)}</p>
+                                    <p>₹{((prices.amount + prices.tax) / 100).toFixed(2)}</p>
                                 </div>
                             </>
                         )}

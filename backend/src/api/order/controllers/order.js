@@ -36,11 +36,10 @@ const getShiprocketOptions = async (pinCode, weight) => {
     cod: 0,
     weight,
   };
-  console.log(params);
   return await axios
     .get(
       "https://apiv2.shiprocket.in/v1/external/courier/serviceability?" +
-        new URLSearchParams(params),
+      new URLSearchParams(params),
       {
         headers: {
           Authorization: `Bearer ${await getShiprocketToken()}`,
@@ -81,7 +80,35 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
     }));
     ctx.body = { order, cart };
   },
+  async getAll(ctx) {
+    if (!ctx.request.query?.email) return;
+    const orders = await strapi.db
+      .query("api::order.order")
+      .findMany({ where: { userEmail: ctx.request.query.email }, orderBy: { createdAt: 'DESC' } });
+    if (orders === null) return;
+    let orderDets = []
+    for await (const order of orders) {
+      let products = await strapi.db.query("api::product.product").findMany({
+        where: {
+          $or: Object.keys(order.items).map((id) => {
+            return { id };
+          }),
+        },
+        populate: {
+          images: true,
+        },
+      });
+      const cart = Object.keys(order.items).map((item) => ({
+        ...products.find((prod) => prod.id === parseInt(item)),
+        qty: order.items[item],
+      }));
 
+      orderDets.push({
+        order, cart
+      })
+    }
+    ctx.body = orderDets;
+  },
   async create(ctx) {
     let products = await strapi.db.query("api::product.product").findMany({
       where: {
@@ -91,18 +118,18 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
       },
     });
 
-    let totalPrice = Math.ceil(
+    let totalPrice = Number(((
       products.reduce(
         (prev, next) =>
           prev +
-          Math.ceil(
+          (
             ctx.request.body.cart[next.id] *
-              next.price *
-              (1 - next.discount / 100)
+            next.price *
+            (1 - next.discount / 100)
           ),
         0
       ) * 1.18
-    );
+    ) / 100).toFixed(2));
 
     const totalWeight =
       products.reduce(
@@ -114,20 +141,23 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
       ctx.request.body.info.zipcode,
       totalWeight
     );
+
     const selectedShipOption =
       shipOptions.data.available_courier_companies.filter(
         (company) => company.id === ctx.request.body.shipping
       )[0];
-    totalPrice += Math.ceil(selectedShipOption.rate);
+
+    totalPrice += (Math.ceil(selectedShipOption.rate));
 
     let userId = null;
+    let user;
     if (ctx.request.header.authorization) {
       try {
         const user = await strapi.plugins[
           "users-permissions"
         ].services.jwt.getToken(ctx);
         userId = user.id;
-      } catch (err) {}
+      } catch (err) { }
     }
 
     const entry = await strapi.db.query("api::order.order").create({
@@ -136,25 +166,32 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         items: ctx.request.body.cart,
         isConfirmed: false,
         userId,
+        userEmail: ctx.request.body.info.email,
         userInfo: ctx.request.body.info,
-        amount: totalPrice,
-        shipping: Math.ceil(selectedShipOption.rate),
+        amount: Math.floor(totalPrice * 100),
+        shipping: Math.ceil(selectedShipOption.rate * 100),
       },
     });
+
     const options = {
-      amount: totalPrice * 100,
+      amount: Math.floor(totalPrice * 100),
       currency: "INR",
       receipt: entry.transactionId,
     };
 
-    const createdOrder = await promisify(razorpay.orders.create)(options);
-    console.log(createdOrder);
+    try {
+      var createdOrder = await promisify(razorpay.orders.create)(options);
+    } catch (err) {
+      console.log(err)
+    }
+
     strapi.db.query("api::order.order").update({
       where: { id: entry.id },
       data: {
         orderId: createdOrder.id,
       },
     });
+
     ctx.body = createdOrder;
   },
 
@@ -164,8 +201,8 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
       .createHmac("sha256", process.env.RAZORPAY_SECRET)
       .update(
         ctx.request.body.razorpay_order_id +
-          "|" +
-          ctx.request.body.razorpay_payment_id
+        "|" +
+        ctx.request.body.razorpay_payment_id
       )
       .digest("hex");
 

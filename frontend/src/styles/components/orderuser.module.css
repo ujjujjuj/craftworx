@@ -1,0 +1,139 @@
+.orderPager {
+    display: flex;
+    margin: 30px 100px;
+    flex-direction: column;
+}
+
+.orderPager h1 {
+    font-weight: 500;
+    color: #54605F;
+}
+
+.noOrders {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
+    text-align: center;
+    gap: 20px;
+}
+
+.noOrders img {
+    width: 220px;
+}
+
+.btn {
+    background-color: #54605F;
+    padding: 10.5px 40px;
+    border-radius: 10px;
+    border: 1.5px #54605F solid;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    font-family: "Poppins";
+}
+
+.btn:hover {
+    color: #54605F;
+    background-color: white;
+}
+
+
+.ordersWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    margin-top: 20px;
+}
+
+
+.orderItem {
+    width: 100%;
+    border: 1px solid #dddddd;
+    transition: all 0.3s ease;
+    border-radius: 9px;
+    padding: 20px 30px;
+    display: flex;
+}
+
+.orderItem .sep {
+    width: 2px;
+    margin: 0 10px;
+    background-color: #DDDDDD;
+}
+
+.orderItem .orderLeft {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 30%;
+    padding: 20px 0;
+}
+
+.orderItem:hover {
+    transform: scale(1.01);
+}
+
+.orderItem .orderLi p {
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.orderItem,
+.orderLi h3 {
+    font-weight: 500;
+    font-size: 18px;
+    margin-top: 3px;
+    color: #54605F;
+}
+
+.orderItem .orderLeft a {
+    font-size: 15px;
+    color: #54605F;
+}
+
+.orderItem .orderLeft a:hover {
+    color: black;
+}
+
+.orderItem .orderLeft a p {
+    text-decoration: underline;
+    display: inline-block;
+}
+
+.orderItem .orderRight {
+    flex: 1;
+}
+
+.orderLi.invoice {
+    margin-top: 6px;
+}
+
+.orderItem .orderRight {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.orderItem .orderRight .btns {
+    display: flex;
+    gap: 17px;
+    margin: 15px 30px;
+}
+
+.orderItem .orderRight .btns .btn {
+    font-size: 13.5px;
+}
+
+.orderItem .btns .btn:nth-child(2) {
+    color: #54605F;
+    background-color: white;
+}
+
+.orderItem .btns .btn:nth-child(2):hover {
+    color: white;
+    background-color: #54605F;
+}

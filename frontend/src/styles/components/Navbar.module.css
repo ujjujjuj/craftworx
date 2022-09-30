@@ -8,7 +8,7 @@ nav {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 9998;
+    z-index: 10;
     white-space: nowrap;
     box-shadow: 0 2px 0 #DDDDDD;
 }
@@ -233,6 +233,10 @@ nav .right .crossExpanded {
     top: 100%;
     padding-top: 5px;
     right: 0;
+    visibility: hidden;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
 }
 
 .userMenuWrap .userMenu {
@@ -242,19 +246,14 @@ nav .right .crossExpanded {
     flex-direction: column;
     background-color: #FFFBFB;
     padding: 4px 0;
-    visibility: hidden;
-    overflow: hidden;
-    opacity: 0;
 }
 
-.userMenuWrap:hover .userMenu {
-    visibility: visible;
+.userMenuWrap:hover .parent {
+    visibility: visible;    
     opacity: 1;
+    pointer-events: all;
 }
-.userMenuWrap .userMenu.expanded {
-    visibility: visible;
-    opacity: 1;
-}
+
 
 .userMenuWrap .userMenu > a {
     padding: 5px 20px;

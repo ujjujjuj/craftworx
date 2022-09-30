@@ -1,10 +1,9 @@
 import styles from "../styles/components/user.module.css"
 
-export const UserPageItem = ({Child,index,addresses})=>{
+export const UserPageItem = ({Child,addresses,popState})=>{
     return (<>
         <div className={styles.userItem}>
-            <Child addresses={addresses}/>
-            <img src="/images/edit_icon.svg" alt="edit icon" className={index===0?styles.center:""} />
+            <Child addresses={addresses} popState={popState}/>
         </div>
     </>)
 }

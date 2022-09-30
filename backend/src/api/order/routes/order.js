@@ -9,6 +9,14 @@ module.exports = {
       },
     },
     {
+      method: "GET",
+      path: "/orders/getAll",
+      handler: "order.getAll",
+      config: {
+        auth: false,
+      },
+    },
+    {
       method: "POST",
       path: "/orders/new",
       handler: "order.create",

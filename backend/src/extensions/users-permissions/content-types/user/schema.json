@@ -68,6 +68,12 @@
     },
     "lastName": {
       "type": "string"
+    },
+    "address": {
+      "type": "json"
+    },
+    "phone": {
+      "type": "string"
     }
   }
 }
