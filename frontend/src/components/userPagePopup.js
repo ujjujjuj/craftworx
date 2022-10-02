@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import styles from "../styles/components/user.module.css"
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -38,40 +38,29 @@ export const UserPopup = ({ state, setState }) => {
             }
         }
         else if (state.vr === 1) {
-            let prevAddrs = Object.assign({}, user.user.address)
+            let prevAddrs = structuredClone(user.user.address)
             if (!prevAddrs || !prevAddrs.data)
                 prevAddrs = {
                     data: []
                 }
-            let newAddr = formState
+            let newAddr = structuredClone(formState)
+            delete newAddr.phnNo
             prevAddrs.data = [...prevAddrs.data, newAddr]
             dispatch(updateAddr(prevAddrs))
-            setFormState(initState)
             updateUserDb({ address: prevAddrs }, user.jwt, user.user.id)
         }
         else {
-            let prevAddrs = Object.assign({}, user.user.address)
-            let newAddr = formState
+            let prevAddrs = structuredClone(user.user.address)
+            let newAddr = structuredClone(formState)
+            delete newAddr.phnNo
             prevAddrs.data[state.index] = newAddr
             dispatch(updateAddr(prevAddrs))
-            setFormState(initState)
             updateUserDb({ address: prevAddrs }, user.jwt, user.user.id)
         }
         setState((old) => ({ ...old, visible: 0 }))
     };
 
-    const deleteAddr = () => {
-        let prevAddrs = Object.assign({}, user.user.address)
-        prevAddrs.data = prevAddrs.data.filter((x, n) => {
-            if (n !== state.index)
-                return true
-            else return false
-        })
-        dispatch(updateAddr(prevAddrs))
-        setState((old) => ({ ...old, visible: 0 }))
-        setFormState(initState)
-        updateUserDb({ address: prevAddrs }, user.jwt, user.user.id)
-    }
+
     return (<>
         {state.visible ?
             <>
@@ -124,7 +113,6 @@ export const UserPopup = ({ state, setState }) => {
                         <div className={styles.formFoot}>
                             <div style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "17px", color: "#54605F" }}>
                                 <button type={"submit"} className={styles.btn}>{state.vr === 1 ? "Add Address" : "Update"}</button>
-                                {state.vr === 2 ? <i class="far fa-trash-alt" onClick={deleteAddr}></i> : <></>}
                             </div>
                             <div className={styles.btn} onClick={() => setState((old) => ({ ...old, visible: 0 }))}>Cancel</div>
                         </div>

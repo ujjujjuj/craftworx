@@ -28,7 +28,7 @@ export const OrderItem = ({ order }) => {
                 </div>
                 <div className={classnames(styles.orderLi, styles.invoice)}>
                     <a href={"/"} target={"_blank"} rel="noreferrer">
-                        <i class="fa-regular fa-file-lines"></i> <p>View Invoice</p>
+                        <i className="fa-regular fa-file-lines"></i> <p>View Invoice</p>
                     </a>
                 </div>
             </div>

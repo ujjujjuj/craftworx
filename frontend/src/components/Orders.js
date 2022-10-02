@@ -3,11 +3,12 @@ import styles from "../styles/components/orderuser.module.css"
 import { OrderItem } from "./OrderItem"
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
 
 
 export const Orders = () => {
     const user = useSelector((state) => state.authState);
-    const [orders, setOrders] = useState([])
+    const [orders, setOrders] = useState(null)
     useEffect(() => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/getAll?email=${user.user.email}`)
             .then((res) => res.json())
@@ -26,15 +27,28 @@ export const Orders = () => {
                             <OrderItem order={x} key={n} />
                         )
                     }) :
-                        <div className={styles.noOrders}>
-                            <img src="/images/fl0.svg" alt="empty cart" />
-                            <p>
-                                Your have no orders yet.
-                                <br />
-                                Go ahead and buy some products!
-                            </p>
-                            <div className={styles.btn}>Shop Now</div>
-                        </div>
+                        orders !== null ?
+                            <div className={styles.noOrders}>
+                                <img src="/images/fl0.svg" alt="empty cart" />
+                                <p>
+                                    Your have no orders yet.
+                                    <br />
+                                    Go ahead and buy some products!
+                                </p>
+                                <div className={styles.btn}>Shop Now</div>
+                            </div> :
+                            <div style={{ margin: "auto" }}>
+                                <ThreeDots
+                                    height="20"
+                                    width="60"
+                                    radius="9"
+                                    color="#54605F"
+                                    ariaLabel="three-dots-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClassName=""
+                                    visible={true}
+                                />
+                            </div>
                 }
             </div>
         </section>

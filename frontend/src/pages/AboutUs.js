@@ -74,7 +74,7 @@ const About = () => {
                         visionRef.current.scrollIntoView() 
                     }}>
                         <p> Scroll Down</p>
-                        <i class="fas fa-chevron-down"></i>
+                        <i className="fas fa-chevron-down"></i>
                     </div>
                 </div>
                 <div className={styles.aboutImg}></div>

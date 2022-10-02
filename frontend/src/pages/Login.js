@@ -35,6 +35,7 @@ const Login = () => {
                 }
                 console.log(data, "sending dispatch");
                 dispatch(loginUser(data));
+                console.log(state?.fromCheckout)
                 if (state?.fromCheckout) navigate("/checkout");
                 else navigate("/shop");
             })

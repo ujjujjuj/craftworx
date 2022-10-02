@@ -138,8 +138,14 @@
     text-decoration: underline;
 }
 
-.addresses tr {
+.addresses tr td {
     cursor: pointer;
+}
+
+.editAddr i {
+    font-size: 1.15em;
+    margin-left: 8px;
+    color: #54605F;
 }
 
 .backDrop {

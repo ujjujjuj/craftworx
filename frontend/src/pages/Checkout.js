@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchOrder, initRazorPay, confirmOrder } from "../api/checkout";
 import CheckoutForm from "../components/checkoutForm";
 import ShipOption from "../components/shipOption";
+import { SavedAddress } from "../components/SavedAddress";
 
 const Checkout = () => {
     const cart = useSelector((state) => state.cartState);
@@ -43,6 +44,7 @@ const Checkout = () => {
         message: "",
         label: "",
     });
+
 
     const successCallback = async (resp, order) => {
         setTransactionModal({
@@ -122,7 +124,6 @@ const Checkout = () => {
     useEffect(() => {
         setProcessState(user.isLoggedIn ? "auth" : "initUnAuth");
         let address = sessionStorage.getItem("userInfo");
-        console.log(JSON.parse(address))
         if (address) {
             setUserPayInfo(JSON.parse(address));
         }
@@ -289,19 +290,27 @@ const Checkout = () => {
                     ) : (
                         <></>
                     )}
-                    {processState === "unAuth" || processState === "auth" ? (
+                    {(processState !== "initUnAuth") ? (
                         <>
-                            <div className={styles1.addressFormWrap}>
-                                <h3>Where &amp; who to ship to?</h3>
-                                <CheckoutForm startShipProcess={startShipProcess} setStates={updateStateLoc} userPayInfo={userPayInfo} setUserPayInfo={setUserPayInfo} states={states}>
-                                </CheckoutForm>
-                                <div className={styles1.endForm}>
-                                    <p onClick={emptyForm}>Clear</p>
-                                    <button className={styles1.button} type="submit" form="address-form">
-                                        Continue
-                                    </button>
+                            {(processState === "auth" && user.user?.address?.data?.length) ?
+                                <SavedAddress setState={setProcessState} setAddr={setUserPayInfo} />
+                                : <></>}
+                            {(processState === "unAuth" || processState === "authWA" || !(user.user?.address?.data?.length)) ?
+                                <div className={styles1.addressFormWrap}>
+                                    <h3>Where &amp; who to ship to?
+                                        {processState === "authWA" ?
+                                            <span onClick={() => { setProcessState("auth") }}>Go Back</span> : <></>}
+                                    </h3>
+                                    <CheckoutForm startShipProcess={startShipProcess} setStates={updateStateLoc} userPayInfo={userPayInfo} setUserPayInfo={setUserPayInfo} states={states}>
+                                    </CheckoutForm>
+                                    <div className={styles1.endForm}>
+                                        <p onClick={emptyForm}>Clear</p>
+                                        <button className={styles1.button} type="submit" form="address-form">
+                                            Continue
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                                : <></>}
                             <div className={classnames(styles1.shippingTo, styles1.hide)}>
                                 <h3>Shipping to</h3>
                                 <div className={styles1.flex}>
@@ -376,7 +385,8 @@ const Checkout = () => {
                             </div>
                         </>
                     ) : (
-                        <></>
+                        <>
+                        </>
                     )}
                 </section>
                 <section className={styles1.rightSec}>

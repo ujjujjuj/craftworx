@@ -2,7 +2,9 @@ import classNames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import styles from "../styles/components/user.module.css"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateAddr } from "../app/authSlice";
+import updateUserDb from "../api/update";
 export const ContactInfo = ({ popState }) => {
     const { user } = useSelector((state) => state.authState);
     return (<>
@@ -31,6 +33,20 @@ export const ContactInfo = ({ popState }) => {
 
 export const ShippingInfo = ({ addresses, popState }) => {
 
+    const user = useSelector((state) => state.authState);
+    const dispatch = useDispatch();
+    const deleteAddr = (e, index) => {
+        e.stopPropagation();
+        let prevAddrs = structuredClone(user.user.address)
+        prevAddrs.data = prevAddrs.data.filter((x, n) => {
+            if (n !== index)
+                return true
+            return false
+        })
+        dispatch(updateAddr(prevAddrs))
+        updateUserDb({ address: prevAddrs }, user.jwt, user.user.id)
+    }
+
     return (<>
         <div className={styles.elemContent}>
             <div className={`${styles.elemHead} ${styles.ship}`}>
@@ -56,6 +72,7 @@ export const ShippingInfo = ({ addresses, popState }) => {
                                     </td>
                                     <td className={styles.editAddr}>
                                         <img src="/images/edit_icon.svg" alt="edit icon" />
+                                        <i className="far fa-trash-alt" onClick={(e) => deleteAddr(e, n)}></i>
                                     </td>
                                 </tr>
                             )
@@ -95,7 +112,6 @@ const User = () => {
         if (!user.isLoggedIn) {
             navigate("/login")
         }
-        console.log(user.jwt)
     }, [user]);
 
     return (
