@@ -29,7 +29,7 @@ const dropdownOptions = [
     },
 ];
 
-const categories = ["All", "Gifts", "Trousseau", "Festive Occasion"];
+const categories = ["All", "MDF Boards/Boxes", "Pinewood", "Tissue Box"];
 
 const Shop = () => {
     const [init, setInit] = useState(true);
@@ -55,9 +55,6 @@ const Shop = () => {
                 applyFilters();
                 setInit(false);
             });
-
-        // products.current = productsTemp;
-        // setFilteredProducts(products.current);
     }, []);
 
     useEffect(() => {

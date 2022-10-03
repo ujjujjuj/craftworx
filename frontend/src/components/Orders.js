@@ -4,11 +4,13 @@ import { OrderItem } from "./OrderItem"
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
+import { useNavigate } from "react-router-dom";
 
 
 export const Orders = () => {
     const user = useSelector((state) => state.authState);
     const [orders, setOrders] = useState(null)
+    const navigate = useNavigate()
     useEffect(() => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/getAll?email=${user.user.email}`)
             .then((res) => res.json())
@@ -35,7 +37,9 @@ export const Orders = () => {
                                     <br />
                                     Go ahead and buy some products!
                                 </p>
-                                <div className={styles.btn}>Shop Now</div>
+                                <div className={styles.btn} onClick={() => {
+                                    navigate("/shop")
+                                }}>Shop Now</div>
                             </div> :
                             <div style={{ margin: "auto" }}>
                                 <ThreeDots

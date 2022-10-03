@@ -1,25 +1,38 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styles from "../styles/components/auth.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../app/authSlice";
+import { ThreeDots } from "react-loader-spinner";
 
 const Login = () => {
     const [formData, setFormData] = useState({ identifier: "", password: "" });
     const [passVisible, setPassVisible] = useState(false);
     const navigate = useNavigate();
     const { state } = useLocation();
+    const [loading, setLoading] = useState(false);
     const [errorMsg, setError] = useState("");
     const togglePass = () => {
         setPassVisible(!passVisible);
     };
+    const user = useSelector((state) => state.authState);
+    useEffect(() => {
+        console.log(user)
+        if (user?.isLoggedIn) {
+            navigate("/shop")
+        }
+    }, [user])
     const dispatch = useDispatch();
     useEffect(() => {
         window.scrollTo(0, 0);
+        if (state?.error) {
+            setError(state.error)
+        }
     }, []);
 
     const formSubmit = (e) => {
         e.preventDefault();
+        setLoading(true)
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/auth/local/`, {
             method: "POST",
             headers: {
@@ -30,12 +43,11 @@ const Login = () => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.data === null) {
+                    setLoading(false)
                     setError("Invalid Email & Password combination");
                     return console.log(data);
                 }
-                console.log(data, "sending dispatch");
                 dispatch(loginUser(data));
-                console.log(state?.fromCheckout)
                 if (state?.fromCheckout) navigate("/checkout");
                 else navigate("/shop");
             })
@@ -82,6 +94,16 @@ const Login = () => {
                 <div className={styles.login}>
                     Don't have an account? <Link to="/register">Sign up</Link>
                 </div>
+                {loading ? <ThreeDots
+                    height="20"
+                    width="40"
+                    radius="10"
+                    color="#54605F"
+                    ariaLabel="three-dots-loading"
+                    wrapperStyle={{ marginTop: "20px" }}
+                    wrapperClassName=""
+                    visible={true}
+                /> : <></>}
                 <div className={styles.error}>
                     {errorMsg.length ? <i className="fas fa-exclamation-circle"></i> : <></>}
                     <p id="error-msg">{errorMsg}</p>

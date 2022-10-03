@@ -34,7 +34,7 @@ const getShiprocketOptions = async (pinCode, weight) => {
     pickup_postcode: "282005",
     delivery_postcode: pinCode,
     cod: 0,
-    weight,
+    weight
   };
   return await axios
     .get(

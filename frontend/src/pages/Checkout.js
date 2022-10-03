@@ -11,6 +11,8 @@ import { fetchOrder, initRazorPay, confirmOrder } from "../api/checkout";
 import CheckoutForm from "../components/checkoutForm";
 import ShipOption from "../components/shipOption";
 import { SavedAddress } from "../components/SavedAddress";
+import { updateAddr } from "../app/authSlice";
+import updateUserDb from "../api/update";
 
 const Checkout = () => {
     const cart = useSelector((state) => state.cartState);
@@ -148,6 +150,17 @@ const Checkout = () => {
         document.querySelector(`.${styles1.addressFormWrap}`).classList.add(styles1.hide);
         document.querySelector(`.${styles1.shippingTo}`).classList.remove(styles1.hide);
         document.querySelector(`.${styles1.shipPartner}`).classList.remove(styles1.hide);
+        let { email, phnNo, ...addressInfo } = userPayInfo;
+        if (!user.user.address?.data?.find((elem) => elem.fName === addressInfo.fName && elem.lName === addressInfo.lName)) {
+            let prevAddrs = structuredClone(user.user.address)
+            if (!prevAddrs || !prevAddrs.data)
+                prevAddrs = {
+                    data: []
+                }
+            prevAddrs.data = [...prevAddrs.data, addressInfo]
+            dispatch(updateAddr(prevAddrs))
+            updateUserDb({ address: prevAddrs }, user.jwt, user.user.id)
+        }
         let [interval, loadElem] = loadShipStatus();
         loadElem.classList.remove(styles1.error);
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/getShipOptions`, {
@@ -299,7 +312,7 @@ const Checkout = () => {
                                 <div className={styles1.addressFormWrap}>
                                     <h3>Where &amp; who to ship to?
                                         {processState === "authWA" ?
-                                            <span onClick={() => { setProcessState("auth") }}>Go Back</span> : <></>}
+                                            <span onClick={() => { setProcessState("auth"); }}>Go Back</span> : <></>}
                                     </h3>
                                     <CheckoutForm startShipProcess={startShipProcess} setStates={updateStateLoc} userPayInfo={userPayInfo} setUserPayInfo={setUserPayInfo} states={states}>
                                     </CheckoutForm>
