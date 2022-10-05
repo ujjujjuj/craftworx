@@ -3,6 +3,7 @@ import Product from "./Product";
 import classnames from "classnames";
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const dropdownOptions = [
     {
@@ -78,6 +79,9 @@ const Shop = () => {
 
     return (
         <>
+            <Helmet>
+                <title>Craftworx | Shop</title>
+            </Helmet>
             <div className={styles.main}>
                 <div className={styles.header}>
                     <div className={styles.searchBox}>

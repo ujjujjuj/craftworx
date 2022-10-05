@@ -3,7 +3,7 @@ import gsap, { Linear, Sine } from "gsap";
 import classnames from "classnames";
 import Product from "./Product";
 import { useEffect, useState } from "react";
-import { Navigation, Pagination, Autoplay} from 'swiper';
+import { Navigation, Pagination, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -13,10 +13,12 @@ import '../styles/components/swiper.css'
 import UserTestimonial from "../components/userTestimonial";
 import { useNavigate } from "react-router-dom";
 import useWindowDimensions from "../hooks/windowDimensions";
+import { Helmet } from "react-helmet";
+import { testimonials } from "../data/testimonials";
 
 const Home = () => {
     const navigate = useNavigate();
-    const {  width } = useWindowDimensions();
+    const { width } = useWindowDimensions();
     const init = () => {
         gsap.set(`${styles.container}`, { perspective: 600 });
         gsap.set("img", { xPercent: "-50%", yPercent: "-50%" });
@@ -26,14 +28,14 @@ const Home = () => {
 
         for (i = 0; i < total; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.dot}`}, x: R(w * 0.4, w), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.dot}` }, x: R(w * 0.4, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
 
         for (i = 0; i < 4; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.fl1}`}, x: R(w * 0.4, w), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.fl1}` }, x: R(w * 0.4, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
@@ -41,6 +43,13 @@ const Home = () => {
         for (i = 0; i < 3; i++) {
             let Div = document.createElement('div');
             gsap.set(Div, { attr: { class: `${styles.fl2}` }, x: R(w * 0.4, w), y: R(-200, -150), z: R(-200, 200) });
+            container.appendChild(Div);
+            animm(Div);
+        }
+
+        for (i = 0; i < 2; i++) {
+            let Div = document.createElement('div');
+            gsap.set(Div, { attr: { class: `${styles.gift}` }, x: R(w * 0.4, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
@@ -68,39 +77,39 @@ const Home = () => {
 
         for (i = 0; i < total; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.dot1}`}, x: R(0, w*0.2), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.dot1}` }, x: R(0, w * 0.2), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
         for (i = 0; i < total; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.dot1}`}, x: R(w*0.7, w), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.dot1}` }, x: R(w * 0.7, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
 
         for (i = 0; i < 2; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.fl4}`}, x: R(0, w*0.1), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.fl4}` }, x: R(0, w * 0.1), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
         for (i = 0; i < 2; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.fl4}`}, x:  R(w*0.7, w), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.fl4}` }, x: R(w * 0.7, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
 
         for (i = 0; i < 2; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.fl3}` }, x:  R(0, w*0.1), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.fl3}` }, x: R(0, w * 0.1), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
         for (i = 0; i < 2; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.fl3}` }, x: R(w*0.7, w), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.fl3}` }, x: R(w * 0.7, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
@@ -119,25 +128,28 @@ const Home = () => {
             return min + Math.random() * (max - min);
         }
     };
-    const [popProducts,setPopProducts] =useState([]);
+    const [popProducts, setPopProducts] = useState([]);
     useEffect(() => {
-        window.scrollTo(0,0);
-        if(width<975)
-        init1();
-        else         init();
+        window.scrollTo(0, 0);
+        if (width < 975)
+            init1();
+        else init();
 
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?fields=name,price,category,discount&populate=images`)
-        .then((res) => res.json())
-        .then((data) => {
-            let products = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
-            if(products.length>3)
-            setPopProducts(products.slice(0,3));
-            else
-            setPopProducts(products)
-        });
+            .then((res) => res.json())
+            .then((data) => {
+                let products = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
+                if (products.length > 3)
+                    setPopProducts(products.slice(0, 3));
+                else
+                    setPopProducts(products)
+            });
     }, []);
     return (
         <>
+            <Helmet>
+                <title>Craftworx</title>
+            </Helmet>
             <div className={styles.container} id="container"></div>
             <div className={styles.main}>
                 <div className={styles.hero}>
@@ -152,7 +164,7 @@ const Home = () => {
                         you with the best quality of services with premium packaging that will leave
                         everyone awestruck.
                     </p>
-                    <div className={styles.shopBtn} onClick={()=>{navigate('/shop')}}>Shop now</div>
+                    <div className={styles.shopBtn} onClick={() => { navigate('/shop') }}>Shop now</div>
                 </div>
             </div>
             <section className={styles.homeSec1}>
@@ -161,17 +173,17 @@ const Home = () => {
                     <a href="/shop">View All</a>
                 </div>
                 <div className={styles.popProducts}>
-                    {popProducts.length===0?
-                     <><Product shimmer="true"/>
-                     <Product shimmer="true"/>
-                     <Product shimmer="true"/>
-                     {window.innerWidth>1650?                
-                         <Product shimmer="true"/>:<></>
-                     }
-                     </>:
-                     popProducts.map((product) => (
-                        <Product key={product.id} shimmer={false} product={product} />
-                    ))}
+                    {popProducts.length === 0 ?
+                        <><Product shimmer="true" />
+                            <Product shimmer="true" />
+                            <Product shimmer="true" />
+                            {window.innerWidth > 1650 ?
+                                <Product shimmer="true" /> : <></>
+                            }
+                        </> :
+                        popProducts.map((product) => (
+                            <Product key={product.id} shimmer={false} product={product} />
+                        ))}
 
                 </div>
             </section>
@@ -181,50 +193,44 @@ const Home = () => {
                 <div className={styles.promoContent}>
                     <div className={styles.col}>
                         <h2>
-                        We take customisation to a whole other level.
+                            We take customisation to a whole other level.
                         </h2>
                         <p>
-                        The range of our customised products and services include, trousseau packaging, engagement ring platters, return favours, baby shower presents, invitations, varied kinds of hampers, pinewood trays and baskets, MDF wooden boxes and a lot more.
+                            The range of our customised products and services include, trousseau packaging, engagement ring platters, return favours, baby shower presents, invitations, varied kinds of hampers, pinewood trays and baskets, MDF wooden boxes and a lot more.
                         </p>
-                        <div className={styles.shopBtn} onClick={()=>{
+                        <div className={styles.shopBtn} onClick={() => {
                             navigate('/about')
                         }}>Learn More</div>
                     </div>
                 </div>
             </section>
             <div className="swiper-wrap">
-            <Swiper
-            slidesPerView={1}
-            spaceBetween={30}
-            loop={true}
-            autoplay={{
-                delay: 2500,
-                disableOnInteraction: false,
-              }}
-            pagination={{
-            
-              clickable: true,
-            }}
-            navigation={width<975?false:true}
-            modules={[Pagination, Navigation,Autoplay]}
-            onSlideChange={() => console.log('slide change')}
-            onSwiper={(swiper) => console.log(swiper)}
-            >
-            <SwiperSlide>
-                <UserTestimonial ></UserTestimonial>
-            </SwiperSlide>
-            <SwiperSlide>                
-                <UserTestimonial></UserTestimonial>
-            </SwiperSlide>
-            <SwiperSlide>                
-                <UserTestimonial></UserTestimonial>
-            </SwiperSlide>
-            <SwiperSlide>                
-                <UserTestimonial></UserTestimonial>
-            </SwiperSlide>
-            </Swiper>
+                <Swiper
+                    slidesPerView={1}
+                    spaceBetween={30}
+                    loop={true}
+                    autoplay={{
+                        delay: 5000,
+                        disableOnInteraction: false,
+                    }}
+                    pagination={{
+
+                        clickable: true,
+                    }}
+                    navigation={width < 975 ? false : true}
+                    modules={[Pagination, Navigation, Autoplay]}
+                    onSwiper={(swiper) => console.log(swiper)}
+                >
+                    {
+                        testimonials.map((elem, n) =>
+                            <SwiperSlide>
+                                <UserTestimonial content={elem.review} key={n} name={elem.name} desig={elem.from} ></UserTestimonial>
+                            </SwiperSlide>
+                        )
+                    }
+                </Swiper>
             </div>
-           
+
         </>
     );
 };

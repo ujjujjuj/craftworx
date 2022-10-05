@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux"
 import { loginUser } from "../app/authSlice";
 import { ThreeDots } from "react-loader-spinner";
 import updateUserDb from "../api/update";
+import { Helmet } from "react-helmet";
 
 const toTitleCase = (str) => {
     return str.replace(
@@ -62,6 +63,9 @@ const Callback = () => {
             });
     }, []);
     return <>
+        <Helmet>
+            <title>Craftworx | Auth</title>
+        </Helmet>
         <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
             <ThreeDots
                 height="15"

@@ -16,7 +16,7 @@ const Cart = () => {
 
     useEffect(() => {
         const closeOnEscape = (e) => {
-            if (e.key === "Escape") {
+            if (e.key === "Escape" && !location.pathname.includes("checkout")) {
                 dispatch(toggleCart());
             }
         };
@@ -98,11 +98,11 @@ const Cart = () => {
                         <hr />
                         <div className={styles.row}>
                             <p>Subtotal</p>
-                            <p>₹{(prices.amount/100).toFixed(2)}</p>
+                            <p>₹{(prices.amount / 100).toFixed(2)}</p>
                         </div>
                         <div className={styles.row}>
                             <p>Tax</p>
-                            <p>₹{(prices.tax/100).toFixed(2)}</p>
+                            <p>₹{(prices.tax / 100).toFixed(2)}</p>
                         </div>
                         <div className={styles.row}>
                             <p>Shipping (Calculated in checkout)</p>
@@ -110,7 +110,7 @@ const Cart = () => {
                         </div>
                         <div className={classnames(styles.row, styles.total)}>
                             <p>Estimated Total</p>
-                            <p>₹{((prices.amount + prices.tax)/100).toFixed(2)}</p>
+                            <p>₹{((prices.amount + prices.tax) / 100).toFixed(2)}</p>
                         </div>
                         <div
                             title={cartSize ? "" : "Add products to cart first"}

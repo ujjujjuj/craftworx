@@ -4,6 +4,7 @@ import styles from "../styles/components/auth.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../app/authSlice";
 import { ThreeDots } from "react-loader-spinner";
+import { Helmet } from "react-helmet";
 
 const Login = () => {
     const [formData, setFormData] = useState({ identifier: "", password: "" });
@@ -58,6 +59,9 @@ const Login = () => {
 
     return (
         <>
+            <Helmet>
+                <title>Craftworx | Login</title>
+            </Helmet>
             <main>
                 <h1>Craftworx Agra</h1>
                 <h2>Log in</h2>

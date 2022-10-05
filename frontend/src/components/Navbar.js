@@ -1,11 +1,34 @@
 import styles from "../styles/components/Navbar.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import classnames from "classnames";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import useWindowDimensions from "../hooks/windowDimensions";
 import { useSelector, useDispatch } from "react-redux";
 import { getCartSize, toggleCart } from "../app/cartSlice";
+import { useEffect } from "react";
+
+const tabs = [
+    {
+        label: "Shop",
+        route: '/shop'
+    }, {
+        label: "Bespoke",
+        route: '/bespoke'
+    },
+    {
+        label: "Corporate",
+        route: '/corporate'
+    },
+    {
+        label: "About Us",
+        route: '/about'
+    }, {
+        label: "Contact",
+        route: '/contact'
+    }
+]
+
 
 const Navbar = () => {
     const cart = useSelector((state) => state.cartState);
@@ -25,6 +48,12 @@ const Navbar = () => {
         }
     };
 
+    useEffect(() => {
+        if (isNavExpanded)
+            setNavExpanded(false)
+    }, [location])
+
+
     return (
         <>
             <nav className={location.pathname.includes("checkout") ? styles.hide : styles.show}>
@@ -38,21 +67,15 @@ const Navbar = () => {
                         <></>
                     ) : (
                         <>
-                            <Link to="/shop">
-                                <div className={styles.item}>Shop</div>
-                            </Link>
-                            <Link to="/bespoke">
-                                <div className={styles.item}>Bespoke</div>
-                            </Link>
-                            <Link to="/corporate">
-                                <div className={styles.item}>Corporate</div>
-                            </Link>
-                            <Link to="/about">
-                                <div className={styles.item}>About Us</div>
-                            </Link>
-                            <Link to="/contact">
-                                <div className={styles.item}>Contact</div>
-                            </Link>
+                            {
+                                tabs.map((x, n) => {
+                                    return <NavLink to={x.route} key={n} className={({ isActive }) =>
+                                        (isActive ? styles.selected : "")
+                                    }>
+                                        <div className={styles.item}>{x.label}</div>
+                                    </NavLink>
+                                })
+                            }
                         </>
                     )}
                 </div>
@@ -120,34 +143,20 @@ const Navbar = () => {
                             <div className={classnames(styles.mobileNav, isNavExpanded ? styles.expanded : "")}>
                             </div>
                             <div className={classnames(styles.mobileNavList)}>
-                                <Link to="/">
+                                <NavLink to="/">
                                     <h1>Craftworx Agra</h1>
-                                </Link>
-                                <Link to="/shop">
-                                    <div className={styles.itemWrap}>
-                                        <div className={styles.item}>Shop</div>
-                                    </div>
-                                </Link>
-                                <Link to="/bespoke">
-                                    <div className={styles.itemWrap}>
-                                        <div className={styles.item}>Bespoke</div>
-                                    </div>
-                                </Link>
-                                <Link to="/corporate">
-                                    <div className={styles.itemWrap}>
-                                        <div className={styles.item}>Corporate</div>
-                                    </div>
-                                </Link>
-                                <Link to="/about">
-                                    <div className={styles.itemWrap}>
-                                        <div className={styles.item}>About Us</div>
-                                    </div>
-                                </Link>
-                                <Link to="/contact">
-                                    <div className={styles.itemWrap}>
-                                        <div className={styles.item}>Contact</div>
-                                    </div>
-                                </Link>
+                                </NavLink>
+                                {
+                                    tabs.map((x, n) => {
+                                        return <NavLink to={x.route} className={({ isActive }) =>
+                                            (isActive ? styles.selected : "")
+                                        } key={n}>
+                                            <div className={styles.itemWrap}>
+                                                <div className={styles.item}>{x.label}</div>
+                                            </div>
+                                        </NavLink>
+                                    })
+                                }
                             </div>
                             <img
                                 src={isNavExpanded ? "/images/close.svg" : "/images/hamburger.svg"}

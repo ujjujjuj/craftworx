@@ -2,9 +2,10 @@
     display: flex;
     width: 100%;
     background-color: #FFFBFB;
-    height: 100vh;
-    align-items: center;
+    min-height: 100vh;
+    align-items: stretch;
 }
+
 .container {
     position: absolute;
     top: 0;
@@ -22,6 +23,7 @@
     background: url("../images/Square leaf.png");
     background-size: 100% 100%;
 }
+
 .dot1 {
     width: 70px;
     height: 70px;
@@ -29,6 +31,7 @@
     background: url("../images/Square leaf.png");
     background-size: 100% 100%;
 }
+
 .dot2 {
     width: 60px;
     height: 60px;
@@ -43,9 +46,9 @@
     width: 60%;
     padding: 0 7vw;
     position: relative;
-    height: 100%;
     justify-content: center;
 }
+
 .aboutContent .scrollIndicator {
     position: absolute;
     cursor: pointer;
@@ -63,6 +66,7 @@
     from {
         transform: translateX(-50%) translateY(-10px);
     }
+
     to {
         transform: translateX(-50%) translateY(0px);
     }
@@ -84,40 +88,64 @@
     justify-content: center;
     align-items: center;
 }
-.ourVision .contentWrap > * {
+
+.ourVision .contentWrap>* {
     text-align: center;
 }
+
 .ourVision .contentWrap h4 {
     font-weight: 400;
     font-size: 1.35em;
 }
+
 .ourVision .contentWrap h2 {
     font-weight: 500;
     font-size: 1.8em;
     margin-top: 18px;
 }
+
 .ourVision .contentWrap p {
     margin-top: 22px;
     font-size: 0.9em;
     width: 80%;
     font-weight: 400;
 }
+
 .aboutContent h3 {
     font-weight: 600;
     font-size: 2.3em;
     color: #54605F;
 }
+
 .aboutContent p {
     margin-top: 27px;
 }
+
 .aboutImg {
-    background-color: yellowgreen;
     width: 40%;
     display: flex;
-    height: 100%;
     background-size: cover;
+    transition: all 0.3s ease;
     background-repeat: no-repeat;
     background-image: url('../images/bg2.png');
+}
+
+.aboutImg.corporate {
+    background-image: url('../images/corporate.png');
+    background-position: center;
+    height: auto;
+
+}
+
+.aboutImg.bespoke {
+    background-image: url('../images/custom.jpeg');
+    background-position: top center;
+    height: auto;
+}
+
+.aboutImg.aboutHeroImg {
+    background-image: url('../images/aboutUs.png');
+    background-position: -20px 40px;
 }
 
 .founderSec {
@@ -132,21 +160,24 @@
     width: 32%;
     height: 300px;
     background-image: url('../images/bg3.png');
-    margin: 0 100px 0 0;
+    margin: 0 5vw 0 0;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     border-radius: 12px;
     background-color: aliceblue;
 }
+
 .founderContent {
     width: 68%;
 }
+
 .founderContent h3 {
     font-weight: 600;
     font-size: 2.3em;
     color: #54605F;
 }
+
 .founderContent p {
     margin-top: 15px;
 }
@@ -162,17 +193,21 @@
     position: relative;
     overflow: hidden;
 }
+
 .uniqueSecWrap {
     width: 63%;
 }
+
 .uniqueSecWrap h3 {
     font-weight: 600;
     color: #54605F;
     font-size: 2em;
 }
+
 .uniqueSecWrap p {
     margin-top: 20px;
 }
+
 .uniqueSec img {
     position: absolute;
     bottom: 0;
@@ -187,8 +222,266 @@
     from {
         transform: translate(38%, 13%) rotate(0);
     }
+
     to {
         transform: translate(38%, 13%) rotate(360deg);
 
     }
+}
+
+.userForm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.userForm form {
+    width: 100%;
+    justify-content: initial;
+    align-items: flex-start;
+}
+
+.userForm .formHead {
+    display: flex;
+    gap: 25px;
+    width: 100%;
+}
+
+.userForm .formInput {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.userForm .formInput label {
+    font-size: 14px;
+    font-weight: 500;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    color: #54605F;
+}
+
+.userForm .formInput input {
+    border: 1px solid #8D8D8D;
+    border-radius: 4px;
+    font-family: 'Poppins';
+    padding: 12px 13px;
+}
+
+.userForm form button {
+    padding: 10px 50px;
+    border: 1.5px solid #54605F;
+    margin-top: 20px;
+    border-radius: 6px;
+    background-color: #54605F;
+    color: white;
+    font-size: 14px;
+    font-family: "Poppins";
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.userForm textarea {
+    border: 1px solid #8D8D8D;
+    border-radius: 4px;
+    resize: none;
+    padding: 12px 13px;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+.userForm .textarea {
+    margin-top: 15px;
+}
+
+.aboutHead.formAbout {
+    height: auto;
+    align-items: stretch;
+    flex-direction: row;
+    margin-top: 0;
+}
+
+.aboutHead.formAbout .aboutImg {
+    width: auto;
+    flex: 1 1 40%;
+}
+
+
+.aboutHead.formAbout .aboutContent {
+    padding-block: 120px;
+    width: auto;
+    flex: 1 5 60%;
+}
+
+@media screen and (max-width:1150px) {
+
+    .aboutHead.mainAbout {
+        flex-direction: column-reverse;
+        height: 100vh;
+        min-height: auto;
+    }
+
+    .aboutImg.aboutHeroImg {
+        visibility: hidden;
+    }
+
+    .mainAbout .aboutContent {
+        width: auto;
+        height: 100%;
+    }
+
+    .mainAbout .aboutContent h3 {
+        font-size: 1.9em;
+    }
+
+    .mainAbout .aboutContent p {
+        font-size: 0.9em;
+    }
+
+    .ourVision .contentWrap {
+        width: auto;
+        padding: 0 30px;
+    }
+
+    .ourVision .contentWrap h2 {
+        font-size: 1.5em;
+    }
+
+    .ourVision .contentWrap p {
+        width: auto;
+    }
+
+    .container>div {
+        opacity: 0.3;
+    }
+
+    .founderSec{
+        flex-direction: column-reverse;
+        padding: 0;
+    }
+
+    .founderSec h3{
+        font-size: 1.7em;
+    }
+
+    .founderContent{
+        padding: 50px 100px;
+    }
+
+    .founderSec>div{
+        width: auto;
+        margin: 0;
+    }
+
+    .founderSec .founderImg{
+        width: 100%;
+        border-radius: 0;
+        height: 320px;
+        margin-top: 10px;
+    }
+
+}
+
+@media screen and (max-width:1000px) {
+    .aboutHead.formAbout {
+        flex-direction: column;
+    }
+
+    .aboutHead.formAbout .aboutContent {
+        padding-block: 40px;
+        padding-inline: 30px;
+    }
+
+    .aboutHead.formAbout .aboutContent h3 {
+        font-size: 2em;
+    }
+
+    .aboutHead.formAbout .aboutImg {
+        margin-top: 52px;
+        width: 100%;
+        height: 130px;
+        flex: auto;
+    }
+
+    .aboutHead.formAbout .aboutImg.aboutImg.bespoke {
+        background-position: center;
+    }
+}
+
+@media screen and (max-width:975px) {
+    .uniqueSec {
+        padding: 100px 50px;
+        position: relative;
+    }
+    .founderContent{
+        padding-inline: 50px;
+    }
+}
+
+@media screen and (max-width:850px) {
+    .uniqueSecWrap {
+        width: auto;
+        z-index: 9;
+    }
+
+    .uniqueSec {
+        padding-top: 80px;
+        padding-bottom: 200px;
+    }
+
+    .uniqueSec img {
+        bottom: -130px;
+        width: 300px;
+        right: 50%;
+        transform: translateX(50%);
+    }
+
+    @keyframes rotate {
+        from {
+            transform: translateX(50%) rotate(0);
+        }
+
+        to {
+            transform: translateX(50%) rotate(360deg);
+
+        }
+    }
+
+}
+
+@media screen and (max-width:700px) {
+    .aboutHead.mainAbout {
+        height: auto;
+        min-height: 100vh;
+        padding-top: 100px;
+        flex-direction: column;
+        padding-bottom: 100px;
+    }
+
+    .scrollIndicator {
+        visibility: hidden;
+    }
+
+    .aboutHead.mainAbout .aboutContent {
+        padding: 0 30px;
+    }
+
+    .uniqueSec {
+        padding-inline: 30px;
+    }
+    .founderContent{
+        padding-inline: 30px;
+    }
+}
+
+@media screen and (max-width:640px) {
+
+    .formAbout .formHead {
+        flex-direction: column;
+        gap: 15px;
+    }
+
 }

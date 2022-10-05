@@ -3,6 +3,7 @@ import styles from "../styles/components/ordersuccess.module.css";
 import gsap, { Linear, Sine } from "gsap";
 import CartItem from "../components/cartItem";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const OrderSuccess = () => {
     const { state } = useLocation();
@@ -97,6 +98,9 @@ const OrderSuccess = () => {
 
     return (
         <>
+            <Helmet>
+                <title>Craftworx | Order</title>
+            </Helmet>
             <div className={styles.container} id="container"></div>
             <section className={styles.thanks}>
                 <img src="/images/fl0.svg" width={200} alt="Flower vector" />

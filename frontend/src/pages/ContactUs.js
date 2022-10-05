@@ -2,8 +2,9 @@ import styles from '../styles/components/contact.module.css'
 import classnames from "classnames";
 import { useEffect } from "react";
 import gsap, { Linear, Sine } from "gsap";
+import { Helmet } from 'react-helmet'
 
-const ContactUs = ()=>{
+const ContactUs = () => {
     const init = () => {
         gsap.set(`${styles.container}`, { perspective: 600 });
         gsap.set("img", { xPercent: "-50%", yPercent: "-50%" });
@@ -13,37 +14,37 @@ const ContactUs = ()=>{
 
         for (i = 0; i < 4; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.dot}`}, x: R(0, w*0.2), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.dot}` }, x: R(0, w * 0.2), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
         for (i = 0; i < 2; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.dot1}`}, x: R(0, w*0.2), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.dot1}` }, x: R(0, w * 0.2), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
         for (i = 0; i < 2; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.dot2}`}, x: R(0, w*0.2), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.dot2}` }, x: R(0, w * 0.2), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
         for (i = 0; i < 4; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.dot}`}, x: R(w*0.80, w), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.dot}` }, x: R(w * 0.80, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
         for (i = 0; i < 2; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.dot1}`}, x: R(w*0.80, w), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.dot1}` }, x: R(w * 0.80, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
         for (i = 0; i < 2; i++) {
             let Div = document.createElement('div');
-            gsap.set(Div, { attr: { class: `${styles.dot2}`}, x: R(w*0.70, w), y: R(-200, -150), z: R(-200, 200) });
+            gsap.set(Div, { attr: { class: `${styles.dot2}` }, x: R(w * 0.70, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
@@ -63,35 +64,39 @@ const ContactUs = ()=>{
         }
     };
     useEffect(() => {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         init();
     }, []);
     return (
         <>
-        <div className={styles.container} id="container"></div>
-        <section className={styles.main}>
-            <h3>Get in touch with us</h3>
-            <div className={styles.formSection}>
-                <form>
-                    <div className={styles.formHead}>
-                        <div className={styles.inputWrap}> 
-                            <label for="name">Name / Business Name</label>
-                            <input name='name'  id='name' placeholder='Jane Doe Enterprises'/>
+            <Helmet>
+                <title>Craftworx | Contact Us</title>
+            </Helmet>
+            <div className={styles.container} id="container"></div>
+            <section className={styles.main}>
+                <h3>Get in touch with us</h3>
+                <div className={styles.formSection}>
+                    <form>
+                        <div className={styles.formHead}>
+                            <div className={styles.inputWrap}>
+                                <label htmlFor="name">Name / Business Name</label>
+                                <input name='name' id='name' placeholder='Jane Doe Enterprises' />
+                            </div>
+                            <div className={styles.inputWrap}>
+                                <label htmlFor="email">Email</label>
+                                <input name='email' type="email" id='email' placeholder='Jane Doe Enterprises' />
+                            </div>
                         </div>
-                        <div className={styles.inputWrap}>
-                            <label for="email">Email</label>
-                            <input name='email' type="email" id='email' placeholder='Jane Doe Enterprises'/>
+
+                        <div className={classnames(styles.message, styles.inputWrap)}>
+                            <label htmlFor="message">Message</label>
+                            <textarea name='message' id='message' placeholder='Hi, I would like you to..' rows={12} ></textarea>
                         </div>
-                    </div>
-                 
-                    <div className={classnames(styles.message,styles.inputWrap)}>
-                    <label for="message">Message</label>
-                    <textarea name='message' id='message' placeholder='Hi, I would like you to..'  rows={12} ></textarea>
-                    </div>
-                    <button type="submit">Send Message</button>
-                </form>
-            </div>
-        </section>
+                        <button type="submit">Send Message</button>
+                    </form>
+                </div>
+                <div className={styles.spacer}></div>
+            </section>
         </>
     );
 };

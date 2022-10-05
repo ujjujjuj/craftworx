@@ -21,6 +21,12 @@ nav .left img {
     width: 2.85em;
 }
 
+
+nav .selected {
+    color: #eba0bc;
+
+}
+
 nav .right img {
     width: 1.8em;
     cursor: pointer;
@@ -29,6 +35,7 @@ nav .right img {
 nav .item.navSearch img {
     width: 1.2em;
 }
+
 nav .item.navSearch {
     border: 1px solid #54605F;
     box-sizing: border-box;
@@ -41,6 +48,7 @@ nav .item.navSearch {
     padding-right: 5px;
     font-family: 'Poppins';
 }
+
 input:focus {
     outline: none;
 }
@@ -53,14 +61,17 @@ nav .item {
     align-items: center;
     justify-content: center;
 }
+
 nav .item img {
     transition: all 0.2s ease;
 }
+
 nav .item:hover {
     color: #eba0bc;
     transition-delay: 0s;
 }
-nav .item:hover > a {
+
+nav .item:hover>a {
     color: #eba0bc;
 }
 
@@ -82,11 +93,13 @@ nav .left .logoNav {
     margin-left: 0;
     display: flex;
 }
+
 nav .right {
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 nav a {
     text-decoration: none;
     color: #000;
@@ -96,7 +109,8 @@ nav a {
 ::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #54605F;
-    opacity: 1; /* Firefox */
+    opacity: 1;
+    /* Firefox */
 }
 
 :-ms-input-placeholder {
@@ -114,6 +128,7 @@ nav a {
     justify-content: center;
     position: relative;
 }
+
 .cartIndicator {
     position: absolute;
     display: flex;
@@ -134,6 +149,7 @@ nav a {
     visibility: hidden;
     display: none;
 }
+
 .show {
     visibility: visible;
     display: flex;
@@ -177,6 +193,7 @@ nav a {
     z-index: 9999;
     transition: all 0.7s ease;
 }
+
 .mobileNavList .item {
     font-size: 1.4em;
     margin-inline: 0;
@@ -185,12 +202,14 @@ nav a {
     transition-delay: 0s;
     opacity: 0;
 }
+
 .mobileNav.expanded+.mobileNavList .item {
     transform: translateY(0%);
     transition-delay: 0.2s;
     opacity: 1;
 
 }
+
 .mobileNavList h1 {
     font-family: 'Sacramento', cursive;
     font-size: 2.5rem;
@@ -203,6 +222,7 @@ nav a {
     transform: scale(5) translate(50%, -50%);
     visibility: visible;
 }
+
 .mobileNav.expanded+.mobileNavList {
     visibility: visible;
 }
@@ -212,14 +232,17 @@ nav a {
     transition: opacity 0.4s ease;
     transition-delay: 0s;
 }
+
 .mobileNavList .itemWrap {
     overflow: hidden;
     margin: 30px 0;
 }
+
 .mobileNav.expanded+.mobileNavList h1 {
     opacity: 1;
     transition-delay: 0.15s;
 }
+
 nav .right .crossExpanded {
     width: 1.5em;
 }
@@ -249,18 +272,18 @@ nav .right .crossExpanded {
 }
 
 .userMenuWrap:hover .parent {
-    visibility: visible;    
+    visibility: visible;
     opacity: 1;
     pointer-events: all;
 }
 
 
-.userMenuWrap .userMenu > a {
+.userMenuWrap .userMenu>a {
     padding: 5px 20px;
     position: relative;
 }
 
-.userMenuWrap .userMenu >a:nth-child(1)::after {
+.userMenuWrap .userMenu>a:nth-child(1)::after {
     position: absolute;
     bottom: 0;
     width: 70%;
@@ -271,7 +294,8 @@ nav .right .crossExpanded {
     opacity: 0.7;
     content: "";
 }
-.userMenuWrap .userMenu >a:hover {
+
+.userMenuWrap .userMenu>a:hover {
     background-color: #f5f5f5;
 }
 
@@ -298,15 +322,19 @@ nav .right .crossExpanded {
     .item.navSearch.stretch {
         max-width: 50%;
     }
+
     nav {
         padding: 10px 18px;
     }
+
     .item.navSearch input {
         min-width: 0;
     }
+
     nav .right img {
         width: 1.6em;
     }
+
     nav .left img {
         width: 2.5em;
     }
