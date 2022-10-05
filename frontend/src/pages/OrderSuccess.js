@@ -68,7 +68,6 @@ const OrderSuccess = () => {
     })
 
     useEffect(() => {
-        console.log(searchParams.get("id"))
         if (state == null && searchParams.get("id") == null) {
             navigate('/shop')
         } else {

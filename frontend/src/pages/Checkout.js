@@ -57,12 +57,18 @@ const Checkout = () => {
         let confirm = await confirmOrder(resp);
         if (!confirm.error) {
             dispatch(emptyCart());
-            navigate("/success", {
-                state: {
-                    id: order.id,
-                },
-                replace: true,
-            });
+            if (user?.user?.isLoggedIn) {
+                navigate("/success", {
+                    state: {
+                        id: order.id,
+                    },
+                    replace: true,
+                });
+            } else {
+                navigate(`/order?id=${order.id}`, {
+                    replace: true
+                })
+            }
         } else {
             setTransactionModal({
                 visible: true,
@@ -147,11 +153,14 @@ const Checkout = () => {
     };
 
     const startShipProcess = () => {
+        if (processState === "auth") {
+            setProcessState("authWA")
+        }
         document.querySelector(`.${styles1.addressFormWrap}`).classList.add(styles1.hide);
         document.querySelector(`.${styles1.shippingTo}`).classList.remove(styles1.hide);
         document.querySelector(`.${styles1.shipPartner}`).classList.remove(styles1.hide);
         let { email, phnNo, ...addressInfo } = userPayInfo;
-        if (!user.user.address?.data?.find((elem) => elem.fName === addressInfo.fName && elem.lName === addressInfo.lName)) {
+        if (!user?.user?.address?.data?.find((elem) => elem.fName === addressInfo.fName && elem.lName === addressInfo.lName) && user?.user?.isLoggedIn) {
             let prevAddrs = structuredClone(user.user.address)
             if (!prevAddrs || !prevAddrs.data)
                 prevAddrs = {
