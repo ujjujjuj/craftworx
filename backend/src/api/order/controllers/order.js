@@ -155,6 +155,56 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         orderId: createdOrder.id,
       },
     });
+    const user = ctx.request.body.info;
+    let shipres = await axios.post("https://apiv2.shiprocket.in/v1/external/orders/create/adhoc", {
+      order_id: entry.id,
+      order_date: new Date().toISOString().split("T")[0],
+      pickup_location: "Agra",
+      billing_customer_name: user.fName + " " + user.lName,
+      billing_city: user.city,
+      billing_state: user.state,
+      billing_country: user.country,
+      billing_email: user.email,
+      billing_phone: user.phnNo,
+      shipping_is_billing: true,
+      order_items: [
+        {
+          name: "Kunai",
+          sku: "chakra123",
+          units: 10,
+          selling_price: "900",
+          discount: "",
+          tax: "",
+          hsn: 441122,
+        },
+      ],
+      payment_method: "Prepaid",
+      shipping_charges: 0,
+      giftwrap_charges: 0,
+      transaction_charges: 0,
+      total_discount: 0,
+      sub_total: totalPrice,
+      length: products.reduce(
+        (prev, next) => prev + ctx.request.body.cart[next.id] * next.length,
+        0
+      ),
+      breadth: products.reduce(
+        (prev, next) => prev + ctx.request.body.cart[next.id] * next.breadth,
+        0
+      ),
+      height: products.reduce(
+        (prev, next) => prev + ctx.request.body.cart[next.id] * next.height,
+        0
+      ),
+      weight:
+        products.reduce(
+          (prev, next) => prev + ctx.request.body.cart[next.id] * next.weight,
+          0
+        ) / 1000,
+    });
+
+    console.log(shipres);
+
     ctx.body = createdOrder;
   },
 
