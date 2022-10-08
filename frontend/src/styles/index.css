@@ -4,14 +4,32 @@
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
-html{
+
+html {
     scroll-behavior: smooth;
 }
+
 body {
     font-family: "Poppins";
     background-color: white;
 }
-#root{
+
+#root {
     position: relative;
     overflow: hidden;
+}
+
+input::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+    /* Firefox */
+}
+
+textarea::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+    font-family: "Poppins";
+    /* Firefox */
 }

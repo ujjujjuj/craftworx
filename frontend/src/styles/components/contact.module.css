@@ -1,70 +1,87 @@
-.main{
+.main {
     display: flex;
     flex-direction: column;
     width: 100%;
     align-items: center;
+    min-height: 80vh;
     padding: 100px 0;
 }
 
-.main h3{
+.spacer {
+    flex: 1;
+}
+
+.main h3 {
     font-weight: 600;
     font-size: 2em;
     color: #54605F;
 }
 
-.formSection{
+.formSection {
     margin-top: 30px;
-    width: 41%;
+    width: 51%;
 }
-.formSection form{
+
+.formSection form {
     width: 100%;
 }
-.formHead{
+
+.formHead {
     display: flex;
     width: 100%;
 }
-.inputWrap{
+
+.inputWrap {
     display: flex;
     flex-direction: column;
     width: 50%;
     color: #54605F;
 }
-.message.inputWrap{
+
+.message.inputWrap {
     width: 100%;
     margin-top: 20px;
 }
-.formHead div:nth-child(2){
+
+.formHead div:nth-child(2) {
     margin-left: 20px;
 }
-.formHead div:nth-child(1){
+
+.formHead div:nth-child(1) {
     margin-right: 20px;
 }
-.inputWrap label{
+
+.inputWrap label {
     font-weight: 500;
     margin-bottom: 7px;
     font-size: 0.9em;
     color: #54605F;
 }
-.formSection input{
+
+.formSection input {
     border: 1px solid #8D8D8D;
     border-radius: 4px;
     padding: 12px;
     font-family: 'Poppins';
 }
-.formSection input:focus{
+
+.formSection input:focus {
     outline: none;
 }
-.formSection textarea:focus{
+
+.formSection textarea:focus {
     outline: none;
 }
-.formSection textarea{
+
+.formSection textarea {
     border: 1px solid #8D8D8D;
     border-radius: 4px;
     padding: 12px;
     font-family: 'Poppins';
     resize: none;
 }
-.formSection button{
+
+.formSection button {
     border: none;
     background: #54605F;
     border-radius: 8px;
@@ -96,6 +113,7 @@
     background: url("../images/Square leaf.png");
     background-size: 100% 100%;
 }
+
 .dot1 {
     width: 70px;
     height: 70px;
@@ -103,6 +121,7 @@
     background: url("../images/Square leaf.png");
     background-size: 100% 100%;
 }
+
 .dot2 {
     width: 60px;
     height: 60px;
@@ -111,14 +130,48 @@
     background-size: 100% 100%;
 }
 
-.main ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    opacity: 0.7; /* Firefox */
-  }
-  
- .main :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    opacity: 0.7; /* Firefox */
-  }
-  
- .main ::-ms-input-placeholder { /* Microsoft Edge */
-    opacity: 0.7; /* Firefox */
-  }
+.main ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    opacity: 0.7;
+    /* Firefox */
+}
+
+.main :-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    opacity: 0.7;
+    /* Firefox */
+}
+
+.main ::-ms-input-placeholder {
+    /* Microsoft Edge */
+    opacity: 0.7;
+    /* Firefox */
+}
+
+@media screen and (max-width:1150px) {
+    .formSection {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width:640px) {
+
+    .container >div{
+        opacity: 0.5;
+    }
+    .formSection {
+        width: 100%;
+        padding: 0 30px;
+    }
+
+    .formHead {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .formHead .inputWrap {
+        width: 100%;
+        padding: 0;
+        margin: 0 !important;
+    }
+}

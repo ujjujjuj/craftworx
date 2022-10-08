@@ -35,6 +35,12 @@
     },
     "shipping": {
       "type": "integer"
+    },
+    "userEmail": {
+      "type": "email"
+    },
+    "shipmentId": {
+      "type": "uid"
     }
   }
 }

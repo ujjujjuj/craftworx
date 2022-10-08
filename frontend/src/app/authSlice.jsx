@@ -12,8 +12,18 @@ const authSlice = createSlice({
         logoutUser: (state) => {
             return { isLoggedIn: false };
         },
+        editUser: (state, param) => {
+            let old = Object.assign({}, state)
+            old.user = ({ ...old.user, ...param.payload })
+            return old
+        },
+        updateAddr: (state, param) => {
+            let old = Object.assign({}, state)
+            old.user = ({ ...old.user, address: param.payload })
+            return old
+        }
     },
 });
 
-export const { loginUser, logoutUser } = authSlice.actions;
+export const { loginUser, logoutUser, editUser, updateAddr } = authSlice.actions;
 export default authSlice;

@@ -1,6 +1,5 @@
 import styles from "../styles/components/home.module.css";
 import classnames from "classnames";
-import { useCart } from "../hooks/cart";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCartItem } from "../app/cartSlice";

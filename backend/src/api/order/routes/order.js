@@ -9,6 +9,14 @@ module.exports = {
       },
     },
     {
+      method: "GET",
+      path: "/orders/getAll",
+      handler: "order.getAll",
+      config: {
+        auth: false,
+      },
+    },
+    {
       method: "POST",
       path: "/orders/new",
       handler: "order.create",
@@ -28,6 +36,14 @@ module.exports = {
       method: "POST",
       path: "/orders/getShipOptions",
       handler: "order.getShipOptions",
+      config: {
+        auth: false,
+      },
+    },
+    {
+      method: "POST",
+      path: "/orders/invoice",
+      handler: "order.invoice",
       config: {
         auth: false,
       },

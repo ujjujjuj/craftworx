@@ -1,12 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "../styles/components/ordersuccess.module.css";
 import gsap, { Linear, Sine } from "gsap";
 import CartItem from "../components/cartItem";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const OrderSuccess = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const init = () => {
         gsap.set(`${styles.container}`, { perspective: 600 });
         gsap.set("img", { xPercent: "-50%", yPercent: "-50%" });
@@ -57,170 +59,48 @@ const OrderSuccess = () => {
             return min + Math.random() * (max - min);
         }
     };
+    const [products, setProducts] = useState([]);
+    const [order, setOrder] = useState({});
+    const [prices, setPrices] = useState({
+        amount: 0,
+        tax: 0,
+        ship: 0,
+        total: 0
+    })
+
     useEffect(() => {
-        console.log(state);
-        if (state == null) {
-            // navigate('/shop')
+        if (state == null && searchParams.get("id") == null) {
+            navigate('/shop')
         } else {
             window.scrollTo(0, 0);
-            getOrderData();
+            getOrderData(state?.id || searchParams.get("id"));
             init();
         }
-    }, [state]);
-    let sampleProduct = {
-        id: 7,
-        attributes: {
-            name: "Craftworx Wooden Gift Packaging Designer Square Empty Box (Blue Golden, 8 x 8 x 3 Inches)",
-            price: 899,
-            category: "Gifts",
-            discount: 50,
-            images: {
-                data: [
-                    {
-                        id: 18,
-                        attributes: {
-                            name: "https://m.media-amazon.com/images/I/41FPgnJ2gdL.jpg",
-                            alternativeText: "https://m.media-amazon.com/images/I/41FPgnJ2gdL.jpg",
-                            caption: "https://m.media-amazon.com/images/I/41FPgnJ2gdL.jpg",
-                            width: 375,
-                            height: 500,
-                            formats: {
-                                thumbnail: {
-                                    name: "thumbnail_https://m.media-amazon.com/images/I/41FPgnJ2gdL.jpg",
-                                    hash: "thumbnail_41_F_Pgn_J2gd_L_352965838b",
-                                    ext: ".jpg",
-                                    mime: "image/jpeg",
-                                    path: null,
-                                    width: 117,
-                                    height: 156,
-                                    size: 2.34,
-                                    url: "/uploads/thumbnail_41_F_Pgn_J2gd_L_352965838b.jpg",
-                                },
-                            },
-                            hash: "41_F_Pgn_J2gd_L_352965838b",
-                            ext: ".jpg",
-                            mime: "image/jpeg",
-                            size: 18.37,
-                            url: "/uploads/41_F_Pgn_J2gd_L_352965838b.jpg",
-                            previewUrl: null,
-                            provider: "local",
-                            provider_metadata: null,
-                            createdAt: "2022-05-31T15:08:31.925Z",
-                            updatedAt: "2022-05-31T15:08:31.925Z",
-                        },
-                    },
-                    {
-                        id: 19,
-                        attributes: {
-                            name: "https://m.media-amazon.com/images/I/71NLdYDJxaS._SL1280_.jpg",
-                            alternativeText: "https://m.media-amazon.com/images/I/71NLdYDJxaS._SL1280_.jpg",
-                            caption: "https://m.media-amazon.com/images/I/71NLdYDJxaS._SL1280_.jpg",
-                            width: 960,
-                            height: 1280,
-                            formats: {
-                                thumbnail: {
-                                    name: "thumbnail_https://m.media-amazon.com/images/I/71NLdYDJxaS._SL1280_.jpg",
-                                    hash: "thumbnail_71_N_Ld_YD_Jxa_S_SL_1280_c2206dbf64",
-                                    ext: ".jpg",
-                                    mime: "image/jpeg",
-                                    path: null,
-                                    width: 117,
-                                    height: 156,
-                                    size: 3.39,
-                                    url: "/uploads/thumbnail_71_N_Ld_YD_Jxa_S_SL_1280_c2206dbf64.jpg",
-                                },
-                            },
-                            hash: "71_N_Ld_YD_Jxa_S_SL_1280_c2206dbf64",
-                            ext: ".jpg",
-                            mime: "image/jpeg",
-                            size: 154.45,
-                            url: "/uploads/71_N_Ld_YD_Jxa_S_SL_1280_c2206dbf64.jpg",
-                            previewUrl: null,
-                            provider: "local",
-                            provider_metadata: null,
-                            createdAt: "2022-05-31T15:10:15.354Z",
-                            updatedAt: "2022-05-31T15:10:15.354Z",
-                        },
-                    },
-                    {
-                        id: 20,
-                        attributes: {
-                            name: "https://m.media-amazon.com/images/I/71shbuqi1BS._SL1280_.jpg",
-                            alternativeText: "https://m.media-amazon.com/images/I/71shbuqi1BS._SL1280_.jpg",
-                            caption: "https://m.media-amazon.com/images/I/71shbuqi1BS._SL1280_.jpg",
-                            width: 960,
-                            height: 1280,
-                            formats: {
-                                thumbnail: {
-                                    name: "thumbnail_https://m.media-amazon.com/images/I/71shbuqi1BS._SL1280_.jpg",
-                                    hash: "thumbnail_71shbuqi1_BS_SL_1280_260fd1cae4",
-                                    ext: ".jpg",
-                                    mime: "image/jpeg",
-                                    path: null,
-                                    width: 117,
-                                    height: 156,
-                                    size: 3.46,
-                                    url: "/uploads/thumbnail_71shbuqi1_BS_SL_1280_260fd1cae4.jpg",
-                                },
-                            },
-                            hash: "71shbuqi1_BS_SL_1280_260fd1cae4",
-                            ext: ".jpg",
-                            mime: "image/jpeg",
-                            size: 139.51,
-                            url: "/uploads/71shbuqi1_BS_SL_1280_260fd1cae4.jpg",
-                            previewUrl: null,
-                            provider: "local",
-                            provider_metadata: null,
-                            createdAt: "2022-05-31T15:10:21.492Z",
-                            updatedAt: "2022-05-31T15:10:21.492Z",
-                        },
-                    },
-                    {
-                        id: 17,
-                        attributes: {
-                            name: "https://m.media-amazon.com/images/I/71v4rRC5FhS._SL1280_.jpg",
-                            alternativeText: "https://m.media-amazon.com/images/I/71v4rRC5FhS._SL1280_.jpg",
-                            caption: "https://m.media-amazon.com/images/I/71v4rRC5FhS._SL1280_.jpg",
-                            width: 960,
-                            height: 1280,
-                            formats: {
-                                thumbnail: {
-                                    name: "thumbnail_https://m.media-amazon.com/images/I/71v4rRC5FhS._SL1280_.jpg",
-                                    hash: "thumbnail_71v4r_RC_5_Fh_S_SL_1280_5714603ef2",
-                                    ext: ".jpg",
-                                    mime: "image/jpeg",
-                                    path: null,
-                                    width: 117,
-                                    height: 156,
-                                    size: 3.48,
-                                    url: "/uploads/thumbnail_71v4r_RC_5_Fh_S_SL_1280_5714603ef2.jpg",
-                                },
-                            },
-                            hash: "71v4r_RC_5_Fh_S_SL_1280_5714603ef2",
-                            ext: ".jpg",
-                            mime: "image/jpeg",
-                            size: 145.33,
-                            url: "/uploads/71v4r_RC_5_Fh_S_SL_1280_5714603ef2.jpg",
-                            previewUrl: null,
-                            provider: "local",
-                            provider_metadata: null,
-                            createdAt: "2022-05-31T15:05:12.506Z",
-                            updatedAt: "2022-05-31T15:05:12.506Z",
-                        },
-                    },
-                ],
-            },
-        },
-    };
+    }, [state, searchParams]);
 
-    const getOrderData = () => {
-        fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/get?id=${state.id}`)
+    const getOrderData = (id) => {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/get?id=${id}`)
             .then((res) => res.json())
-            .then((data) => console.log(data));
+            .then((data) => {
+                console.log(data)
+                setProducts(data.cart)
+                setOrder(data.order)
+                let total = data.order.amount / 100
+                let ship = data.order.shipping / 100
+                let subWt = total - ship
+                let amount = (subWt / 1.18)
+                let tax = (amount * 0.18)
+                setPrices({
+                    amount, tax, ship, total
+                })
+            });
     };
 
     return (
         <>
+            <Helmet>
+                <title>Craftworx | Order</title>
+            </Helmet>
             <div className={styles.container} id="container"></div>
             <section className={styles.thanks}>
                 <img src="/images/fl0.svg" width={200} alt="Flower vector" />
@@ -233,26 +113,26 @@ const OrderSuccess = () => {
                 </div>
                 <div className={styles.orderDetWrap}>
                     <div className={styles.orderItems}>
-                        <CartItem product={{ id: sampleProduct.id, ...sampleProduct.attributes }} isSm={true} />
-                        <CartItem product={{ id: sampleProduct.id, ...sampleProduct.attributes }} isSm={true} />
-                        <CartItem product={{ id: sampleProduct.id, ...sampleProduct.attributes }} isSm={true} />
+                        {
+                            products.length && products.map((x, n) => <CartItem product={x} isSm={true} key={n} />)
+                        }
                     </div>
                     <div className={styles.orderSummary}>
                         <div className={styles.orderSmRow}>
                             <p>Subtotal</p>
-                            <p>₹450.00</p>
+                            <p>₹{prices.amount.toFixed(2)}</p>
                         </div>
                         <div className={styles.orderSmRow}>
                             <p>Tax (GST)</p>
-                            <p>₹50.00</p>
+                            <p>₹{prices.tax.toFixed(2)}</p>
                         </div>
                         <div className={styles.orderSmRow}>
                             <p>Shipping</p>
-                            <p>₹100.00</p>
+                            <p>₹{prices.ship.toFixed(2)}</p>
                         </div>
                         <div className={`${styles.orderSmRow} ${styles.tot}`}>
                             <p>Total</p>
-                            <p>₹690.00</p>
+                            <p>₹{prices.total.toFixed(2)}</p>
                         </div>
                     </div>
                 </div>
@@ -260,10 +140,13 @@ const OrderSuccess = () => {
                     <div className={styles.orderAdr}>
                         <p>Your order is shipping here:</p>
                         <div>
-                            <p>Ishaan Das</p>
-                            <p>401 1st Ave</p>
-                            <p>Apt 1</p>
-                            <p>Manhattan, NY 111217</p>
+                            {order.userInfo?.fName} {order.userInfo?.lName}
+                            <br />
+                            {order.userInfo?.address}
+                            <br />
+                            {order.userInfo?.city}, {order.userInfo?.state} - {order.userInfo?.zipcode}
+                            <br />
+                            {order.userInfo?.country}
                         </div>
                     </div>
                     <div className={styles.trckOrd}>Track Order</div>

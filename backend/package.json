@@ -13,6 +13,7 @@
     "@strapi/design-system": "^1.1.1",
     "@strapi/plugin-i18n": "4.1.12",
     "@strapi/plugin-users-permissions": "4.1.12",
+    "@strapi/provider-email-nodemailer": "^4.4.3",
     "@strapi/strapi": "4.1.12",
     "razorpay": "^2.8.1",
     "sqlite3": "5.0.8",

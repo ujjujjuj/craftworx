@@ -16,7 +16,7 @@ const Cart = () => {
 
     useEffect(() => {
         const closeOnEscape = (e) => {
-            if (e.key === "Escape") {
+            if (e.key === "Escape" && !location.pathname.includes("checkout")) {
                 dispatch(toggleCart());
             }
         };
@@ -29,14 +29,14 @@ const Cart = () => {
 
     useEffect(() => {
         const amount = Object.values(cart.items).reduce(
-            (a, b) => ({ price: a.price + Math.floor(b.price - (b.discount * b.price) / 100).toFixed(2) * b.quantity }),
+            (a, b) => ({ price: a.price + (b.price - (b.discount * b.price) / 100) * b.quantity }),
             {
                 price: 0,
                 quantity: 0,
                 discount: 0,
             }
         ).price;
-        const tax = Math.round((amount * 18) / 100);
+        const tax = ((amount * 18) / 100);
         setPrices({ amount, tax });
     }, [cart]);
 
@@ -98,11 +98,11 @@ const Cart = () => {
                         <hr />
                         <div className={styles.row}>
                             <p>Subtotal</p>
-                            <p>₹{prices.amount.toFixed(2)}</p>
+                            <p>₹{(prices.amount / 100).toFixed(2)}</p>
                         </div>
                         <div className={styles.row}>
                             <p>Tax</p>
-                            <p>₹{prices.tax.toFixed(2)}</p>
+                            <p>₹{(prices.tax / 100).toFixed(2)}</p>
                         </div>
                         <div className={styles.row}>
                             <p>Shipping (Calculated in checkout)</p>
@@ -110,7 +110,7 @@ const Cart = () => {
                         </div>
                         <div className={classnames(styles.row, styles.total)}>
                             <p>Estimated Total</p>
-                            <p>₹{(prices.amount + prices.tax).toFixed(2)}</p>
+                            <p>₹{((prices.amount + prices.tax) / 100).toFixed(2)}</p>
                         </div>
                         <div
                             title={cartSize ? "" : "Add products to cart first"}

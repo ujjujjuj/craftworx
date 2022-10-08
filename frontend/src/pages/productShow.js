@@ -12,12 +12,14 @@ const ProductShow = () => {
     const { id } = useParams();
     const [product, setProduct] = useState({});
     const [imgArray, setImgArray] = useState([]);
-    const [isPopVisible,setPopVisible] = useState(true)
+    const [isPopVisible, setPopVisible] = useState(true)
     const [prodQty, setProdQty] = useState(1);
     const [mainImg, setMain] = useState('');
+    const [isLoading, setLoading] = useState(false)
     const [relatedArray, setRelated] = useState([]);
     useEffect(() => {
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
+        setLoading(true)
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/products/${id}?fields=*&populate=images`)
             .then((res) => res.json())
             .then((data) => {
@@ -41,8 +43,9 @@ const ProductShow = () => {
                 }, {
                     encodeValuesOnly: true,
                 });
+                setLoading(false)
                 fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?${query}&fields=name,price,category&populate=images&pagination[pageSize]=7`).then((res) => res.json()).then((data1) => {
-                    if(data1.data.length===1){
+                    if (data1.data.length === 1) {
                         setPopVisible(false)
                     }
                     setRelated(data1.data.map((obj) => ({ id: obj.id, ...obj.attributes })).filter(obj => {
@@ -52,10 +55,11 @@ const ProductShow = () => {
                             return false
                     }));
                 })
+
             });
     }, [id]);
 
-    let productFinalAmt =Math.floor((product.price-(product.discount*product.price/100))).toFixed(2)
+    let productFinalAmt = (product.price - (product.discount * product.price / 100))
 
 
 
@@ -99,10 +103,10 @@ const ProductShow = () => {
                         <p>42 Reviews</p>
                     </div>
                     <div className={styles.cost}>
-                        {product.discount > 0 ? <> <h1 className={styles.slash}>₹ {product.price.toFixed(2)}</h1>
+                        {product.discount > 0 ? <> <h1 className={styles.slash}>₹ {(product.price / 100).toFixed(2)}</h1>
                         </> : <></>}
                         <div className={styles.discWrap}>
-                            <h1>₹ {product.price?productFinalAmt:"" }</h1>   {product.discount > 0 ? <p>{product.discount}% off</p> : <></>}
+                            <h1>₹ {product.price ? (productFinalAmt / 100).toFixed(2) : ""}</h1>   {product.discount > 0 ? <p>{product.discount}% off</p> : <></>}
 
                         </div>
 
@@ -135,23 +139,23 @@ const ProductShow = () => {
                     </div>
                 </div>
             </div>
-            <section className={classnames(styles1.homeSec1,!isPopVisible?styles1.hidden:"")}>
+            <section className={classnames(styles1.homeSec1, !isPopVisible ? styles1.hidden : "")}>
                 <div className={styles1.title}>
                     <p>More products like this</p>
                     <a href="/shop">View All</a>
                 </div>
                 <div className={styles1.popProducts} >
-                    {relatedArray.length===0?<>
-                        <Product shimmer="true"/>
-                        <Product shimmer="true"/>
-                        <Product shimmer="true"/>
-                        {window.innerWidth>1650?                
-                    <Product shimmer="true"/>:<></>
-                }
-                    </>:
-                    relatedArray.map((obj) => {
-                        return <Product key={obj.id} product={obj} />
-                    })}
+                    {relatedArray.length === 0 ? <>
+                        <Product shimmer="true" />
+                        <Product shimmer="true" />
+                        <Product shimmer="true" />
+                        {window.innerWidth > 1650 ?
+                            <Product shimmer="true" /> : <></>
+                        }
+                    </> :
+                        relatedArray.map((obj) => {
+                            return <Product key={obj.id} product={obj} />
+                        })}
                 </div>
             </section>
         </>

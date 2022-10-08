@@ -1,0 +1,355 @@
+.userWrap {
+    margin-top: 53px;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh);
+}
+
+.userNav {
+    display: flex;
+    padding: 5px 100px 0;
+    gap: 10px;
+    box-shadow: 0 2px 0 #ddddddc3;
+}
+
+.helloText {
+    font-size: 1.5rem;
+    color: #54605F;
+    font-weight: 500;
+}
+
+.addresses .editAddr {
+    vertical-align: top;
+    padding: 0 20px;
+}
+
+.addresses .editAddr img {
+    width: 19px;
+}
+
+.indicator {
+    transition: all 0.2s ease;
+    content: "";
+    background-color: #E19EAC;
+    height: 3.5px;
+    margin-left: 100px;
+    width: 80px;
+    position: relative;
+    left: 0;
+    bottom: 3.5px;
+}
+
+.userNav .item {
+    padding: 10px;
+    font-weight: 500;
+    text-align: center;
+    color: #54605F;
+    position: relative;
+    cursor: pointer;
+    width: 80px;
+    font-size: 1.05rem;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.userNav .item.active {
+    color: #E19EAC;
+}
+
+
+.userPager {
+    display: flex;
+    gap: 27px;
+    margin: 30px 100px;
+    flex-direction: column;
+}
+
+.userItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border: 1px solid #DDDDDD;
+    border-radius: 9px;
+    padding: 24px 30px 24px 45px;
+}
+
+.userItem img.center {
+    align-self: center;
+}
+
+.userItem .basicElem {
+    display: flex;
+    align-items: center;
+    gap: 19px;
+    color: #54605F;
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
+.userItem img {
+    cursor: pointer;
+}
+
+.userItem .basicElem .userImg {
+    width: 55px;
+    height: 55px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 50%;
+    background-position: center;
+}
+
+.userItem .elemContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.userItem .elemContent h1 {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #54605F;
+}
+
+.userItem td img {
+    margin-left: 10px;
+    width: 19px;
+    transform: translateY(2px);
+}
+
+.userItem .elemHead {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.userItem .elemHead img {
+    width: 20px;
+    margin-left: 9px;
+    cursor: pointer;
+}
+
+.userItem .elemHead.ship {
+    margin-bottom: 8px;
+}
+
+.addresses tr:hover {
+    text-decoration: underline;
+}
+
+.addresses tr td {
+    cursor: pointer;
+}
+
+.editAddr i {
+    font-size: 1.15em;
+    margin-left: 8px;
+    color: #54605F;
+}
+
+.backDrop {
+    position: fixed;
+    background-color: #00000080;
+    width: 100%;
+    left: 0;
+    z-index: 9999;
+    top: 0;
+    height: 100vh;
+}
+
+.userPop form .formFoot {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.userPop form .formFoot .btn {
+    padding: 5px 25px;
+    border: 1.5px solid #54605F;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: "Poppins";
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.formFoot i {
+    font-size: 17px;
+    color: #54605F;
+    cursor: pointer;
+}
+
+.userPop .formFoot .btn:nth-child(1) {
+    background-color: #54605F;
+    color: white;
+}
+
+.userPop .formFoot .btn:nth-child(1):hover {
+    background-color: white;
+    color: #54605F;
+}
+
+.userPop .formFoot .btn:hover {
+    background-color: #54605F;
+    color: white;
+}
+
+.userPop {
+    position: fixed;
+    padding: 20px 30px;
+    top: 50%;
+    left: 50%;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 12px;
+}
+
+
+.userPop form {
+    align-items: flex-start;
+    width: 27em;
+}
+
+.userPop .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.userPop .header h1 {
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.userPop .header img {
+    width: 20px;
+    cursor: pointer;
+}
+
+.userPop .formInput {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.userPop .formInput label {
+    font-size: 14px;
+    font-weight: 400;
+    padding-bottom: 7px;
+    padding-top: 8px;
+    color: #54605F;
+}
+
+.userPop .formInput input {
+    border: 1px solid #8D8D8D;
+    border-radius: 4px;
+    font-family: 'Poppins';
+    padding: 8px 10px;
+}
+
+.userItem .elemContent table.addresses {
+    border-spacing: 0px 10px;
+}
+
+.userItem .elemContent table {
+    border-collapse: separate;
+    border-spacing: 0 4px;
+}
+
+
+
+.userItem .elemContent table .head {
+    padding-right: 8px;
+    font-weight: 500;
+    color: #54605F;
+    margin-right: 4px;
+}
+
+.userFoot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.userFoot .buttons {
+    display: flex;
+}
+
+.changePBt {
+    background-color: #54605F;
+    padding: 11px 40px;
+    border-radius: 9px;
+    border: 1.5px #54605F solid;
+    transition: all 0.2s ease;
+    width: fit-content;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.logoutBt {
+    background-color: white;
+    padding: 11px 40px;
+    border-radius: 9px;
+    border: 1.5px #54605F solid;
+    transition: all 0.2s ease;
+    width: fit-content;
+    cursor: pointer;
+    text-align: center;
+    margin-left: 24px;
+    color: #54605F;
+    display: flex;
+    align-items: center;
+    z-index: 999;
+}
+
+.buttons a {
+    text-decoration: none;
+}
+
+.changePBt:hover {
+    color: #54605F;
+    background-color: white;
+}
+
+.logoutBt:hover {
+    color: white;
+    background-color: #54605F;
+}
+
+.buttons img {
+    transition: all 0.2s ease;
+}
+
+
+.changePBt:hover img {
+    filter: invert(38%) sepia(1%) saturate(3847%) hue-rotate(157deg) brightness(51%) contrast(86%);
+}
+
+.logoutBt:hover img {
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(172deg) brightness(250%) contrast(104%);
+}
+
+.deleteAcc {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #FF3B47;
+}
+
+.deleteAcc p {
+    text-decoration: underline;
+}
+
+.userWrap a {
+    text-decoration: none;
+}

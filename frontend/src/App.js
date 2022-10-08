@@ -1,4 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+    TransitionGroup,
+    CSSTransition
+} from "react-transition-group";
 import Navbar from "./components/Navbar";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
@@ -6,10 +10,8 @@ import Login from "./pages/Login";
 import Product from "./pages/Product";
 import Register from "./pages/Register";
 import Shop from "./pages/Shop";
-import { AuthProvider } from "./hooks/auth";
 import Callback from "./pages/Callback";
 import Logout from "./pages/Logout";
-import { CartProvider } from "./hooks/cart"
 import ProductShow from "./pages/productShow"
 import Checkout from "./pages/Checkout";
 import Footer from "./components/footer";
@@ -21,6 +23,9 @@ import Corporate from "./pages/Corporate";
 import Terms from "./pages/Terms";
 import Refund from "./pages/Refund";
 import OrderSuccess from "./pages/OrderSuccess";
+import User from "./pages/User";
+import { Profile } from "./components/Profile";
+import { Orders } from "./components/Orders";
 
 const App = () => {
     return (
@@ -45,6 +50,12 @@ const App = () => {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/contact" element={<ContactUs />} />
+                <Route path="/order" element={<OrderSuccess />} />
+                <Route path="/user" element={<User />} >
+                    <Route index element={<Navigate replace to="profile" />} />
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="orders" element={<Orders />} />
+                </Route>
                 <Route exact path="/product/:id" element={<ProductShow />} />
             </Routes>
             <Footer></Footer>

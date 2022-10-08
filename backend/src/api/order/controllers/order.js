@@ -36,7 +36,6 @@ const getShiprocketOptions = async (pinCode, weight) => {
     cod: 0,
     weight,
   };
-  console.log(params);
   return await axios
     .get(
       "https://apiv2.shiprocket.in/v1/external/courier/serviceability?" +
@@ -81,7 +80,37 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
     }));
     ctx.body = { order, cart };
   },
+  async getAll(ctx) {
+    if (!ctx.request.query?.email) return;
+    const orders = await strapi.db.query("api::order.order").findMany({
+      where: { userEmail: ctx.request.query.email },
+      orderBy: { createdAt: "DESC" },
+    });
+    if (orders === null) return;
+    let orderDets = [];
+    for await (const order of orders) {
+      let products = await strapi.db.query("api::product.product").findMany({
+        where: {
+          $or: Object.keys(order.items).map((id) => {
+            return { id };
+          }),
+        },
+        populate: {
+          images: true,
+        },
+      });
+      const cart = Object.keys(order.items).map((item) => ({
+        ...products.find((prod) => prod.id === parseInt(item)),
+        qty: order.items[item],
+      }));
 
+      orderDets.push({
+        order,
+        cart,
+      });
+    }
+    ctx.body = orderDets;
+  },
   async create(ctx) {
     let products = await strapi.db.query("api::product.product").findMany({
       where: {
@@ -91,17 +120,19 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
       },
     });
 
-    let totalPrice = Math.ceil(
-      products.reduce(
-        (prev, next) =>
-          prev +
-          Math.ceil(
+    let totalPrice = Number(
+      (
+        (products.reduce(
+          (prev, next) =>
+            prev +
             ctx.request.body.cart[next.id] *
               next.price *
-              (1 - next.discount / 100)
-          ),
-        0
-      ) * 1.18
+              (1 - next.discount / 100),
+          0
+        ) *
+          1.18) /
+        100
+      ).toFixed(2)
     );
 
     const totalWeight =
@@ -114,18 +145,20 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
       ctx.request.body.info.zipcode,
       totalWeight
     );
+
     const selectedShipOption =
       shipOptions.data.available_courier_companies.filter(
         (company) => company.id === ctx.request.body.shipping
       )[0];
+
     totalPrice += Math.ceil(selectedShipOption.rate);
 
     let userId = null;
     if (ctx.request.header.authorization) {
       try {
-        const user = await strapi.plugins[
-          "users-permissions"
-        ].services.jwt.getToken(ctx);
+        user = await strapi.plugins["users-permissions"].services.jwt.getToken(
+          ctx
+        );
         userId = user.id;
       } catch (err) {}
     }
@@ -136,74 +169,26 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         items: ctx.request.body.cart,
         isConfirmed: false,
         userId,
+        userEmail: ctx.request.body.info.email,
         userInfo: ctx.request.body.info,
-        amount: totalPrice,
-        shipping: Math.ceil(selectedShipOption.rate),
+        amount: Math.floor(totalPrice * 100),
+        shipping: Math.ceil(selectedShipOption.rate * 100),
       },
     });
+
     const options = {
-      amount: totalPrice * 100,
+      amount: Math.floor(totalPrice * 100),
       currency: "INR",
       receipt: entry.transactionId,
     };
 
     const createdOrder = await promisify(razorpay.orders.create)(options);
-    console.log(createdOrder);
     strapi.db.query("api::order.order").update({
       where: { id: entry.id },
       data: {
         orderId: createdOrder.id,
       },
     });
-    const user = ctx.request.body.info;
-    let shipres = await axios.post("https://apiv2.shiprocket.in/v1/external/orders/create/adhoc", {
-      order_id: entry.id,
-      order_date: new Date().toISOString().split("T")[0],
-      pickup_location: "Agra",
-      billing_customer_name: user.fName + " " + user.lName,
-      billing_city: user.city,
-      billing_state: user.state,
-      billing_country: user.country,
-      billing_email: user.email,
-      billing_phone: user.phnNo,
-      shipping_is_billing: true,
-      order_items: [
-        {
-          name: "Kunai",
-          sku: "chakra123",
-          units: 10,
-          selling_price: "900",
-          discount: "",
-          tax: "",
-          hsn: 441122,
-        },
-      ],
-      payment_method: "Prepaid",
-      shipping_charges: 0,
-      giftwrap_charges: 0,
-      transaction_charges: 0,
-      total_discount: 0,
-      sub_total: totalPrice,
-      length: products.reduce(
-        (prev, next) => prev + ctx.request.body.cart[next.id] * next.length,
-        0
-      ),
-      breadth: products.reduce(
-        (prev, next) => prev + ctx.request.body.cart[next.id] * next.breadth,
-        0
-      ),
-      height: products.reduce(
-        (prev, next) => prev + ctx.request.body.cart[next.id] * next.height,
-        0
-      ),
-      weight:
-        products.reduce(
-          (prev, next) => prev + ctx.request.body.cart[next.id] * next.weight,
-          0
-        ) / 1000,
-    });
-
-    console.log(shipres);
 
     ctx.body = createdOrder;
   },
@@ -222,12 +207,100 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
     console.log(hash);
     if (hash === ctx.request.body.razorpay_signature) {
       ctx.body = { error: false };
+      const order = await strapi.db
+        .query("api::order.order")
+        .findOne({ where: { orderId: ctx.request.body.razorpay_order_id } });
+      console.log(order);
+      let products = await strapi.db.query("api::product.product").findMany({
+        where: {
+          $or: Object.keys(order.items).map((id) => {
+            return { id };
+          }),
+        },
+      });
+      console.log(products);
+      const info = order.userInfo;
+      let shipres = await axios
+        .post(
+          "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc",
+          {
+            order_id: order.id.toString(),
+            order_date: new Date().toISOString().split("T")[0],
+            pickup_location: "Primary",
+            billing_customer_name: info.fName,
+            billing_last_name: info.lName,
+            billing_city: info.city,
+            billing_address: info.address,
+            billing_pincode: info.zipcode,
+            billing_state: info.state,
+            billing_country: info.country,
+            billing_email: info.email,
+            billing_phone: info.phnNo,
+            shipping_is_billing: true,
+            order_items: products.map((prod) => ({
+              sku: prod.id,
+              name: prod.name,
+              units: order.items[prod.id],
+              selling_price: (prod.price * 1.18) / 100,
+            })),
+            payment_method: "Prepaid",
+            shipping_charges: order.shipping / 100,
+            giftwrap_charges: 0,
+            transaction_charges: 0,
+            total_discount: 0,
+            sub_total: order.amount / 100,
+            length: products.reduce(
+              (prev, next) => prev + order.items[next.id] * next.length,
+              0
+            ),
+            breadth: products.reduce(
+              (prev, next) => prev + order.items[next.id] * next.breadth,
+              0
+            ),
+            height: products.reduce(
+              (prev, next) => prev + order.items[next.id] * next.height,
+              0
+            ),
+            weight:
+              products.reduce(
+                (prev, next) => prev + order.items[next.id] * next.weight,
+                0
+              ) / 1000,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${await getShiprocketToken()}`,
+            },
+          }
+        )
+        .catch((e) => {
+          console.log(JSON.stringify(e.response.data, null, 2));
+          throw "nigga";
+        });
       strapi.db.query("api::order.order").update({
         where: { orderId: ctx.request.body.razorpay_order_id },
         data: {
           isConfirmed: true,
+          shipmentId: shipres.data.order_id,
         },
       });
+      console.log(JSON.stringify(shipres.data, null, 2));
+      await strapi
+        .plugin("email")
+        .service("email")
+        .send({
+          to: info.email,
+          from: "admin@craftworxagra.co.in",
+          subject: "Order Successfully Placed at CratworxAgra",
+          text: "hello you have ordered the the",
+          html: "<b>hi<b> is this working",
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     } else {
       ctx.body = { error: true };
     }
@@ -240,5 +313,25 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
     );
 
     ctx.body = res;
+  },
+
+  async invoice(ctx) {
+    const res = await axios
+      .post(
+        "https://apiv2.shiprocket.in/v1/external/orders/print/invoice",
+        {
+          ids: [ctx.request.body.id],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${await getShiprocketToken()}`,
+          },
+        }
+      )
+      .catch((e) => {
+        console.log(e);
+        throw "nigga";
+      });
+    ctx.body = { invoice: res.data.invoice_url };
   },
 }));

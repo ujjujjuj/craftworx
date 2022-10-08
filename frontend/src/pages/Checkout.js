@@ -10,6 +10,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchOrder, initRazorPay, confirmOrder } from "../api/checkout";
 import CheckoutForm from "../components/checkoutForm";
 import ShipOption from "../components/shipOption";
+import { SavedAddress } from "../components/SavedAddress";
+import { updateAddr } from "../app/authSlice";
+import updateUserDb from "../api/update";
 
 const Checkout = () => {
     const cart = useSelector((state) => state.cartState);
@@ -44,6 +47,7 @@ const Checkout = () => {
         label: "",
     });
 
+
     const successCallback = async (resp, order) => {
         setTransactionModal({
             visible: true,
@@ -53,12 +57,18 @@ const Checkout = () => {
         let confirm = await confirmOrder(resp);
         if (!confirm.error) {
             dispatch(emptyCart());
-            navigate("/success", {
-                state: {
-                    id: order.id,
-                },
-                replace: true,
-            });
+            if (user?.user?.isLoggedIn) {
+                navigate("/success", {
+                    state: {
+                        id: order.id,
+                    },
+                    replace: true,
+                });
+            } else {
+                navigate(`/order?id=${order.id}`, {
+                    replace: true
+                })
+            }
         } else {
             setTransactionModal({
                 visible: true,
@@ -81,7 +91,6 @@ const Checkout = () => {
     };
 
     const createOrder = async () => {
-        console.log(user, userPayInfo, checkoutCart, shippingOptions);
         setPlaceText("Processing..");
         let order = await fetchOrder(user, userPayInfo, checkoutCart, shippingOptions);
         if (order) {
@@ -99,7 +108,7 @@ const Checkout = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (Object.entries(cart.items).length === 0) {
+        if (Object.entries(cart.items).length === 0 && processState === "") {
             navigate("/shop");
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,7 +117,7 @@ const Checkout = () => {
     useEffect(() => {
         const amount = Object.values(cart.items).reduce(
             (a, b) => ({
-                price: a.price + Math.ceil(b.price - (b.discount * b.price) / 100).toFixed(2) * b.quantity,
+                price: a.price + (b.price - (b.discount * b.price) / 100) * b.quantity,
             }),
             {
                 price: 0,
@@ -116,7 +125,7 @@ const Checkout = () => {
                 discount: 0,
             }
         ).price;
-        const tax = Math.ceil((amount * 18) / 100);
+        const tax = ((amount * 18) / 100);
         setPrices({ amount, tax });
     }, [cart]);
 
@@ -144,9 +153,23 @@ const Checkout = () => {
     };
 
     const startShipProcess = () => {
+        if (processState === "auth") {
+            setProcessState("authWA")
+        }
         document.querySelector(`.${styles1.addressFormWrap}`).classList.add(styles1.hide);
         document.querySelector(`.${styles1.shippingTo}`).classList.remove(styles1.hide);
         document.querySelector(`.${styles1.shipPartner}`).classList.remove(styles1.hide);
+        let { email, phnNo, ...addressInfo } = userPayInfo;
+        if (!user?.user?.address?.data?.find((elem) => elem.fName === addressInfo.fName && elem.lName === addressInfo.lName) && user?.user?.isLoggedIn) {
+            let prevAddrs = structuredClone(user.user.address)
+            if (!prevAddrs || !prevAddrs.data)
+                prevAddrs = {
+                    data: []
+                }
+            prevAddrs.data = [...prevAddrs.data, addressInfo]
+            dispatch(updateAddr(prevAddrs))
+            updateUserDb({ address: prevAddrs }, user.jwt, user.user.id)
+        }
         let [interval, loadElem] = loadShipStatus();
         loadElem.classList.remove(styles1.error);
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/getShipOptions`, {
@@ -162,7 +185,6 @@ const Checkout = () => {
             .then((res) => res.json())
             .then((data) => {
                 clearInterval(interval);
-                console.log(data);
                 if (!data.error && ![404, 422].includes(data.status)) {
                     loadElem.classList.add(styles1.hidden);
                     setShipOptions((shipOptions) => ({
@@ -212,6 +234,11 @@ const Checkout = () => {
             email: "",
         });
     };
+
+    const updateStateLoc = (state) => {
+        setStates(state);
+    }
+
 
     return (
         <>
@@ -285,24 +312,27 @@ const Checkout = () => {
                     ) : (
                         <></>
                     )}
-                    {processState === "unAuth" || processState === "auth" ? (
+                    {(processState !== "initUnAuth") ? (
                         <>
-                            <div className={styles1.addressFormWrap}>
-                                <h3>Where &amp; who to ship to?</h3>
-                                <CheckoutForm
-                                    startShipProcess={startShipProcess}
-                                    setStates={setStates}
-                                    userPayInfo={userPayInfo}
-                                    setUserPayInfo={setUserPayInfo}
-                                    states={states}
-                                ></CheckoutForm>
-                                <div className={styles1.endForm}>
-                                    <p onClick={emptyForm}>Clear</p>
-                                    <button className={styles1.button} type="submit" form="address-form">
-                                        Continue
-                                    </button>
+                            {(processState === "auth" && user.user?.address?.data?.length) ?
+                                <SavedAddress setState={setProcessState} setAddr={setUserPayInfo} />
+                                : <></>}
+                            {(processState === "unAuth" || processState === "authWA" || !(user.user?.address?.data?.length)) ?
+                                <div className={styles1.addressFormWrap}>
+                                    <h3>Where &amp; who to ship to?
+                                        {processState === "authWA" ?
+                                            <span onClick={() => { setProcessState("auth"); }}>Go Back</span> : <></>}
+                                    </h3>
+                                    <CheckoutForm startShipProcess={startShipProcess} setStates={updateStateLoc} userPayInfo={userPayInfo} setUserPayInfo={setUserPayInfo} states={states}>
+                                    </CheckoutForm>
+                                    <div className={styles1.endForm}>
+                                        <p onClick={emptyForm}>Clear</p>
+                                        <button className={styles1.button} type="submit" form="address-form">
+                                            Continue
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                                : <></>}
                             <div className={classnames(styles1.shippingTo, styles1.hide)}>
                                 <h3>Shipping to</h3>
                                 <div className={styles1.flex}>
@@ -315,22 +345,19 @@ const Checkout = () => {
                                         <br />
                                         {userPayInfo.country}
                                     </p>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                        }}
-                                    >
+                                    <div style={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                    }} >
                                         <img src="/images/edit_icon.svg" alt="edit icon" />
-                                        <p
-                                            style={{
-                                                color: "#54605F",
-                                                textDecoration: "underline",
-                                                marginLeft: 8,
-                                                fontWeight: "500",
-                                                cursor: "pointer",
-                                            }}
+                                        <p style={{
+                                            color: "#54605F",
+                                            textDecoration: "underline",
+                                            marginLeft: 8,
+                                            fontWeight: "500",
+                                            cursor: "pointer",
+                                        }}
                                             onClick={() => {
                                                 setShipOptions({
                                                     currentSelected: -1,
@@ -353,7 +380,6 @@ const Checkout = () => {
                                     </div>
                                 </div>
                             </div>
-
                             <div className={classnames(styles1.shipPartner, styles1.hide)}>
                                 <h3 className={classnames(styles1.shipLoadStatus, styles1.hidden)}>
                                     Getting Shipping Options
@@ -381,7 +407,8 @@ const Checkout = () => {
                             </div>
                         </>
                     ) : (
-                        <></>
+                        <>
+                        </>
                     )}
                 </section>
                 <section className={styles1.rightSec}>
@@ -407,11 +434,11 @@ const Checkout = () => {
                         <hr />
                         <div className={styles.row}>
                             <p>Subtotal</p>
-                            <p>₹{prices.amount.toFixed(2)}</p>
+                            <p>₹{(prices.amount / 100).toFixed(2)}</p>
                         </div>
                         <div className={styles.row}>
-                            <p>Tax</p>
-                            <p>₹{prices.tax.toFixed(2)}</p>
+                            <p>Tax (GST)</p>
+                            <p>₹{(prices.tax / 100).toFixed(2)}</p>
                         </div>
                         {shippingCost > 0 ? (
                             <>
@@ -421,7 +448,7 @@ const Checkout = () => {
                                 </div>
                                 <div className={classnames(styles.row, styles.total)}>
                                     <p>Total</p>
-                                    <p>₹{(prices.amount + prices.tax + shippingCost).toFixed(2)}</p>
+                                    <p>₹{((prices.amount + prices.tax) / 100 + shippingCost).toFixed(2)}</p>
                                 </div>
                             </>
                         ) : (
@@ -432,7 +459,7 @@ const Checkout = () => {
                                 </div>
                                 <div className={classnames(styles.row, styles.total)}>
                                     <p>Estimated Total</p>
-                                    <p>₹{(prices.amount + prices.tax).toFixed(2)}</p>
+                                    <p>₹{((prices.amount + prices.tax) / 100).toFixed(2)}</p>
                                 </div>
                             </>
                         )}

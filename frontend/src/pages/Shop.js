@@ -3,6 +3,7 @@ import Product from "./Product";
 import classnames from "classnames";
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const dropdownOptions = [
     {
@@ -29,7 +30,7 @@ const dropdownOptions = [
     },
 ];
 
-const categories = ["All", "Gifts", "Trousseau", "Festive Occasion"];
+const categories = ["All", "MDF Boards/Boxes", "Pinewood", "Tissue Box"];
 
 const Shop = () => {
     const [init, setInit] = useState(true);
@@ -55,9 +56,6 @@ const Shop = () => {
                 applyFilters();
                 setInit(false);
             });
-
-        // products.current = productsTemp;
-        // setFilteredProducts(products.current);
     }, []);
 
     useEffect(() => {
@@ -81,6 +79,9 @@ const Shop = () => {
 
     return (
         <>
+            <Helmet>
+                <title>Craftworx | Shop</title>
+            </Helmet>
             <div className={styles.main}>
                 <div className={styles.header}>
                     <div className={styles.searchBox}>
