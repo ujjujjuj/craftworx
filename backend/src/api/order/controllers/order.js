@@ -277,15 +277,16 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           console.log(JSON.stringify(e.response.data, null, 2));
           throw "nigga";
         });
-      strapi.db.query("api::order.order").update({
+      await strapi.db.query("api::order.order").update({
         where: { orderId: ctx.request.body.razorpay_order_id },
         data: {
           isConfirmed: true,
-          shipmentId: shipres.data.order_id,
+          shiprockeId: shipres.data.order_id,
+          shipmentId: shipres.data.shipment_id,
         },
       });
       console.log(JSON.stringify(shipres.data, null, 2));
-      await strapi
+      strapi
         .plugin("email")
         .service("email")
         .send({
@@ -304,6 +305,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
     } else {
       ctx.body = { error: true };
     }
+    console.log(await getShiprocketToken());
   },
 
   async getShipOptions(ctx) {

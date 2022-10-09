@@ -39,7 +39,10 @@
     "userEmail": {
       "type": "email"
     },
-    "shipmentId": {
+    "shiprocketId": {
+      "type": "uid"
+    },
+    "shippingId": {
       "type": "uid"
     }
   }
