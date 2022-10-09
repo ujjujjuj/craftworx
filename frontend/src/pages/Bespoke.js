@@ -9,8 +9,14 @@ const Bespoke = () => {
         email: "",
         desc: ""
     })
+    const [imgLoaded, setImgLoaded] = useState(false);
     useEffect(() => {
         window.scrollTo(0, 0);
+        const img = new Image();
+        img.src = "https://api.craftworxagra.co.in/uploads/custom_78e6bd0819.jpeg"
+        img.onload = () => {
+            setImgLoaded(true)
+        }
     }, []);
     return (
         <>
@@ -18,7 +24,7 @@ const Bespoke = () => {
                 <title>Craftworx | Bespoke</title>
             </Helmet>
             <div className={classNames(styles.aboutHead, styles.formAbout)}>
-                <div className={classNames(styles.aboutImg, styles.bespoke)}></div>
+                <div className={classNames(styles.aboutImg, imgLoaded ? styles.bespoke : styles.shimmer)}></div>
                 <div className={styles.aboutContent}>
                     <h3>Customised handmade products specifically for you.</h3>
                     <p>We create customised handmade products for our customers on special request. Tell us what you want and we will deliver it to you right away. Whatever event it is, we know how to make it exceptional.</p>

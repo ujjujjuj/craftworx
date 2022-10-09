@@ -131,20 +131,23 @@
 }
 
 .aboutImg.corporate {
-    background-image: url('../images/corporate.png');
+    opacity: 1;
+    background-image: url('https://api.craftworxagra.co.in/uploads/corporate_47c15ad976.png');
     background-position: center;
     height: auto;
 
 }
 
 .aboutImg.bespoke {
-    background-image: url('../images/custom.jpeg');
+    opacity: 1;
+    background-image: url('https://api.craftworxagra.co.in/uploads/custom_78e6bd0819.jpeg');
     background-position: top center;
     height: auto;
 }
 
 .aboutImg.aboutHeroImg {
-    background-image: url('../images/aboutUs.png');
+    opacity: 1;
+    background-image: url('https://api.craftworxagra.co.in/uploads/about_Us_59822b8772.png');
     background-position: -20px 40px;
 }
 
@@ -316,6 +319,25 @@ textarea:focus {
     flex: 1 5 60%;
 }
 
+
+.shimmer {
+    animation: shimmer 2s infinite;
+    background: linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);
+    background-size: 1000px 100%;
+}
+
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+
 @media screen and (max-width:1150px) {
 
     .aboutHead.mainAbout {
@@ -358,25 +380,25 @@ textarea:focus {
         opacity: 0.3;
     }
 
-    .founderSec{
+    .founderSec {
         flex-direction: column-reverse;
         padding: 0;
     }
 
-    .founderSec h3{
+    .founderSec h3 {
         font-size: 1.7em;
     }
 
-    .founderContent{
+    .founderContent {
         padding: 50px 100px;
     }
 
-    .founderSec>div{
+    .founderSec>div {
         width: auto;
         margin: 0;
     }
 
-    .founderSec .founderImg{
+    .founderSec .founderImg {
         width: 100%;
         border-radius: 0;
         height: 320px;
@@ -416,7 +438,8 @@ textarea:focus {
         padding: 100px 50px;
         position: relative;
     }
-    .founderContent{
+
+    .founderContent {
         padding-inline: 50px;
     }
 }
@@ -472,7 +495,8 @@ textarea:focus {
     .uniqueSec {
         padding-inline: 30px;
     }
-    .founderContent{
+
+    .founderContent {
         padding-inline: 30px;
     }
 }
