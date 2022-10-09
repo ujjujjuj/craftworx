@@ -7,6 +7,7 @@
     width: 100%;
     height: 100%;
 }
+
 .dot {
     width: 50px;
     height: 50px;
@@ -14,6 +15,7 @@
     background: url("../images/Square leaf.png");
     background-size: 100% 100%;
 }
+
 .dot1 {
     width: 70px;
     height: 70px;
@@ -21,6 +23,7 @@
     background: url("../images/Square leaf.png");
     background-size: 100% 100%;
 }
+
 .dot2 {
     width: 60px;
     height: 60px;
@@ -29,79 +32,92 @@
     background-size: 100% 100%;
 }
 
-.thanks{
+.thanks {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top:110px;
+    padding-top: 110px;
     padding-bottom: 57px;
 }
-.thanks h1{
+
+.thanks h1 {
     font-family: "Sacramento";
     font-size: 3.3rem;
     font-weight: 400;
     margin-top: 20px;
 }
-.orderDet{
+
+.orderDet {
     background-color: white;
     padding: 60px 100px;
 }
-.orderDet .orderHead{
+
+.orderDet .orderHead {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
 }
-.orderDet .orderHead p{
+
+.orderDet .orderHead p {
     font-weight: 500;
     font-size: 1.35em;
 }
-.orderDet .orderHead a{
+
+.orderDet .orderHead a {
     font-weight: 400;
     font-size: 1.05em;
 }
-.orderDet .orderItems{
+
+.orderDet .orderItems {
     display: flex;
     flex-direction: column;
     width: 50%;
     gap: 20px;
 
 }
-.orderDetWrap{
+
+.orderDetWrap {
     padding: 20px 0;
     display: flex;
     justify-content: space-between;
 }
-.orderDet .orderSummary{
+
+.orderDet .orderSummary {
     display: flex;
     flex-direction: column;
     width: 27%;
     align-self: flex-end;
 }
 
-.orderSummary .orderSmRow{
+.orderSummary .orderSmRow {
     display: flex;
     padding: 9px 0;
     justify-content: space-between;
     font-size: 0.9em;
 }
-.orderSummary .orderSmRow.tot{
+
+.orderSummary .orderSmRow.tot {
     font-size: 1.1em;
     font-weight: 500;
 }
-.orderSummary .orderSmRow :nth-last-child(1){
+
+.orderSummary .orderSmRow :nth-last-child(1) {
     font-weight: 500;
 }
-.orderAdrWrp{
+
+.orderAdrWrp {
     display: flex;
     margin-top: 30px;
     justify-content: space-between;
 }
-.orderAdrWrp .orderAdr>p{
+
+.orderAdrWrp .orderAdr>p {
     font-weight: 500;
     margin-bottom: 7px;
     font-size: 1.1em;
 }
-.orderAdrWrp .trckOrd{
+
+.orderAdrWrp .trckOrd {
     background-color: #54605F;
     padding: 10.5px 55px;
     height: fit-content;
@@ -114,7 +130,22 @@
     text-align: center;
     color: white;
 }
-.orderAdrWrp .trckOrd:hover{
+
+.orderAdrWrp .trckOrd:hover {
     color: #54605F;
     background-color: white;
+}
+
+.date {
+    margin-top: 6px;
+    margin-bottom: 2px;
+}
+
+.invoice a {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    width: fit-content;
+    color: #54605F;
+    margin-top: 12px;
 }

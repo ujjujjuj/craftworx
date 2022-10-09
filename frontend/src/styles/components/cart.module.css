@@ -228,6 +228,11 @@ hr{
     justify-content: space-between;
 }
 
+
+.cartItem.isSm{
+    padding-left: 5px;
+}
+
 .cart .row.total{
     font-size: 1.1em;
     font-weight: 500;

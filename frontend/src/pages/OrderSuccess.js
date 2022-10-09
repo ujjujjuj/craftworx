@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet";
 import { ThreeDots } from "react-loader-spinner";
 
 const OrderSuccess = () => {
-    const [found, setFound] = useState(false);
+    const [found, setFound] = useState(true);
     const { state } = useLocation();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -79,12 +79,29 @@ const OrderSuccess = () => {
         }
     }, [state, searchParams]);
 
+    const getInvoice = async () => {
+        let req = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/invoice`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id: order.id
+            }),
+        });
+        let res = await req.json()
+        console.log(res)
+
+
+    }
+
     const getOrderData = (id) => {
         if (id) {
             fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/get?id=${id}`)
                 .then((res) => res.json())
                 .then((data) => {
                     if (!(data?.error)) {
+                        console.log(data)
                         setProducts(data.cart)
                         setOrder(data.order)
                         let total = data.order.amount / 100
@@ -106,10 +123,6 @@ const OrderSuccess = () => {
         }
     };
 
-    useEffect(() => {
-        console.log(products)
-    }, [products])
-
     return (
         <>
             <Helmet>
@@ -128,6 +141,8 @@ const OrderSuccess = () => {
                                 <p>Your order was recieved</p>
                                 <a href="/shop">Back to shop</a>
                             </div>
+                            <p className={styles.date}>{new Date(order.createdAt).toLocaleString("en", { year: "numeric", month: "long", day: "numeric" })}</p>
+                            <p><strong style={{ fontWeight: "500" }}>Order ID: </strong>{order.orderId}</p>
                             <div className={styles.orderDetWrap}>
                                 <div className={styles.orderItems}>
                                     {
@@ -164,6 +179,11 @@ const OrderSuccess = () => {
                                         {order.userInfo?.city}, {order.userInfo?.state} - {order.userInfo?.zipcode}
                                         <br />
                                         {order.userInfo?.country}
+                                    </div>
+                                    <div className={styles.invoice}>
+                                        <a href={""} target={"_blank"} rel="noreferrer" onClick={getInvoice}>
+                                            <i className="fa-regular fa-file-lines"></i> <p>View Invoice</p>
+                                        </a>
                                     </div>
                                 </div>
                                 <div className={styles.trckOrd}>Track Order</div>

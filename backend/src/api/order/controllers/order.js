@@ -29,6 +29,90 @@ const getShiprocketToken = (() => {
   return () => shipRocketToken;
 })();
 
+
+const getEmailHtml = (user, order, products) => {
+
+  let items = ``
+  products.map((prod, index) => {
+    items += `
+       <tr>
+          <td>
+              <img src="https://api.craftworxagra.co.in/${prod.images[0].url}" style="width: 90px; height:90px; object-fit: cover;border-radius: 7px;"/>
+          </td>
+          <td style="width: 20px;"></td>
+          <td>
+              <p style="font-weight: 500; font-family: 'Poppins','Google Sans',Roboto,sans-serif; font-size: 16px;">${prod.name}&nbsp;<small style="color: black; opacity: 0.5;">x${order.items[prod.id]}</small>
+              </p>
+          </td>
+      </tr>
+  `
+  })
+
+  return `
+    <div style="font-family: 'Poppins','Google Sans',Roboto,sans-serif; margin:auto; width:fit-content;">
+                <img src="https://api.craftworxagra.co.in/uploads/CW_fe2ddada44.png" style="margin-top: 15px;" width="35"/>
+                <h1 style="color: #54605F;  font-weight: 600; font-size: 24px; margin-top: 30px;">Thanks for shopping, ${user.fName}!</h1>
+                <p style="color: black; font-size: 18px; font-weight: 500; margin-bottom: 0;">Your order was recieved</p>
+                <p style="color: black; font-size: 15px; margin-bottom: 0; margin-top: 18px;">${new Date(order.createdAt).toLocaleString("en", { year: "numeric", month: "long", day: "numeric" })}</p>
+                <p style="color: black; font-size: 15px; margin-top: 5px; margin-bottom: 0;">
+                    <strong style="font-weight: 500;">Order ID:</strong>
+                    ${order.orderId}
+                </p>
+                <table class="orders" style="border-spacing:0 10px; margin-top: 10px;">
+                    `+ items + `
+                </table>
+                <p style="font-weight: 500; margin-bottom: 0; margin-top: 18px; font-family: 'Poppins','Google Sans',Roboto,sans-serif; font-size: 16px;">Your order is shipping here:</p>
+                <p style="margin-top: 10px; font-family: 'Poppins','Google Sans',Roboto,sans-serif; font-size: 16px; margin-bottom: 10px;">
+                ${user.fName} ${user.lName}
+                <br />
+                ${user.address}
+                <br />
+                ${user.city}, ${user.state} - ${user.zipcode}
+                <br />
+                ${user.country}
+                </p>
+                <table style="border-spacing: 0px 15px; font-size: 16px;">
+                    <tbody>
+                        <tr>
+                            <td style="font-family: 'Poppins','Google Sans',Roboto,sans-serif;">Subtotal (tax inclusive)</td>
+                            <td style="width: 40px;"></td>
+                            <td style="text-align: right; font-weight: 500; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">₹ ${(order.amount - order.shipping) / 100}</td>
+                        </tr>
+                        <tr>
+                            <td>Shipping</td>
+                            <td></td>
+                            <td style="text-align: right; font-weight: 500; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">₹ ${(order.shipping) / 100}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left; font-weight: 600; font-size: 1.1rem; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">Total</th>
+                            <td></td>
+                            <td style="font-size: 1.1rem; text-align: right; font-weight: 600; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">₹ ${(order.amount) / 100}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table>
+                    <tr>
+                        <td>
+                            <a href="https://craftworxagra.co.in/order?id=${order.orderId}" target="_blank" style="text-decoration: none;">
+                                <div style="background:#54605F; padding: 10px 33px; font-size: 0.9rem; color: white; margin-top: 10px; border-radius: 8px; border: 2px solid #54605F; font-family: 'Poppins','Google Sans',Roboto,sans-serif; ">View Order</div>
+                            </a>
+                        </td>
+                        <td style="width: 10px;"></td>
+                        <td>
+                            <a href="https://craftworxagra.co.in/shop" target="_blank" style="text-decoration: none;">
+                                <div style="background:white; padding: 10px 33px; font-size: 0.9rem; color: #54605F; border: 2px solid #54605F; margin-top: 10px; border-radius: 8px; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">Shop More</div>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                <small style="margin: 40px 0; display: block; font-size:14px;">
+                    Craftworx Agra ©2022 All Right Reserved
+                </small>
+            </div>
+    `
+}
+
+
 const getShiprocketOptions = async (pinCode, weight) => {
   let params = {
     pickup_postcode: "282005",
@@ -39,7 +123,7 @@ const getShiprocketOptions = async (pinCode, weight) => {
   return await axios
     .get(
       "https://apiv2.shiprocket.in/v1/external/courier/serviceability?" +
-        new URLSearchParams(params),
+      new URLSearchParams(params),
       {
         headers: {
           Authorization: `Bearer ${await getShiprocketToken()}`,
@@ -126,8 +210,8 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           (prev, next) =>
             prev +
             ctx.request.body.cart[next.id] *
-              next.price *
-              (1 - next.discount / 100),
+            next.price *
+            (1 - next.discount / 100),
           0
         ) *
           1.18) /
@@ -160,7 +244,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           ctx
         );
         userId = user.id;
-      } catch (err) {}
+      } catch (err) { }
     }
 
     const entry = await strapi.db.query("api::order.order").create({
@@ -199,26 +283,24 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
       .createHmac("sha256", process.env.RAZORPAY_SECRET)
       .update(
         ctx.request.body.razorpay_order_id +
-          "|" +
-          ctx.request.body.razorpay_payment_id
+        "|" +
+        ctx.request.body.razorpay_payment_id
       )
       .digest("hex");
 
     console.log(hash);
     if (hash === ctx.request.body.razorpay_signature) {
-      ctx.body = { error: false };
       const order = await strapi.db
         .query("api::order.order")
         .findOne({ where: { orderId: ctx.request.body.razorpay_order_id } });
-      console.log(order);
       let products = await strapi.db.query("api::product.product").findMany({
         where: {
           $or: Object.keys(order.items).map((id) => {
             return { id };
           }),
         },
+        populate: true
       });
-      console.log(products);
       const info = order.userInfo;
       let shipres = await axios
         .post(
@@ -241,14 +323,14 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
               sku: prod.id,
               name: prod.name,
               units: order.items[prod.id],
-              selling_price: (prod.price * 1.18) / 100,
+              selling_price: (prod.price * (1 - (prod.discount ?? 0) / 100) * 1.18) / 100,
             })),
             payment_method: "Prepaid",
             shipping_charges: order.shipping / 100,
             giftwrap_charges: 0,
             transaction_charges: 0,
             total_discount: 0,
-            sub_total: order.amount / 100,
+            sub_total: (order.amount - order.shipping) / 100,
             length: products.reduce(
               (prev, next) => prev + order.items[next.id] * next.length,
               0
@@ -285,7 +367,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           shipmentId: shipres.data.shipment_id,
         },
       });
-      console.log(JSON.stringify(shipres.data, null, 2));
+      ctx.body = { error: false };
       strapi
         .plugin("email")
         .service("email")
@@ -293,8 +375,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           to: info.email,
           from: "admin@craftworxagra.co.in",
           subject: "Order Successfully Placed at CratworxAgra",
-          text: "hello you have ordered the the",
-          html: "<b>hi<b> is this working",
+          html: getEmailHtml(info, order, products),
         })
         .then((res) => {
           console.log(res);
@@ -313,7 +394,6 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
       ctx.request.body.delivery_postcode,
       ctx.request.body.weight / 1000
     );
-
     ctx.body = res;
   },
 

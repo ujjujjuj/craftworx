@@ -26,6 +26,8 @@ import OrderSuccess from "./pages/OrderSuccess";
 import User from "./pages/User";
 import { Profile } from "./components/Profile";
 import { Orders } from "./components/Orders";
+import { Reset } from "./pages/Reset";
+import { NewPass } from "./pages/NewPass";
 
 const App = () => {
     return (
@@ -51,6 +53,8 @@ const App = () => {
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/contact" element={<ContactUs />} />
                 <Route path="/order" element={<OrderSuccess />} />
+                <Route path="/reset" element={<Reset />} />
+                <Route path="/resetCallback" element={<NewPass />} />
                 <Route path="/user" element={<User />} >
                     <Route index element={<Navigate replace to="profile" />} />
                     <Route path="profile" element={<Profile />} />
