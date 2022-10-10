@@ -56,13 +56,21 @@ const About = () => {
         }
     };
 
+    const [imgLoaded, setImgLoaded] = useState(false);
+
     useEffect(() => {
         document.title = "Craftworx | Contact Us"
         window.scrollTo(0, 0);
+        const img = new Image();
+        img.src = "../images/aboutUs.png"
+        img.onload = () => {
+            setImgLoaded(true)
+        }
         if (!isAnim) {
             init()
             setIsAnim(true)
         }
+
     }, []);
 
     return (
@@ -83,7 +91,7 @@ const About = () => {
                             <i className="fas fa-chevron-down"></i>
                         </div>
                     </div>
-                    <div className={classNames(styles.aboutImg, styles.aboutHeroImg)}></div>
+                    <div className={classNames(styles.aboutImg, imgLoaded ? styles.aboutHeroImg : styles.shimmer)}></div>
                 </section>
                 <section className={styles.ourVision} ref={visionRef}>
                     <div className={styles.container} id="container"></div>

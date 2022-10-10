@@ -57,7 +57,7 @@ const Checkout = () => {
         let confirm = await confirmOrder(resp);
         if (!confirm.error) {
             dispatch(emptyCart());
-            if (user?.user?.isLoggedIn) {
+            if (user?.isLoggedIn) {
                 navigate("/success", {
                     state: {
                         id: order.id,
@@ -160,7 +160,7 @@ const Checkout = () => {
         document.querySelector(`.${styles1.shippingTo}`).classList.remove(styles1.hide);
         document.querySelector(`.${styles1.shipPartner}`).classList.remove(styles1.hide);
         let { email, phnNo, ...addressInfo } = userPayInfo;
-        if (!user?.user?.address?.data?.find((elem) => elem.fName === addressInfo.fName && elem.lName === addressInfo.lName) && user?.user?.isLoggedIn) {
+        if (!user?.user?.address?.data?.find((elem) => elem.fName === addressInfo.fName && elem.lName === addressInfo.lName) && user?.isLoggedIn) {
             let prevAddrs = structuredClone(user.user.address)
             if (!prevAddrs || !prevAddrs.data)
                 prevAddrs = {

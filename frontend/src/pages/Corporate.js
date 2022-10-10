@@ -10,13 +10,18 @@ const Corporate = () => {
         email: "",
         desc: ""
     })
+    const [imgLoaded, setImgLoaded] = useState(false);
     useEffect(() => {
         window.scrollTo(0, 0);
+        const img = new Image();
+        img.src = "https://api.craftworxagra.co.in/uploads/corporate_47c15ad976.png"
+        img.onload = () => {
+            setImgLoaded(true)
+        }
     }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
     }
 
     return (
@@ -25,7 +30,7 @@ const Corporate = () => {
                 <title>Craftworx | Corporate</title>
             </Helmet>
             <div className={classNames(styles.aboutHead, styles.formAbout)}>
-                <div className={classNames(styles.aboutImg, styles.corporate)} ></div>
+                <div className={classNames(styles.aboutImg, imgLoaded ? styles.corporate : styles.shimmer)} ></div>
                 <div className={styles.aboutContent} >
                     <h3>Want something special and handmade for your business?</h3>
                     <p>We offer customised handmade products and services for businesses on special request. Tell us what you want and we will get back to you right away. We take customisation to a whole other level.</p>

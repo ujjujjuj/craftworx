@@ -3,6 +3,7 @@ import styles from "../styles/components/cart.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCartItem, getCartSize, setCartItem, toggleCart } from "../app/cartSlice";
 import { useEffect } from "react";
+import classNames from "classnames";
 
 const CartItem = ({ product, checkoutModalState, isSm }) => {
     // const { setCartItem, deleteCartItem, cart, toggleCart,getCartSize } = useCart();
@@ -14,7 +15,7 @@ const CartItem = ({ product, checkoutModalState, isSm }) => {
     let productFinalAmt = (product.price - ((product.discount ?? 0) * product.price) / 100);
     return (
         <>
-            <div className={styles.cartItem}>
+            <div className={classNames(styles.cartItem, isSm ? styles.isSm : "")} >
                 <div
                     className={styles.cartImg}
                     onClick={(e) => {

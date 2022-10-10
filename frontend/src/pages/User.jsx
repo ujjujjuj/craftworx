@@ -109,6 +109,10 @@ const User = () => {
     }, [pathname])
 
     useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
+    useEffect(() => {
         if (!user.isLoggedIn) {
             navigate("/login")
         }

@@ -23,7 +23,7 @@ const Home = () => {
         gsap.set(`${styles.container}`, { perspective: 600 });
         gsap.set("img", { xPercent: "-50%", yPercent: "-50%" });
 
-        let total = 13, i;
+        let total = 9, i;
         let container = document.getElementById("container"), w = window.innerWidth, h = window.innerHeight;
 
         for (i = 0; i < total; i++) {
@@ -33,7 +33,7 @@ const Home = () => {
             animm(Div);
         }
 
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < 3; i++) {
             let Div = document.createElement('div');
             gsap.set(Div, { attr: { class: `${styles.fl1}` }, x: R(w * 0.4, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
@@ -72,7 +72,7 @@ const Home = () => {
         gsap.set(`${styles.container}`, { perspective: 600 });
         gsap.set("img", { xPercent: "-50%", yPercent: "-50%" });
 
-        let total = 4, i;
+        let total = 3, i;
         let container = document.getElementById("container"), w = window.innerWidth, h = window.innerHeight;
 
         for (i = 0; i < total; i++) {
@@ -88,31 +88,32 @@ const Home = () => {
             animm(Div);
         }
 
-        for (i = 0; i < 2; i++) {
+        for (i = 0; i < 1; i++) {
             let Div = document.createElement('div');
             gsap.set(Div, { attr: { class: `${styles.fl4}` }, x: R(0, w * 0.1), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
-        for (i = 0; i < 2; i++) {
+        for (i = 0; i < 1; i++) {
             let Div = document.createElement('div');
             gsap.set(Div, { attr: { class: `${styles.fl4}` }, x: R(w * 0.7, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
 
-        for (i = 0; i < 2; i++) {
+        for (i = 0; i < 1; i++) {
             let Div = document.createElement('div');
             gsap.set(Div, { attr: { class: `${styles.fl3}` }, x: R(0, w * 0.1), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
-        for (i = 0; i < 2; i++) {
+        for (i = 0; i < 1; i++) {
             let Div = document.createElement('div');
             gsap.set(Div, { attr: { class: `${styles.fl3}` }, x: R(w * 0.7, w), y: R(-200, -150), z: R(-200, 200) });
             container.appendChild(Div);
             animm(Div);
         }
+
         function animm(elm) {
             gsap.to(elm, R(20, 30), { y: h + 100, ease: Linear.easeNone, repeat: -1, delay: -15 });
             gsap.to(elm, R(4, 8), {

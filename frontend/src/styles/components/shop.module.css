@@ -1,45 +1,47 @@
-body{
+body {
     background-color: unset;
 }
 
-.main{
+.main {
     margin-top: 90px;
     padding: 0 100px;
 }
 
-.header{
+.header {
     display: flex;
     align-items: flex-start;
 }
 
-.filter{
+.filter {
     display: flex;
     align-items: center;
     padding: 20px 0;
 }
 
-.filter p{
+.filter p {
     cursor: pointer;
     transition: color 0.2s ease;
     margin-right: 20px;
     position: relative;
 }
-.filter p:nth-last-child(1){
+
+.filter p:nth-last-child(1) {
     margin-right: 0;
 }
 
-.filter p:hover{
+.filter p:hover {
     color: #E19EAC;
 }
 
-.filter p.active{
+.filter p.active {
     color: #E19EAC;
 }
-.filter p::after{
+
+.filter p::after {
     content: "";
     position: absolute;
     left: 0;
-    right:0;
+    right: 0;
     bottom: -2px;
     transition: all 0.2s ease;
     width: 0%;
@@ -49,11 +51,12 @@ body{
     height: 2px;
     background-color: #E19EAC;
 }
-.filter p.active::after{
+
+.filter p.active::after {
     width: 75%;
 }
 
-.searchBox{
+.searchBox {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -63,7 +66,7 @@ body{
     border: 1px solid #8D8D8D;
 }
 
-.searchBox input{
+.searchBox input {
     border: none;
     font-size: 0.93em;
     width: 13em;
@@ -72,16 +75,17 @@ body{
     font-family: 'Poppins';
 }
 
-input:focus{
+input:focus {
     outline: none;
 
 }
-.searchBox img{
+
+.searchBox img {
     cursor: pointer;
     width: 15px;
 }
 
-.sort{
+.sort {
     position: relative;
     display: flex;
     border: 1px solid #8D8D8D;
@@ -95,7 +99,7 @@ input:focus{
     cursor: pointer;
 }
 
-.sort p{
+.sort p {
     padding: 3px 5px;
     user-select: none;
     -moz-user-select: none;
@@ -106,7 +110,7 @@ input:focus{
 }
 
 
-.sort ul{
+.sort ul {
     position: absolute;
     top: 45px;
     max-height: 0;
@@ -114,7 +118,7 @@ input:focus{
     overflow: hidden;
     min-height: 0;
     width: 101%;
-    z-index: 999;
+    z-index: 9;
     padding: 0;
     visibility: hidden;
     pointer-events: none;
@@ -126,40 +130,42 @@ input:focus{
 
 }
 
-.sort ul.ulExpanded{
+.sort ul.ulExpanded {
     max-height: 200px;
     pointer-events: all;
     padding: 8px 0;
     visibility: visible;
 }
 
-.sort ul li{
+.sort ul li {
     cursor: pointer;
     padding: 5px 14px;
     transition: all 0.2s ease;
 }
 
-.sort ul li:hover{
+.sort ul li:hover {
     background-color: #f5f5f5;
 }
 
-.sort img{
+.sort img {
     transform: rotate(0deg);
     transition: all 0.2s ease;
 }
 
-.sort img.rotate{
+.sort img.rotate {
     transform: rotate(180deg);
 
 }
 
-.sort li.selected{
+.sort li.selected {
     background-color: #f5f5f5;
 }
-.searchBox{
+
+.searchBox {
     position: relative;
 }
-.searchBox .suggestion{
+
+.searchBox .suggestion {
     position: absolute;
     top: 45px;
     left: -1px;
@@ -177,7 +183,8 @@ input:focus{
     list-style: none;
     border: 1px solid #8D8D8D;
 }
-.searchBox .suggestion p{
+
+.searchBox .suggestion p {
     padding: 7px 11px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -191,85 +198,94 @@ input:focus{
     line-clamp: 2;
     -webkit-box-orient: vertical;
 }
-.searchBox .suggestion p:hover{
+
+.searchBox .suggestion p:hover {
     background-color: #f5f5f5;
 }
-.products{
-  display: grid;
-  padding: 16px 100px;
-  column-gap: 6vw;
-  min-height: 80vh;
-  row-gap: 50px;
-  padding-bottom: 70px;
-  grid-template-columns: 1fr 1fr 1fr;
+
+.products {
+    display: grid;
+    padding: 16px 100px;
+    column-gap: 6vw;
+    min-height: 80vh;
+    row-gap: 50px;
+    padding-bottom: 70px;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
-@media (min-width: 1650px ) {
-    .products{
+@media (min-width: 1650px) {
+    .products {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
-    
+
 }
 
 @media (max-width:1090px) {
-    .main{
+    .main {
         padding: 0 60px;
     }
-    .products{
+
+    .products {
         padding-inline: 60px;
     }
 }
 
 
 @media (max-width:975px) {
-    .main{
+    .main {
         padding: 0px 30px;
     }
-    .products{
+
+    .products {
         padding-inline: 30px;
     }
 }
 
-@media (max-width: 990px ) {
-    .products{
+@media (max-width: 990px) {
+    .products {
         grid-template-columns: 1fr 1fr 1fr;
     }
-    .filter p{
+
+    .filter p {
         font-size: 0.9em;
     }
 }
 
 
-@media (max-width: 800px ) {
-    .products{
+@media (max-width: 800px) {
+    .products {
         grid-template-columns: 1fr 1fr;
     }
 
 }
 
 @media (max-width:577px) {
-    .searchBox input{
+    .searchBox input {
         width: 10em;
     }
 }
 
-@media (max-width: 531px ) {
-    .products{
+@media (max-width: 531px) {
+    .products {
         grid-template-columns: 1fr;
         justify-items: center;
         row-gap: 35px;
     }
-    .filter{
+
+    .filter {
         justify-content: center;
     }
-    .header{
+
+    .header {
         justify-content: center;
     }
-    .sort{
+
+    .sort {
         margin-left: 18px;
         width: 18em;
     }
-    .sort p{
+
+    .sort p {
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -279,34 +295,42 @@ input:focus{
         -webkit-box-orient: vertical;
     }
 }
+
 @media (max-width:478px) {
-    .header{
+    .header {
         flex-direction: column;
         align-items: center;
     }
-    .header >*{
+
+    .header>* {
         width: 100%;
         margin: 0;
     }
-    .header .searchBox input{
+
+    .header .searchBox input {
         width: 100%;
     }
-    .sort{
+
+    .sort {
         margin-top: 15px;
     }
-    .main{
+
+    .main {
         margin-top: 80px;
     }
 }
+
 @media (max-width:380px) {
-    .filter p{
+    .filter p {
         margin-inline: 8px;
         margin-top: 5px;
     }
-    .filter p:nth-last-child(1){
+
+    .filter p:nth-last-child(1) {
         margin-inline: 8px;
     }
-    .filter{
+
+    .filter {
         padding-top: 15px;
         flex-wrap: wrap;
     }
