@@ -42,7 +42,7 @@ const getShiprocketOptions = async (pinCode, weight) => {
         new URLSearchParams(params),
       {
         headers: {
-          Authorization: `Bearer ${await getShiprocketToken()}`,
+          Authorization: `Bearer ${getShiprocketToken()}`,
         },
       }
     )
@@ -269,7 +269,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           },
           {
             headers: {
-              Authorization: `Bearer ${await getShiprocketToken()}`,
+              Authorization: `Bearer ${getShiprocketToken()}`,
             },
           }
         )
@@ -277,6 +277,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           console.log(JSON.stringify(e.response.data, null, 2));
           throw "nigga";
         });
+      console.log(JSON.stringify(shipres.data, null, 2));
       await strapi.db.query("api::order.order").update({
         where: { orderId: ctx.request.body.razorpay_order_id },
         data: {
@@ -285,7 +286,6 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           shipmentId: shipres.data.shipment_id,
         },
       });
-      console.log(JSON.stringify(shipres.data, null, 2));
       strapi
         .plugin("email")
         .service("email")
@@ -305,7 +305,6 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
     } else {
       ctx.body = { error: true };
     }
-    console.log(await getShiprocketToken());
   },
 
   async getShipOptions(ctx) {
@@ -326,7 +325,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         },
         {
           headers: {
-            Authorization: `Bearer ${await getShiprocketToken()}`,
+            Authorization: `Bearer ${getShiprocketToken()}`,
           },
         }
       )
