@@ -62,7 +62,7 @@ const App = () => {
                 </Route>
                 <Route exact path="/product/:id" element={<ProductShow />} />
             </Routes>
-            <Footer></Footer>
+            <Footer />
         </Router>
     );
 };

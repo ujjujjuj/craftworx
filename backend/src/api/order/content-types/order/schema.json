@@ -40,10 +40,10 @@
       "type": "email"
     },
     "shiprocketId": {
-      "type": "uid"
+      "type": "biginteger"
     },
     "shippingId": {
-      "type": "uid"
+      "type": "biginteger"
     }
   }
 }

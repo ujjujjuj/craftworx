@@ -18,22 +18,22 @@ const Login = () => {
     };
     const user = useSelector((state) => state.authState);
     useEffect(() => {
-        console.log(user)
+        console.log(user);
         if (user?.isLoggedIn) {
-            navigate("/shop")
+            navigate("/shop");
         }
-    }, [user])
+    }, [user,navigate]);
     const dispatch = useDispatch();
     useEffect(() => {
         window.scrollTo(0, 0);
         if (state?.error) {
-            setError(state.error)
+            setError(state.error);
         }
     }, []);
 
     const formSubmit = (e) => {
         e.preventDefault();
-        setLoading(true)
+        setLoading(true);
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/auth/local/`, {
             method: "POST",
             headers: {
@@ -44,7 +44,7 @@ const Login = () => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.data === null) {
-                    setLoading(false)
+                    setLoading(false);
                     setError("Invalid Email & Password combination");
                     return console.log(data);
                 }
@@ -87,27 +87,31 @@ const Login = () => {
                     <input type="submit" value="Continue" />
                 </form>
                 <div className={styles.forgot}>
-                    <a href="">Forgot Password?</a>
+                    <Link to="/reset">Forgot Password?</Link>
                 </div>
                 <a href={`${process.env.REACT_APP_SERVER_URL}/api/connect/google`} className={styles.googleA}>
                     <div className={styles.google}>
-                        <img src="/images/google.svg" width="25" />
+                        <img src="/images/google.svg" alt="Google Login" width="25" />
                         &nbsp;&nbsp; Sign in with Google
                     </div>
                 </a>
                 <div className={styles.login}>
                     Don't have an account? <Link to="/register">Sign up</Link>
                 </div>
-                {loading ? <ThreeDots
-                    height="20"
-                    width="40"
-                    radius="10"
-                    color="#54605F"
-                    ariaLabel="three-dots-loading"
-                    wrapperStyle={{ marginTop: "20px" }}
-                    wrapperClassName=""
-                    visible={true}
-                /> : <></>}
+                {loading ? (
+                    <ThreeDots
+                        height="20"
+                        width="40"
+                        radius="10"
+                        color="#54605F"
+                        ariaLabel="three-dots-loading"
+                        wrapperStyle={{ marginTop: "20px" }}
+                        wrapperClassName=""
+                        visible={true}
+                    />
+                ) : (
+                    <></>
+                )}
                 <div className={styles.error}>
                     {errorMsg.length ? <i className="fas fa-exclamation-circle"></i> : <></>}
                     <p id="error-msg">{errorMsg}</p>
