@@ -36,7 +36,7 @@ const getEmailHtml = (user, order, products) => {
     items += `
     <tr>
         <td>
-            <img src="https://api.craftworxagra.co.in/${prod.images[0].url}" style="width: 90px; height:90px; object-fit: cover;border-radius: 7px;"/>
+            <img src="https://api.craftworxagra.co.in${prod.images[0].url}" style="width: 90px; height:90px; object-fit: cover;border-radius: 7px;"/>
         </td>
         <td style="width: 20px;"></td>
         <td>
