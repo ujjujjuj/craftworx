@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "addresses",
+  "info": {
+    "singularName": "address",
+    "pluralName": "addresses",
+    "displayName": "address"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "phnNo": {
+      "type": "string"
+    },
+    "fName": {
+      "type": "string"
+    },
+    "lName": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "zipcode": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    }
+  }
+}

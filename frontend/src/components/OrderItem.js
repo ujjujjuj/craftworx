@@ -1,13 +1,28 @@
 import styles from "../styles/components/orderuser.module.css"
 import CartItem from "./cartItem";
 import classnames from "classnames"
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const OrderItem = ({ order }) => {
-    useEffect(() => {
+
+
+    const getInvoice = async (e) => {
         console.log(order)
-    }, [])
+        e.stopPropagation();
+        let req = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/invoice`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id: order.order.shiprocketId
+            }),
+        });
+        let res = await req.json()
+        window.open(res.invoice, '_blank').focus();
+
+    }
+
     const navigate = useNavigate();
     return (<>
         <div className={styles.orderItem} onClick={() => {
@@ -27,9 +42,9 @@ export const OrderItem = ({ order }) => {
                     <h3>Placed</h3>
                 </div>
                 <div className={classnames(styles.orderLi, styles.invoice)}>
-                    <a href={"/"} target={"_blank"} rel="noreferrer">
+                    <div onClick={getInvoice}>
                         <i className="fa-regular fa-file-lines"></i> <p>View Invoice</p>
-                    </a>
+                    </div>
                 </div>
             </div>
             <div className={styles.sep}></div>

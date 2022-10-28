@@ -1,0 +1,26 @@
+.main {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main div {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+}
+
+.main h1 {
+    font-size: 7em;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    color: #54605F;
+}
+
+.p1 {
+    font-size: 0.96em;
+    margin-top: 10px;
+    color: #54605F;
+}

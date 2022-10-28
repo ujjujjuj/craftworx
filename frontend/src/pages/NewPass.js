@@ -1,7 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 import styles from "../styles/components/reset.module.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function useQuery() {
     const { search } = useLocation();
@@ -12,11 +12,16 @@ function useQuery() {
 export const NewPass = () => {
     const [error, setError] = useState(false);
     const { code } = useQuery();
-
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         pass: "",
         repass: "",
     });
+
+    useEffect(() => {
+        if (!code)
+            navigate("/")
+    }, [])
 
     const submitForm = (e) => {
         e.preventDefault();
@@ -41,7 +46,7 @@ export const NewPass = () => {
             .catch((error) => {
                 console.log(error);
             })
-            .finally(() => {});
+            .finally(() => { });
     };
 
     return (

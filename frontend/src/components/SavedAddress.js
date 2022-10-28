@@ -62,7 +62,9 @@ export const SavedAddress = ({ setState, setAddr }) => {
                                 setDropState((state) => ({ ...state, selection: index }))
                             }}
                         >
-                            {currentAddress.fName} {currentAddress.lName}, {currentAddress.address}, {currentAddress.city}, {currentAddress.state}, {currentAddress.zipcode}, {currentAddress.country}
+                            <p>
+                                {currentAddress.fName} {currentAddress.lName}, {currentAddress.address}, {currentAddress.city}, {currentAddress.state}, {currentAddress.zipcode}, {currentAddress.country}
+                            </p>
                         </li>
                     ))}
                 </ul>

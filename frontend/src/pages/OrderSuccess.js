@@ -86,12 +86,11 @@ const OrderSuccess = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                id: order.id
+                id: order.shiprocketId
             }),
         });
         let res = await req.json()
-        console.log(res)
-
+        window.open(res.invoice, '_blank').focus();
 
     }
 
@@ -181,9 +180,9 @@ const OrderSuccess = () => {
                                         {order.userInfo?.country}
                                     </div>
                                     <div className={styles.invoice}>
-                                        <a href={""} target={"_blank"} rel="noreferrer" onClick={getInvoice}>
+                                        <div onClick={getInvoice}>
                                             <i className="fa-regular fa-file-lines"></i> <p>View Invoice</p>
-                                        </a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className={styles.trckOrd}>Track Order</div>

@@ -13,12 +13,15 @@ import ShipOption from "../components/shipOption";
 import { SavedAddress } from "../components/SavedAddress";
 import { updateAddr } from "../app/authSlice";
 import updateUserDb from "../api/update";
+import useWindowDimensions from "../hooks/windowDimensions";
+import { MobileCheckoutCart } from "../components/mobcheckoutcart";
 
 const Checkout = () => {
     const cart = useSelector((state) => state.cartState);
     const user = useSelector((state) => state.authState);
     const cartSize = useSelector(getCartSize);
     const dispatch = useDispatch();
+    const { width } = useWindowDimensions();
     const checkoutCart = useSelector(getCheckoutCart);
     const refresh = useRef(0);
     const [states, setStates] = useState([]);
@@ -312,6 +315,10 @@ const Checkout = () => {
                     ) : (
                         <></>
                     )}
+                    {
+                        width <= 990 ? <MobileCheckoutCart shippingCost={shippingCost} prices={prices} cartSize={cartSize} cart={cart} setCheckoutModalState={setCheckoutModalState} /> : <></>
+                    }
+
                     {(processState !== "initUnAuth") ? (
                         <>
                             {(processState === "auth" && user.user?.address?.data?.length) ?
@@ -321,7 +328,7 @@ const Checkout = () => {
                                 <div className={styles1.addressFormWrap}>
                                     <h3>Where &amp; who to ship to?
                                         {processState === "authWA" ?
-                                            <span onClick={() => { setProcessState("auth"); }}>Go Back</span> : <></>}
+                                            <span onClick={() => { setProcessState("auth"); }}>Go&nbsp;Back</span> : <></>}
                                     </h3>
                                     <CheckoutForm startShipProcess={startShipProcess} setStates={updateStateLoc} userPayInfo={userPayInfo} setUserPayInfo={setUserPayInfo} states={states}>
                                     </CheckoutForm>
@@ -400,6 +407,14 @@ const Checkout = () => {
                                                 );
                                             })}
                                         </div>
+                                        {width <= 990 ?
+                                            <div
+                                                title={"Place Order"}
+                                                className={classnames(styles.checkout, shippingCost > 0 ? "" : styles.disabled, styles.mob)}
+                                                onClick={createOrder}
+                                            >
+                                                {placeText}
+                                            </div> : <></>}
                                     </>
                                 ) : (
                                     <></>

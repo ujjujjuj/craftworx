@@ -17,7 +17,7 @@
 .main .leftSec .head {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
 }
 
 .leftSec .head p {
@@ -119,6 +119,7 @@
     font-family: 'Poppins';
     min-width: 110px;
     padding: 9px 20px;
+    white-space: nowrap;
 }
 
 .button {
@@ -133,6 +134,7 @@
     font-size: 0.95em;
     max-width: 300px;
     text-align: center;
+    white-space: nowrap;
     color: white;
     z-index: 1;
 }
@@ -153,6 +155,7 @@
     width: fit-content;
     border-radius: 7px;
     padding: 12px 85px;
+    white-space: nowrap;
 }
 
 .authWrap p {
@@ -165,6 +168,7 @@
     color: #54605F;
     margin-right: 0;
     background-color: white;
+    white-space: nowrap;
     border: 2px #54605F solid;
 }
 
@@ -185,7 +189,7 @@
 }
 
 .leftSec .addressFormWrap {
-    margin: 30px 0;
+    margin: 25px 0;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -420,7 +424,7 @@
 .leftSec .savedAdr {
     display: flex;
     gap: 27px;
-    margin-top: 30px;
+    margin-top: 25px;
     align-items: center;
 }
 
@@ -476,7 +480,7 @@
     left: -0.2%;
     overflow: scroll;
     min-height: 0;
-    width: 100.3%;
+    width: 100.4%;
     z-index: 999;
     padding: 0;
     visibility: hidden;
@@ -496,15 +500,22 @@
     visibility: visible;
 }
 
+
+
 .sort ul li {
     cursor: pointer;
     padding: 10px 14px;
     transition: all 0.2s ease;
+}
+
+
+.sort ul li p {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 1;
-    line-clamp: 1;
+    -webkit-line-clamp: 2;
+    /* number of lines to show */
+    line-clamp: 2;
     -webkit-box-orient: vertical;
 }
 
@@ -532,5 +543,129 @@
     text-decoration: underline;
     color: #54605F;
     cursor: pointer;
-    margin-left: 6px;
+    margin-left: 10px;
+}
+
+@media screen and (max-width:1190px) {
+    .authWrap>p {
+        margin: 0 20px;
+    }
+
+    .authWrap>.button {
+        padding: 10.5px 30px;
+    }
+}
+
+@media screen and (max-width:990px) {
+    .rightSec {
+        display: none;
+    }
+
+    .main .leftSec {
+        padding-inline: 0;
+        padding-top: 20px;
+    }
+
+
+    .main .leftSec>* {
+        padding-inline: 32px;
+    }
+
+    .leftSec .contAsGuest {
+        margin-top: 5px;
+    }
+
+    .main .leftSec .sort {
+        padding-inline: 0;
+        padding: 10px 13px;
+        padding-right: 17px;
+        margin-inline: 32px;
+    }
+}
+
+@media screen and (max-width:698px) {
+    .popUpMsg p:nth-child(1) {
+        width: auto;
+    }
+
+    .popup {
+        width: 80%;
+    }
+}
+
+@media (max-width:475px) {
+    .authWrap {
+        flex-direction: column;
+    }
+
+    .authWrap .button {
+        width: 100%;
+        max-width: none;
+    }
+
+    .authWrap>p {
+        margin: 6px 0;
+        font-size: 1.2em;
+    }
+
+    .main .leftSec>* {
+        padding-inline: 23px;
+    }
+
+    .leftSec .endForm {
+        align-self: auto;
+        flex-direction: column-reverse;
+    }
+
+    .leftSec .endForm p {
+        margin-top: 15px;
+        margin-right: 0;
+    }
+
+    .leftSec .endForm .button {
+        width: 100%;
+        max-width: none;
+        padding-inline: 0;
+    }
+
+    .main .leftSec .sort {
+        margin-inline: 23px;
+    }
+}
+
+@media (max-width:425px) {
+    .leftSec .savedAdr{
+        flex-direction: column;
+        gap: 5px;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width:355px) {
+    .leftSec h3 span{
+        margin-left: 0;
+    }
+}
+
+@media (max-width:345px) {
+
+    .main .leftSec .head p {
+        font-size: 1.4em;
+    }
+
+    .popup {
+        width: 90%;
+        padding-inline: 25px;
+    }
+
+    .popup .buttonWrap {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+
+
+    .popup .buttonWrap div:nth-child(1) {
+        width: 80%;
+    }
 }

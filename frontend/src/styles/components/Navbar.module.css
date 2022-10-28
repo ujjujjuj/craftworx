@@ -321,6 +321,7 @@ nav .right .crossExpanded {
 @media(max-width:450px) {
     .item.navSearch.stretch {
         max-width: 50%;
+        margin-inline: 0;
     }
 
     nav {

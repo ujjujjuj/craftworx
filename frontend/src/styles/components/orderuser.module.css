@@ -112,16 +112,27 @@
     margin-top: 6px;
 }
 
+.orderLi.invoice > div{
+    text-decoration: underline;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 7px;
+    color: #54605F;
+}
+
 .orderItem .orderRight {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    margin-top: 15px;
+    margin-left: 30px;
 }
 
 .orderItem .orderRight .btns {
     display: flex;
     gap: 17px;
-    margin: 15px 30px;
+    margin: 15px 0px;
 }
 
 .orderItem .orderRight .btns .btn {

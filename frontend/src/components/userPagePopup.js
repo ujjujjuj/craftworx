@@ -64,7 +64,7 @@ export const UserPopup = ({ state, setState }) => {
     return (<>
         {state.visible ?
             <>
-                <div className={styles.backDrop} onClick={(e) => e.stopImmediatePropagation()} />
+                <div className={styles.backDrop} onClick={(e) => e.stopPropagation()} />
                 <div className={styles.userPop}>
                     <div className={styles.header}>
                         <h1>{state.header}</h1>

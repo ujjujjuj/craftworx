@@ -28,6 +28,7 @@ import { Profile } from "./components/Profile";
 import { Orders } from "./components/Orders";
 import { Reset } from "./pages/Reset";
 import { NewPass } from "./pages/NewPass";
+import { NotFound } from "./pages/NotFound";
 
 const App = () => {
     return (
@@ -54,13 +55,16 @@ const App = () => {
                 <Route path="/contact" element={<ContactUs />} />
                 <Route path="/order" element={<OrderSuccess />} />
                 <Route path="/reset" element={<Reset />} />
-                <Route path="/resetCallback" element={<NewPass />} />
+                <Route path="/auth/reset-password" element={<NewPass />} />
                 <Route path="/user" element={<User />} >
                     <Route index element={<Navigate replace to="profile" />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="orders" element={<Orders />} />
+                    <Route path="*" element={<Navigate to={"/404"} />} />
                 </Route>
                 <Route exact path="/product/:id" element={<ProductShow />} />
+                <Route path="/404" element={<NotFound />} />
+                <Route path="/*" element={<NotFound />} />
             </Routes>
             <Footer />
         </Router>

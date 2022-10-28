@@ -156,11 +156,17 @@
 
 @media screen and (max-width:640px) {
 
-    .container >div{
+    .container>div {
         opacity: 0.5;
     }
+
     .formSection {
         width: 100%;
+        padding: 0 30px;
+    }
+
+    .main h3{
+        font-size: 1.8em;
         padding: 0 30px;
     }
 

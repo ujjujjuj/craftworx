@@ -7,8 +7,12 @@ const cartSlice = createSlice({
         items: {},
     },
     reducers: {
-        toggleCart: (state) => {
-            state.isExpanded = !state.isExpanded;
+        toggleCart: (state, params) => {
+            if (params.payload !== undefined) {
+                state.isExpanded = params.payload
+            }
+            else
+                state.isExpanded = !state.isExpanded;
         },
         setCartItem: (state, params) => {
             let { product, amount } = params.payload;

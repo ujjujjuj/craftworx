@@ -212,6 +212,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
     const orders = await strapi.db.query("api::order.order").findMany({
       where: { userEmail: ctx.request.query.email },
       orderBy: { createdAt: "DESC" },
+      populate: true
     });
     if (orders === null) return;
     let orderDets = [];
@@ -408,8 +409,8 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         where: { orderId: ctx.request.body.razorpay_order_id },
         data: {
           isConfirmed: true,
-          shiprockeId: shipres.data.order_id,
-          shipmentId: shipres.data.shipment_id,
+          shiprocketId: shipres.data.order_id,
+          shippingId: shipres.data.shipment_id,
         },
       });
       ctx.body = { error: false };

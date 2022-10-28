@@ -8,7 +8,7 @@ const ShipOption = ({selectShipElement,shippingOptions,index,ship}) => {
                 className={ classnames(styles1.shipOption, index === shippingOptions.currentSelected && styles1.selected) }
                 key={index}>
                 <label htmlFor={"ship-" + index} key={index}>
-                    { ship.courier_name }: ₹ { Math.ceil(ship.rate).toFixed(2) }
+                    { ship.courier_name }: ₹&nbsp;{ Math.ceil(ship.rate).toFixed(2) }
                     <br/>
                     <small>
                     Estimated shipping in { ship.estimated_delivery_days }

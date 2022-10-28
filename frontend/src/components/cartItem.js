@@ -21,7 +21,7 @@ const CartItem = ({ product, checkoutModalState, isSm }) => {
                     onClick={(e) => {
                         e.stopPropagation()
                         navigate(`/product/${product.id}`);
-                        !isSm && dispatch(toggleCart());
+                        !isSm && dispatch(toggleCart(false));
                     }}
                     style={{
                         backgroundImage: `url('${process.env.REACT_APP_SERVER_URL + (isSm ? product.images[0].url : product.images.data[0].attributes.url)
@@ -33,7 +33,7 @@ const CartItem = ({ product, checkoutModalState, isSm }) => {
                         onClick={(e) => {
                             e.stopPropagation()
                             navigate(`/product/${product.id}`);
-                            !isSm && dispatch(toggleCart());
+                            !isSm && dispatch(toggleCart(false));
                         }}
                     >
                         {product.name}

@@ -141,11 +141,84 @@
     margin-bottom: 2px;
 }
 
-.invoice a {
+.invoice>div {
+    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 7px;
     width: fit-content;
+    text-decoration: underline;
     color: #54605F;
     margin-top: 12px;
+}
+
+@media screen and (max-width:970px) {
+    .orderDet {
+        padding-inline: 32px;
+    }
+}
+
+@media screen and (max-width:850px) {
+    .orderDetWrap {
+        flex-direction: column;
+        gap: 20px;
+        border-bottom: 0.8px solid #54605F;
+    }
+
+    .orderDet .orderItems {
+        width: auto;
+    }
+
+
+
+    .orderDetWrap .orderSummary {
+        align-self: auto;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:640px) {
+
+    .thanks img {
+        width: 180px;
+    }
+
+    .orderDet {
+        padding-block: 40px;
+    }
+
+    .thanks {
+        padding-top: 90px;
+        padding-bottom: 40px;
+    }
+
+    .thanks h1 {
+        font-size: 2.9rem;
+    }
+
+    .orderAdrWrp {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+@media screen and (max-width:470px) {
+    .orderDet .orderHead {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .orderDet .orderHead p {
+        font-size: 1.3rem;
+    }
+
+    .orderDet .orderHead a {
+        font-size: 1em;
+    }
+
+    .trckOrd {
+        width: 100%;
+    }
+
 }
