@@ -10,17 +10,20 @@
     font-family: "Sacramento", cursive;
     font-size: 3rem;
     font-weight: 300;
+    text-align: center;
 }
 
 .resetSec h2 {
     font-weight: 500;
     font-size: 1.15rem;
     margin-top: 10px;
+    text-align: center;
 }
 
 .resetSec p {
     margin-top: 20px;
     font-weight: 400;
+    text-align: center;
 }
 
 .resetSec form {
@@ -31,11 +34,29 @@
     border-radius: 4px;
     width: 100%;
     border: 1px solid #8D8D8D;
-    margin-top: 20px;
     padding: 14px 17px;
     font-family: 'Poppins';
     font-size: 1rem;
+}
 
+.passWrap {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.passWrap {
+    position: relative;
+    width: 100%;
+}
+
+.passWrap i {
+    position: absolute;
+    top: 50%;
+    padding: 15px;
+    right: 0;
+    opacity: 0.8;
+    cursor: pointer;
+    transform: translateY(-50%);
 }
 
 .resetSec button {
@@ -68,4 +89,53 @@
     color: rgb(212, 51, 51);
     font-weight: 500;
     transform: translateY(-15px);
+}
+
+@media screen and (max-width:974px) {
+
+    .resetSec {
+        padding-inline: 30px;
+    }
+
+}
+
+@media screen and (max-width:520px) {
+    .resetSec form {
+        width: 100%;
+    }
+
+    .resetSec button {
+        width: 100%;
+    }
+
+
+    .resetSec h2 {
+        text-align: center;
+    }
+
+    .resetSec p {
+        text-align: center;
+    }
+}
+
+@media screen and (max-width:350px) {
+
+    .resetSec h1 {
+        font-size: 2.7rem;
+        text-align: center;
+    }
+
+    .resetSec h2 {
+        font-size: 1.05rem;
+    }
+}
+
+@media screen and (max-width:305px) {
+    main h1 {
+        text-align: center;
+    }
+
+    .google span {
+        display: none;
+    }
 }

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
 
-main{
+main {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,61 +8,68 @@ main{
     margin-bottom: 7em;
 }
 
-main h1{
+main h1 {
     font-size: 2.9em;
     font-weight: 300;
     font-family: 'Sacramento';
 }
 
-.passWrap{
+.passWrap {
     position: relative;
     margin-bottom: 16px;
     width: 100%;
 }
-.passWrap i{
+
+.passWrap i {
     position: absolute;
     top: 50%;
-    right: 15px;
+    padding: 15px;
+    padding-left: 0;
+    right: 0;
     opacity: 0.8;
     cursor: pointer;
     transform: translateY(-50%);
 }
 
-.passWrap i.fa-eye-slash{
+.passWrap i.fa-eye-slash {
     right: 14px;
 }
-.passWrap input{
+
+.passWrap input {
     width: 100%;
     margin-bottom: 0;
-    
+
 }
-main h2{
+
+main h2 {
     font-weight: 500;
     font-size: 1.55em;
     margin-top: 6px;
     margin-bottom: 17px;
 }
 
-form{
+form {
     width: 25em;
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     justify-content: center;
 }
-main input{
+
+main input {
     width: 100%;
     margin-bottom: 16px;
     padding: 12.5px;
- 
+
     border: 1px solid #8D8D8D;
     font-family: 'Poppins';
     border-radius: 4px;
 }
-main input[type='submit']{
-     cursor: pointer;
-     padding: 14.5px;
+
+main input[type='submit'] {
+    cursor: pointer;
+    padding: 14.5px;
     background-color: #54605F;
     border-radius: 4px;
     border: none;
@@ -70,18 +77,18 @@ main input[type='submit']{
     width: 100%;
 }
 
-.forgot{
-    text-align: left; 
+.forgot {
+    text-align: left;
     width: 25em;
 }
 
-.forgot a{
+.forgot a {
     color: black;
     font-size: 0.95rem;
 
 }
 
-.google{
+.google {
     display: flex;
     padding: 14px;
     align-items: center;
@@ -90,23 +97,25 @@ main input[type='submit']{
     border-radius: 7px;
     justify-content: center;
     background-color: #fff;
-    margin-top: 35px;
-    margin-bottom: 30px;
+
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
 }
 
-.googleA{
+.googleA {
     text-decoration: none;
+    margin-top: 35px;
+    margin-bottom: 30px;
 }
-a{
+
+a {
     color: black;
 }
 
-.login{
+.login {
     font-size: 0.95rem;
 }
 
-.error{
+.error {
     color: rgb(212, 51, 51);
     display: flex;
     margin-top: 20px;
@@ -114,11 +123,50 @@ a{
     font-weight: 500;
     justify-content: center;
 }
-.error i{
+
+.error i {
     display: flex;
     margin-right: 7px;
 }
 
-main h1{
+main h1 {
     font-family: 'Sacramento', cursive;
+}
+
+@media screen and (max-width:470px) {
+    .auth form {
+        width: 100%;
+    }
+
+    .auth{
+        padding: 0 30px;
+    }
+
+    .forgot{
+        width: 100%;
+    }
+
+    .googleA,
+    .google {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:350px) {
+    main h1{
+        font-size: 2.4em;
+    }
+
+    main h2{
+        font-size: 1.25em;
+    }
+}
+
+@media screen and (max-width:305px) {
+    main h1{
+        text-align: center;
+    }
+    .google span{
+        display: none;
+    }
 }

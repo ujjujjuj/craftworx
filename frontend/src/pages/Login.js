@@ -18,11 +18,10 @@ const Login = () => {
     };
     const user = useSelector((state) => state.authState);
     useEffect(() => {
-        console.log(user);
-        if (user?.isLoggedIn) {
+        if (user?.isLoggedIn && !state?.fromCheckout) {
             navigate("/shop");
         }
-    }, [user,navigate]);
+    }, [user, navigate, state]);
     const dispatch = useDispatch();
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -34,6 +33,7 @@ const Login = () => {
     const formSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
+        setError("")
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/auth/local/`, {
             method: "POST",
             headers: {
@@ -43,6 +43,7 @@ const Login = () => {
         })
             .then((res) => res.json())
             .then((data) => {
+                console.log(data)
                 if (data.data === null) {
                     setLoading(false);
                     setError("Invalid Email & Password combination");
@@ -62,7 +63,7 @@ const Login = () => {
             <Helmet>
                 <title>Craftworx | Login</title>
             </Helmet>
-            <main>
+            <main className={styles.auth}>
                 <h1>Craftworx Agra</h1>
                 <h2>Log in</h2>
                 <form onSubmit={formSubmit}>
@@ -92,7 +93,7 @@ const Login = () => {
                 <a href={`${process.env.REACT_APP_SERVER_URL}/api/connect/google`} className={styles.googleA}>
                     <div className={styles.google}>
                         <img src="/images/google.svg" alt="Google Login" width="25" />
-                        &nbsp;&nbsp; Sign in with Google
+                        <span>&nbsp;&nbsp; Sign in with Google</span>
                     </div>
                 </a>
                 <div className={styles.login}>

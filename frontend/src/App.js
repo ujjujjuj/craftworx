@@ -29,6 +29,7 @@ import { Orders } from "./components/Orders";
 import { Reset } from "./pages/Reset";
 import { NewPass } from "./pages/NewPass";
 import { NotFound } from "./pages/NotFound";
+import { ChangePass } from "./pages/ChangePass";
 
 const App = () => {
     return (
@@ -55,6 +56,7 @@ const App = () => {
                 <Route path="/contact" element={<ContactUs />} />
                 <Route path="/order" element={<OrderSuccess />} />
                 <Route path="/reset" element={<Reset />} />
+                <Route path="/change-password" element={<ChangePass />} />
                 <Route path="/auth/reset-password" element={<NewPass />} />
                 <Route path="/user" element={<User />} >
                     <Route index element={<Navigate replace to="profile" />} />

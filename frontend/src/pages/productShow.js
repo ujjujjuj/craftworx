@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Product from "./Product";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
+import useWindowDimensions from "../hooks/windowDimensions";
 const qs = require('qs');
 const ProductShow = () => {
     const { id } = useParams();
@@ -15,6 +16,7 @@ const ProductShow = () => {
     const [isPopVisible, setPopVisible] = useState(true)
     const [prodQty, setProdQty] = useState(1);
     const [mainImg, setMain] = useState('');
+    const { width } = useWindowDimensions();
     const [isLoading, setLoading] = useState(false)
     const [relatedArray, setRelated] = useState([]);
     useEffect(() => {
@@ -78,7 +80,32 @@ const ProductShow = () => {
 
     return (
         <>
-            <div className={styles.header}>
+
+            <div className={classnames(styles.header, isPopVisible ? "" : styles.sm)}>
+                {
+                    width <= 800 ? <>
+                        <div className={styles.details}>
+                            <div className={styles.heading}>
+                                <Link to="/shop">Back to Shop</Link>
+                                <h1>{product.name}</h1>
+                            </div>
+                            <div className={styles.rating}>
+                                <img src="/images/star.svg" alt="Rating star" />
+                                <img src="/images/star.svg" alt="Rating star" />
+                                <img src="/images/star.svg" alt="Rating star" />
+                                <img src="/images/star.svg" alt="Rating star" />
+                                <p>42 Reviews</p>
+                            </div>
+                            <div className={styles.cost}>
+                                {product.discount > 0 ? <> <h1 className={styles.slash}>₹ {(product.price / 100).toFixed(2)}</h1>
+                                </> : <></>}
+                                <div className={styles.discWrap}>
+                                    <h1>₹ {product.price ? (productFinalAmt / 100).toFixed(2) : ""}</h1>   {product.discount > 0 ? <p>{product.discount}% off</p> : <></>}
+                                </div>
+                            </div>
+                        </div>
+                    </> : <></>
+                }
                 <div className={styles.gallery}>
                     <div className={styles.mainImg} style={{ backgroundImage: `url('${mainImg?.length ? process.env.REACT_APP_SERVER_URL + mainImg : ""}')` }}>
                     </div>
@@ -91,26 +118,28 @@ const ProductShow = () => {
                     </div>
                 </div>
                 <div className={styles.details}>
-                    <div className={styles.heading}>
-                        <h1>{product.name}</h1>
-                        <Link to="/shop">Back to shop</Link>
-                    </div>
-                    <div className={styles.rating}>
-                        <img src="/images/star.svg" alt="Rating star" />
-                        <img src="/images/star.svg" alt="Rating star" />
-                        <img src="/images/star.svg" alt="Rating star" />
-                        <img src="/images/star.svg" alt="Rating star" />
-                        <p>42 Reviews</p>
-                    </div>
-                    <div className={styles.cost}>
-                        {product.discount > 0 ? <> <h1 className={styles.slash}>₹ {(product.price / 100).toFixed(2)}</h1>
-                        </> : <></>}
-                        <div className={styles.discWrap}>
-                            <h1>₹ {product.price ? (productFinalAmt / 100).toFixed(2) : ""}</h1>   {product.discount > 0 ? <p>{product.discount}% off</p> : <></>}
-
-                        </div>
-
-                    </div>
+                    {width <= 800 ? <></> :
+                        <>
+                            <div className={styles.heading}>
+                                <Link to="/shop">Back to Shop</Link>
+                                <h1>{product.name}</h1>
+                            </div>
+                            <div className={styles.rating}>
+                                <img src="/images/star.svg" alt="Rating star" />
+                                <img src="/images/star.svg" alt="Rating star" />
+                                <img src="/images/star.svg" alt="Rating star" />
+                                <img src="/images/star.svg" alt="Rating star" />
+                                <p>42 Reviews</p>
+                            </div>
+                            <div className={styles.cost}>
+                                {product.discount > 0 ? <> <h1 className={styles.slash}>₹ {(product.price / 100).toFixed(2)}</h1>
+                                </> : <></>}
+                                <div className={styles.discWrap}>
+                                    <h1>₹ {product.price ? (productFinalAmt / 100).toFixed(2) : ""}</h1>   {product.discount > 0 ? <p>{product.discount}% off</p> : <></>}
+                                </div>
+                            </div>
+                        </>
+                    }
                     <p className={styles.desc}>
                         {product.description}
                     </p>

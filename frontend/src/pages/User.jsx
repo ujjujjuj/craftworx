@@ -7,26 +7,29 @@ import { updateAddr } from "../app/authSlice";
 import updateUserDb from "../api/update";
 export const ContactInfo = ({ popState }) => {
     const { user } = useSelector((state) => state.authState);
+    const splitEmail = (email) => {
+        if (email)
+            return email.split("@")
+        return ["", ""]
+    }
     return (<>
-        <div className={styles.elemContent}>
+        <div className={`${styles.elemContent} ${styles.profileElem}`}>
             <div className={styles.elemHead}>
                 <h1>Contact Information</h1>
             </div>
-            <table>
-                <tbody>
-                    <tr>
-                        <td className={styles.head}>Email:</td>
-                        <td>{user?.email}</td>
-                    </tr>
-                    <tr>
-                        <td className={styles.head}>Mobile:</td>
-                        <td>
-                            {user?.phone ?? "Not Provided"}
-                            <img src="/images/edit_icon.svg" alt="edit icon" onClick={() => popState((old) => ({ ...old, visible: 1, vr: 0, header: "Contact Information" }))} />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div className={styles.infoTab}>
+                <div className={styles.row}>
+                    <p className={styles.head}>Email:</p>
+                    <p>{splitEmail(user?.email)[0]}&#8203;@{splitEmail(user?.email)[1]}</p>
+                </div>
+                <div className={styles.row}>
+                    <p className={styles.head}>Mobile:</p>
+                    <p>
+                        {user?.phone ?? "Not Provided"}
+                        <img src="/images/edit_icon.svg" alt="edit icon" onClick={() => popState((old) => ({ ...old, visible: 1, vr: 0, header: "Contact Information" }))} />
+                    </p>
+                </div>
+            </div>
         </div>
     </>)
 }
@@ -65,7 +68,7 @@ export const ShippingInfo = ({ addresses, popState }) => {
                                             <br />
                                             {item.address}
                                             <br />
-                                            {item.city}, {item.state} - {item.zipcode}
+                                            {item.city}, {item.state}&nbsp;-&nbsp;{item.zipcode}
                                             <br />
                                             {item.country}
                                         </div>

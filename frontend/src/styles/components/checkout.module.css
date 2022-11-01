@@ -250,6 +250,7 @@
 .leftSec .addressForm .halfInputForm {
     display: flex;
     width: 100%;
+    gap: 23px;
     margin-top: 23px;
 }
 
@@ -271,13 +272,6 @@
     width: 100%;
 }
 
-.addressForm .halfInputForm>:first-child {
-    margin-right: 13px;
-}
-
-.addressForm .halfInputForm>:nth-child(2) {
-    margin-left: 13px;
-}
 
 .leftSec input::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -638,6 +632,13 @@
         flex-direction: column;
         gap: 5px;
         align-items: flex-start;
+    }
+
+    .halfInputForm{
+        flex-direction: column;
+    }
+    .leftSec .addressForm .halfInputForm > *{
+        width: 100%;
     }
 }
 

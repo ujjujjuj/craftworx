@@ -5,20 +5,25 @@
     display: grid;
     column-gap: 70px;
     grid-template-columns: 0.7fr 1.3fr;
-    margin-bottom: 100px;
+    margin-bottom: 30px;
+}
+
+.header.sm{
+    min-height: 100vh;
 }
 .header .details {
     display: flex;
     flex-direction: column;
 }
+
 .details .heading {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .details .heading h1 {
     font-weight: 500;
-    max-width: 75%;
     font-size: 1.6em;
 }
 
@@ -30,26 +35,33 @@
 
 .details .rating {
     display: flex;
-    padding-top: 8px;
+    margin-top: 8px;
     align-items: center;
+    display: none;
 }
+
 .details .rating img {
     padding-right: 10px;
     width: 39px;
 }
+
 .details .rating p {
-    margin-left: 8px;
+    margin-left: 4px;
     cursor: pointer;
-    text-decoration: underline;
+    color: #54605f;
+    font-weight: 500;
+    transform: translateY(3px);
+    /* text-decoration: underline; */
 }
 
 .cost {
     display: flex;
-    padding-top: 20px;
+    padding-top: 15px;
     flex-direction: column;
     color: #54605f;
     font-size: 1.1em;
 }
+
 .cost h1 {
     font-weight: 500;
     color: black;
@@ -67,21 +79,23 @@
 .details .desc {
     padding-top: 20px;
     font-size: 1em;
-    width: 80%;
+    width: 100%;
 }
 
 .gallery {
     display: flex;
     flex-direction: column;
 }
+
 .gallery .mainImg {
     background-image: url("../images/product-placeholder.png");
     background-size: contain;
-    border-radius: 12px;
+    border-radius: 8px;
     width: 100%;
     background-repeat: no-repeat;
     background-position: center;
-    height: 24vw;
+    height: 0;
+    padding-top: 100%;
 }
 
 .imgList {
@@ -103,13 +117,16 @@
     image-rendering: pixelated;
     background-repeat: no-repeat;
     background-position: center;
-    height: 6vw;
+    height: 0;
+    padding-top: 100%;
     border: 2.5px solid white;
-    border-radius: 6px;
+    border-radius: 8px;
 }
+
 .smallImg.selected {
     border: 2.5px solid #54605f;
 }
+
 .foot {
     display: flex;
     justify-content: space-between;
@@ -120,6 +137,7 @@
     display: flex;
     margin-top: 10px;
 }
+
 .qtyWrap input {
     font-family: "Poppins";
     margin-right: 5px;
@@ -130,10 +148,12 @@
     text-align: center;
     -moz-appearance: textfield;
 }
-.qtyWrap > * {
+
+.qtyWrap>* {
     border: 1px solid #000000;
     border-radius: 2px;
 }
+
 .qtyWrap .alter {
     background-color: #fff;
     width: 32px;
@@ -152,4 +172,84 @@
 .discWrap {
     display: flex;
     align-items: center;
+}
+
+@media(max-width:1090px) {
+    .header {
+        padding-inline: 60px;
+    }
+}
+
+@media(max-width:974px) {
+    .header {
+        padding-inline: 30px;
+        grid-template-columns: 0.9fr 1.1fr;
+        column-gap: 40px;
+    }
+}
+
+@media(max-width:800px) {
+    .header {
+        grid-template-columns: 1fr;
+        padding-top: 80px;
+        padding-inline: 30px;
+    }
+
+    .gallery {
+        margin-top: 25px;
+        margin-bottom: 15px;
+        flex-direction: row;
+        gap: 18px;
+    }
+
+    .gallery .imgList {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        padding-top: 0;
+        column-gap: 0;
+        row-gap: 10px;
+    }
+
+    .gallery .mainImg {
+        width: 80%;
+        padding-top: 80%;
+        flex: 0 0 80%;
+    }
+
+    .gallery .smallImg {
+        height: 0;
+        padding-top: 100%;
+    }
+}
+
+@media(max-width:600px) {
+    .gallery {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .gallery .mainImg {
+        width: 100%;
+        padding-top: 100%;
+        flex: none;
+    }
+
+    .gallery .imgList {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        margin-top: 20px;
+        column-gap: 2vw;
+        display: grid;
+    }
+}
+
+
+@media(max-width:531px) {
+    .foot {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+    }
+
 }

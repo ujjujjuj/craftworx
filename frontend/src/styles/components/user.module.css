@@ -21,6 +21,7 @@
 .addresses .editAddr {
     vertical-align: top;
     padding: 0 20px;
+    padding-right: 0;
 }
 
 .addresses .editAddr img {
@@ -70,7 +71,7 @@
     align-items: flex-start;
     border: 1px solid #DDDDDD;
     border-radius: 9px;
-    padding: 24px 30px 24px 45px;
+    padding: 24px 45px;
 }
 
 .userItem img.center {
@@ -102,6 +103,7 @@
 .userItem .elemContent {
     display: flex;
     flex-direction: column;
+
 }
 
 .userItem .elemContent h1 {
@@ -110,6 +112,36 @@
     align-items: center;
     font-size: 1.1rem;
     color: #54605F;
+}
+
+.profileElem {
+    width: 100%;
+}
+
+.infoTab .row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+}
+
+.infoTab .row:nth-child(1) {
+    margin-bottom: 2px;
+    margin-top: 8px;
+}
+
+.infoTab .row .head {
+    width: 4.1em;
+    color: #54605F;
+    font-weight: 500;
+}
+
+.infoTab .row>p {
+    word-wrap: break-word;
+}
+
+.infoTab .row img {
+    margin-left: 7px;
+    transform: translateY(1px);
 }
 
 .userItem td img {
@@ -130,9 +162,6 @@
     cursor: pointer;
 }
 
-.userItem .elemHead.ship {
-    margin-bottom: 8px;
-}
 
 .addresses tr:hover {
     text-decoration: underline;
@@ -254,23 +283,15 @@
     padding: 8px 10px;
 }
 
-.userItem .elemContent table.addresses {
-    border-spacing: 0px 10px;
-}
+
 
 .userItem .elemContent table {
     border-collapse: separate;
-    border-spacing: 0 4px;
+    border-spacing: 0 12px;
+    margin-top: -2px;
 }
 
 
-
-.userItem .elemContent table .head {
-    padding-right: 8px;
-    font-weight: 500;
-    color: #54605F;
-    margin-right: 4px;
-}
 
 .userFoot {
     display: flex;
@@ -280,6 +301,8 @@
 
 .userFoot .buttons {
     display: flex;
+    column-gap: 24px;
+    row-gap: 20px;
 }
 
 .changePBt {
@@ -305,7 +328,6 @@
     width: fit-content;
     cursor: pointer;
     text-align: center;
-    margin-left: 24px;
     color: #54605F;
     display: flex;
     align-items: center;
@@ -352,4 +374,116 @@
 
 .userWrap a {
     text-decoration: none;
+}
+
+@media screen and (max-width: 1090px) {
+    .userNav {
+        padding-inline: 60px;
+    }
+
+    .indicator {
+        margin-left: 60px;
+    }
+
+    .userPager {
+        margin-inline: 60px;
+    }
+}
+
+@media screen and (max-width: 974px) {
+    .userNav {
+        padding-inline: 30px;
+    }
+
+    .indicator {
+        margin-left: 30px;
+    }
+
+    .userPager {
+        margin-inline: 30px;
+    }
+
+
+}
+
+@media screen and (max-width: 710px) {
+    .userFoot {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .userFoot .buttons {
+        width: 100%;
+        column-gap: 15px;
+    }
+
+    .buttons>div,
+    .buttons a {
+        width: 50%;
+    }
+
+    .logoutBt , .changePBt {
+        width: 100%;
+    }
+
+    .changePBt,
+    .logoutBt {
+        justify-content: center;
+    }
+
+    .userItem {
+        padding-inline: 30px;
+    }
+}
+
+@media screen and (max-width: 609px) {
+
+    .buttons>div,
+    .buttons a {
+        width: 100%;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    .changePBt {
+        padding-inline: 20px;
+    }
+
+    .userPop{
+        width: 90%;
+    }
+    .userPop form{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 520px) {
+
+    .infoTab .row {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .infoTab .row:nth-child(1) {
+        margin-bottom: 10px;
+    }
+
+}
+
+@media screen and (max-width: 315px) {
+
+    .formFoot{
+        flex-direction: column;
+        row-gap: 9px;
+    }
+
+    .formFoot > *, .formFoot .btn{
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
 }

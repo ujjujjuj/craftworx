@@ -16,6 +16,8 @@ export const Profile = () => {
         index: -1
     });
 
+
+
     return (<>
         <div className={styles.userPager}>
             <UserPopup state={popState} setState={setPopState} />
@@ -24,9 +26,11 @@ export const Profile = () => {
             <UserPageItem Child={ShippingInfo} addresses={user.user?.address} popState={setPopState} />
             <div className={styles.userFoot}>
                 <div className={styles.buttons}>
-                    <div className={styles.changePBt}>
-                        <img src="/images/password-change.svg" alt="change password" width={19} />&nbsp;&nbsp;Change Password
-                    </div>
+                    <Link to={"/change-password"}>
+                        <div className={styles.changePBt}>
+                            <img src="/images/password-change.svg" alt="change password" width={19} />&nbsp;&nbsp;Change Password
+                        </div>
+                    </Link>
                     <Link to={"/logout"}>
                         <div className={styles.logoutBt} >
                             <img src="/images/logout.svg" alt="change password" width={19} style={{ transform: "rotate(180deg)" }} />&nbsp;&nbsp;Logout

@@ -306,7 +306,7 @@ nav .right .crossExpanded {
     }
 }
 
-@media(max-width:975px) {
+@media(max-width:974px) {
     nav {
         padding: 10px 30px;
     }

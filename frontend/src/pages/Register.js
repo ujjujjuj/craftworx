@@ -61,7 +61,7 @@ const Register = () => {
             <Helmet>
                 <title>Craftworx | Register</title>
             </Helmet>
-            <main>
+            <main className={styles.auth}>
                 <h1>Craftworx Agra</h1>
                 <h2>Sign Up</h2>
                 <form onSubmit={formSubmit}>
@@ -85,7 +85,7 @@ const Register = () => {
                 <a href={`${process.env.REACT_APP_SERVER_URL}/api/connect/google`} className={styles.googleA}>
                     <div className={styles.google} style={{ marginTop: "0" }}>
                         <img src="/images/google.svg" width="25" />
-                        &nbsp;&nbsp; Sign up with Google
+                        <span>&nbsp;&nbsp; Sign up with Google</span>
                     </div>
                 </a>
 

@@ -48,7 +48,7 @@ const getEmailHtml = (user, order, products) => {
   })
 
   return `
-        <table style="font-family: 'Poppins','Google Sans',Roboto,sans-serif; margin:auto; width:fit-content; border-collapse:collapse;" cellspacing="0">
+        <table style="font-family: 'Poppins','Google Sans',Roboto,sans-serif; width:fit-content; border-collapse:collapse;" cellspacing="0">
         <tr>
             <td>
                 <img src="https://api.craftworxagra.co.in/uploads/CW_fe2ddada44.png" style="margin-top: 15px;" width="35"/>
@@ -419,7 +419,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         .service("email")
         .send({
           to: info.email,
-          from: "admin@craftworxagra.co.in",
+          from: "Craftworx Agra <admin@craftworxagra.co.in>",
           subject: "Order Successfully Placed at CratworxAgra",
           html: getEmailHtml(info, order, products),
         })

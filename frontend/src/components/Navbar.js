@@ -157,6 +157,27 @@ const Navbar = () => {
                                         </NavLink>
                                     })
                                 }
+                                {user.isLoggedIn ? (
+                                    <NavLink to="/user/profile" className={({ isActive }) =>
+                                        (isActive ? styles.selected : "")
+                                    }>
+                                        <div className={styles.itemWrap}>
+                                            <div className={styles.item}>
+                                                My Account
+                                            </div>
+                                        </div>
+                                    </NavLink>
+                                ) : (
+                                    <NavLink to="/login" className={({ isActive }) =>
+                                        (isActive ? styles.selected : "")
+                                    }>
+                                        <div className={styles.itemWrap}>
+                                            <div className={styles.item}>
+                                                Login
+                                            </div>
+                                        </div>
+                                    </NavLink>
+                                )}
                             </div>
                             <img
                                 src={isNavExpanded ? "/images/close.svg" : "/images/hamburger.svg"}

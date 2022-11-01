@@ -14,7 +14,7 @@ const Corporate = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
         const img = new Image();
-        img.src = "https://api.craftworxagra.co.in/uploads/corporate_47c15ad976.png"
+        img.src = 'https://api.craftworxagra.co.in/uploads/corp_b2e4959f33.jpg'
         img.onload = () => {
             setImgLoaded(true)
         }

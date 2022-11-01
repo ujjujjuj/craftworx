@@ -23,3 +23,15 @@ margin-bottom: 10px;
 .privacyWrap p{
     color: black;
 }
+
+@media screen and (max-width:1090px) {
+    .privacyWrap{
+        padding-inline: 60px;
+    }
+}
+
+@media screen and (max-width:974px) {
+    .privacyWrap{
+        padding-inline: 30px;
+    }
+}

@@ -1,13 +1,18 @@
+import { useEffect } from "react";
 import { useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/components/reset.module.css";
 
 export const Reset = () => {
     const [mailSent, setMailSent] = useState(0);
-
+    const user = useSelector((state) => state.authState);
     const [form, setForm] = useState({
         email: "",
     });
+
+    const navigate = useNavigate();
 
     const submitForm = (e) => {
         e.preventDefault();
@@ -26,6 +31,11 @@ export const Reset = () => {
                 setMailSent(2);
             });
     };
+
+    useEffect(() => {
+        if (user.isLoggedIn)
+            navigate("/shop")
+    }, [])
 
     return (
         <>

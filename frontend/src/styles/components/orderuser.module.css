@@ -112,7 +112,7 @@
     margin-top: 6px;
 }
 
-.orderLi.invoice > div{
+.orderLi.invoice>div {
     text-decoration: underline;
     display: flex;
     align-items: center;
@@ -147,4 +147,11 @@
 .orderItem .btns .btn:nth-child(2):hover {
     color: white;
     background-color: #54605F;
+}
+
+
+@media screen and (max-width: 1090px) {
+    .orderPager {
+        margin-inline: 60px;
+    }
 }

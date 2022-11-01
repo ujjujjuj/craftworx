@@ -3,56 +3,55 @@ import { useState, useMemo, useEffect } from "react";
 import styles from "../styles/components/reset.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
+import { useSelector } from "react-redux";
 
-function useQuery() {
-    const { search } = useLocation();
-
-    return useMemo(() => Object.fromEntries(new URLSearchParams(search)), [search]);
-}
-
-export const NewPass = () => {
+export const ChangePass = () => {
     const [error, setError] = useState("");
-    const { code } = useQuery();
     const [loading, setLoading] = useState(false)
+    const location = useLocation();
     const navigate = useNavigate();
+    const user = useSelector((state) => state.authState);
     const [form, setForm] = useState({
         pass: "",
         repass: "",
     });
+
     const [passVisible, setPassVisible] = useState(false);
     const [newPassVisible, setNewPassVisible] = useState(false);
 
     useEffect(() => {
-        if (!code)
+        if (!user.isLoggedIn)
             navigate("/")
     }, [])
 
     const submitForm = (e) => {
         e.preventDefault();
-        if (form.pass !== form.repass) {
-            setError("Passwords don't match");
-            return;
-        }
-        if (form.pass.length < 6) {
+        if (form.repass.length < 6) {
             setError("Password must be atleast 6 characters long");
             return;
         }
         setLoading(true)
-        fetch(`${process.env.REACT_APP_SERVER_URL}/api/auth/reset-password/`, {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/api/auth/change-password`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${user.jwt}`,
             },
-            body: JSON.stringify({ code, password: form.pass, passwordConfirmation: form.repass }),
+            body: JSON.stringify({ password: form.repass, currentPassword: form.pass, passwordConfirmation: form.repass }),
         })
             .then((res) => res.json())
             .then((dat) => {
                 setLoading(false)
+                console.log(dat)
+                if (!dat.jwt) {
+                    setError(dat.error.message)
+                    return
+                }
                 navigate("/user/profile")
             })
             .catch((error) => {
                 setLoading(false)
-                setError(error)
+                setError("Something went wrong")
             })
             .finally(() => { });
 
@@ -67,7 +66,7 @@ export const NewPass = () => {
                     <div className={styles.passWrap}>
                         <input
                             type={passVisible ? "text" : "password"}
-                            placeholder={"New Password"}
+                            placeholder={"Current Password"}
                             value={form.pass}
                             onChange={(e) => setForm({ ...form, pass: e.target.value })}
                             required
@@ -77,7 +76,7 @@ export const NewPass = () => {
                     <div className={styles.passWrap}>
                         <input
                             type={newPassVisible ? "text" : "password"}
-                            placeholder={"Re-enter New Password"}
+                            placeholder={"New Password"}
                             value={form.repass}
                             onChange={(e) => setForm({ ...form, repass: e.target.value })}
                             required

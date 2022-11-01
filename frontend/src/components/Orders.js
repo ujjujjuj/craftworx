@@ -12,11 +12,12 @@ export const Orders = () => {
     const [orders, setOrders] = useState(null)
     const navigate = useNavigate()
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/getAll?email=${user.user.email}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setOrders(data)
-            })
+        if (user.user)
+            fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/getAll?email=${user.user.email}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    setOrders(data)
+                })
     }, [])
 
 
