@@ -199,8 +199,10 @@ hr {
     cursor: pointer;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    color: black;
+    -webkit-line-clamp: 3;
     max-width: 90%;
+    font-size: initial;
     min-width: fit-content;
     /* number of lines to show */
     line-clamp: 2;

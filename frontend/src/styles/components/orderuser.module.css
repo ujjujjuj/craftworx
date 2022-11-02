@@ -82,8 +82,7 @@
     font-size: 15px;
 }
 
-.orderItem,
-.orderLi h3 {
+.orderItem .orderLi h3 {
     font-weight: 500;
     font-size: 18px;
     margin-top: 3px;
@@ -154,4 +153,43 @@
     .orderPager {
         margin-inline: 60px;
     }
+}
+
+
+@media screen and (max-width: 974px) {
+    .orderPager {
+        margin-inline: 30px;
+    }
+}
+
+@media screen and (max-width: 790px) {
+    .btns > .btn{
+        flex: 1;
+        padding-inline: 0;
+        min-width: 180px;
+    }
+
+
+    .orderItem .orderRight .btns{
+        gap: 5%;
+        flex-wrap: wrap;
+        row-gap: 10px;
+    }
+
+}
+
+@media screen and (max-width: 660px) {
+
+    .orderItem{
+        flex-direction: column-reverse;
+        padding: 20px;
+    }
+    .orderItem .orderRight{
+        margin: 0;
+    }
+
+    .orderItem .orderLeft{
+        width: 100%;
+    }
+
 }

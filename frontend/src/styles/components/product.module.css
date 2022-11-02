@@ -221,6 +221,12 @@
         height: 0;
         padding-top: 100%;
     }
+    .details .heading h1 {
+        font-size: 1.4em;
+    }
+    .cost h1{
+        font-size: 1.3em;
+    }
 }
 
 @media(max-width:600px) {
