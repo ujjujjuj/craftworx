@@ -61,10 +61,10 @@ main input {
     width: 100%;
     margin-bottom: 16px;
     padding: 12.5px;
-
     border: 1px solid #8D8D8D;
     font-family: 'Poppins';
     border-radius: 4px;
+    font-size: 13px;
 }
 
 main input[type='submit'] {
@@ -117,17 +117,11 @@ a {
 
 .error {
     color: rgb(212, 51, 51);
-    display: flex;
     margin-top: 20px;
-    align-items: center;
     font-weight: 500;
-    justify-content: center;
+    text-align: center;
 }
 
-.error i {
-    display: flex;
-    margin-right: 7px;
-}
 
 main h1 {
     font-family: 'Sacramento', cursive;

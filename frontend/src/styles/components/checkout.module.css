@@ -554,6 +554,10 @@
     .rightSec {
         display: none;
     }
+    
+    .leftSec .shipPartner{
+        margin-bottom: 70px;
+    }
 
     .main .leftSec {
         padding-inline: 0;

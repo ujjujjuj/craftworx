@@ -34,7 +34,7 @@ export const UserPopup = ({ state, setState }) => {
         if (state.vr === 0) {
             if ((user.user.phone !== formState.phnNo) || !user.user.phone) {
                 dispatch(editUser({ phone: formState.phnNo }))
-                await updateUserDb({ phone: formState.phnNo }, user.jwt, user.user.id)
+                updateUserDb({ phone: formState.phnNo }, user.jwt, user.user.id)
             }
         }
         else if (state.vr === 1) {
@@ -104,8 +104,8 @@ export const UserPopup = ({ state, setState }) => {
                                     </div>
                                 </> :
                                 <div className={styles.formInput}>
-                                    <label htmlFor="phone">Mobile</label>
-                                    <input type={"tel"} placeholder="Phone Number" id="phone" value={formState.phnNo} onChange={(e) => setFormState({ ...formState, phnNo: e.target.value })} required />
+                                    <label htmlFor="phone">Mobile (10 digits)</label>
+                                    <input type={"tel"} minLength="10" maxLength="10" pattern=".{10,}" placeholder="Phone Number" id="phone" value={formState.phnNo} onChange={(e) => setFormState({ ...formState, phnNo: e.target.value })} required />
                                 </div>
 
                         }

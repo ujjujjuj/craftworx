@@ -408,12 +408,14 @@ const Checkout = () => {
                                             })}
                                         </div>
                                         {width <= 990 ?
-                                            <div
-                                                title={"Place Order"}
-                                                className={classnames(styles.checkout, shippingCost > 0 ? "" : styles.disabled, styles.mob)}
-                                                onClick={createOrder}
-                                            >
-                                                {placeText}
+                                            <div className={classnames(styles.placeWrap, shippingCost > 0 ? styles.show : "")}>
+                                                <div
+                                                    title={"Place Order"}
+                                                    className={classnames(styles.checkout, shippingCost > 0 ? "" : styles.disabled, styles.mob)}
+                                                    onClick={createOrder}
+                                                >
+                                                    {placeText}
+                                                </div>
                                             </div> : <></>}
                                     </>
                                 ) : (

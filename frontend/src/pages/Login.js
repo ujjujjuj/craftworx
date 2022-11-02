@@ -113,10 +113,9 @@ const Login = () => {
                 ) : (
                     <></>
                 )}
-                <div className={styles.error}>
-                    {errorMsg.length ? <i className="fas fa-exclamation-circle"></i> : <></>}
-                    <p id="error-msg">{errorMsg}</p>
-                </div>
+                <p className={styles.error} style={{ opacity: errorMsg.length ? 1 : 0 }}>
+                    <i className="fas fa-exclamation-circle"></i>&nbsp;{errorMsg}
+                </p>
             </main>
         </>
     );

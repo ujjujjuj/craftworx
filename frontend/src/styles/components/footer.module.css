@@ -87,6 +87,7 @@ footer .listWrap ul{
     font-family: 'Poppins';
     padding: 8px 25px;
     border: none;
+    font-size: 13px;
     border-radius: 8px;
 }
 .footContent{

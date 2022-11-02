@@ -11,10 +11,11 @@
   },
   "dependencies": {
     "@strapi/design-system": "^1.1.1",
-    "@strapi/plugin-i18n": "4.1.12",
-    "@strapi/plugin-users-permissions": "4.1.12",
+    "@strapi/plugin-i18n": "4.4.1",
+    "@strapi/plugin-users-permissions": "4.4.1",
     "@strapi/provider-email-nodemailer": "^4.4.3",
-    "@strapi/strapi": "4.1.12",
+    "@strapi/strapi": "4.4.1",
+    "better-sqlite3": "7.4.6",
     "razorpay": "^2.8.1",
     "sqlite3": "5.0.8",
     "uuid": "^8.3.2"

@@ -13,7 +13,7 @@ export const Orders = () => {
     const navigate = useNavigate()
     useEffect(() => {
         if (user.user)
-            fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/getAll?email=${user.user.email}`)
+            fetch(`${process.env.REACT_APP_SERVER_URL}/api/orders/getAll?email=${user.user.email}&user=${user.user.id}`)
                 .then((res) => res.json())
                 .then((data) => {
                     setOrders(data)

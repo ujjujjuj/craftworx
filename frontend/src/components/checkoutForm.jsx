@@ -107,6 +107,9 @@ import States from "./states";
                     type={"tel"}
                     placeholder={"Phone Number"}
                     value={userPayInfo.phnNo}
+                    maxLength="10"
+                    pattern=".{10,}"
+                    minLength="10"
                     onChange={(e) =>
                         setUserPayInfo((userPayInfo) => ({
                             ...userPayInfo,

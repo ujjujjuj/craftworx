@@ -300,6 +300,8 @@ nav .right .crossExpanded {
 }
 
 
+
+
 @media(max-width:1090px) {
     nav {
         padding: 10px 60px;
@@ -310,12 +312,18 @@ nav .right .crossExpanded {
     nav {
         padding: 10px 30px;
     }
+
+    .item.navSearch input {
+        width: 0%;
+    }
 }
 
 @media(max-width:560px) {
     .item.navSearch.stretch {
         max-width: 50%;
     }
+
+
 }
 
 @media(max-width:450px) {

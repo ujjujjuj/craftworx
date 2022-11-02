@@ -38,6 +38,7 @@ input {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    font-size: 13px;
 }
 
 input[type="submit"],

@@ -48,6 +48,10 @@ export const NewPass = () => {
             .then((res) => res.json())
             .then((dat) => {
                 setLoading(false)
+                if (!dat.jwt) {
+                    setError(dat.error.message)
+                    return
+                }
                 navigate("/user/profile")
             })
             .catch((error) => {
@@ -86,15 +90,20 @@ export const NewPass = () => {
                     </div>
                     <button type="submit">Reset</button>
                 </form>
-                <ThreeDots
-                    height="15"
-                    width="50"
-                    radius="20"
-                    color="#54605F"
-                    ariaLabel="three-dots-loading"
-                    wrapperClassName=""
-                    visible={loading}
-                />
+                {loading ? (
+                    <ThreeDots
+                        height="20"
+                        width="40"
+                        radius="10"
+                        color="#54605F"
+                        ariaLabel="three-dots-loading"
+                        wrapperStyle={{ marginTop: "20px" }}
+                        wrapperClassName=""
+                        visible={true}
+                    />
+                ) : (
+                    <></>
+                )}
                 <p className={styles.error} style={{ opacity: error.length ? 1 : 0 }}>
                     <i className="fas fa-exclamation-circle"></i>&nbsp;{error}
                 </p>

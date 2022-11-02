@@ -23,6 +23,7 @@ body {
     transition: color 0.2s ease;
     margin-right: 20px;
     position: relative;
+    white-space: nowrap;
 }
 
 .filter p:nth-last-child(1) {
@@ -317,6 +318,15 @@ input:focus {
 
     .main {
         margin-top: 80px;
+    }
+}
+
+@media(max-width:450px) {
+    .main{
+        padding-inline: 18px;
+    }
+    .products{
+        padding-inline: 18px;
     }
 }
 

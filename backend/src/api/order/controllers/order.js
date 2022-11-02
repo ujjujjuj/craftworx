@@ -209,8 +209,10 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
   },
   async getAll(ctx) {
     if (!ctx.request.query?.email) return;
+    if (!ctx.request.query?.user) return;
+
     const orders = await strapi.db.query("api::order.order").findMany({
-      where: { userEmail: ctx.request.query.email },
+      where: { $or: [{ userEmail: ctx.request.query.email }, { userId: ctx.request.query.user }], isConfirmed: true },
       orderBy: { createdAt: "DESC" },
       populate: true
     });
@@ -402,7 +404,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         )
         .catch((e) => {
           console.log(JSON.stringify(e.response.data, null, 2));
-          throw "nigga";
+          throw "Error";
         });
       console.log(JSON.stringify(shipres.data, null, 2));
       await strapi.db.query("api::order.order").update({
