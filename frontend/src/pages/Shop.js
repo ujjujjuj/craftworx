@@ -4,6 +4,7 @@ import classnames from "classnames";
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { getProducts } from "../api/products";
 
 const dropdownOptions = [
     {
@@ -43,20 +44,24 @@ const Shop = () => {
         categorySelection: 0,
     });
     const products = useRef([]);
+    const [pgNo, setPgNo] = useState(1);
+    const totPages = useRef(0);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        fetch(
-            `${process.env.REACT_APP_SERVER_URL}/api/products?fields=name,price,category,discount,weight,material,length,breadth,height&populate=images&pagination[page]=1&pagination[pageSize]=999`
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                products.current = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
-                setFilteredProducts(products.current);
-                applyFilters();
-                setInit(false);
-            });
-    }, []);
+        setFilteredProducts([])
+        setInit(true)
+        getProducts(pgNo, (data) => {
+            products.current = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
+            setFilteredProducts(products.current);
+            applyFilters();
+            totPages.current = data.meta.pagination.pageCount;
+            setInit(false);
+        })
+    }, [pgNo])
 
     useEffect(() => {
         setFilters({ ...filters, searchQuery: searchParams.get("q") || "" });
@@ -76,6 +81,8 @@ const Shop = () => {
     useEffect(() => {
         applyFilters();
     }, [filters]);
+
+
 
     return (
         <>
@@ -158,6 +165,32 @@ const Shop = () => {
                     filteredProducts.map((product) => <Product key={product.id} shimmer={false} product={product} />)
                 )}
             </section>
+            {totPages.current ?
+                <div className={styles.pagination}>
+                    <i className="fa-solid fa-angle-left" onClick={() => {
+                        if (pgNo > 1)
+                            setPgNo((cur) => cur - 1)
+                    }} style={{ opacity: pgNo === 1 ? 0.4 : 1 }}></i>
+                    <div className={styles.pages}>
+                        {
+                            Array.from({ length: totPages.current }, (_, i) => i + 1).map((x, n) => {
+                                return <div key={n} className={classnames(styles.page, x === pgNo ? styles.active : "")} onClick={
+                                    () => {
+                                        setPgNo(x)
+                                    }
+                                }>
+                                    {x}
+                                </div>;
+                            })
+                        }
+                    </div>
+                    <i className="fa-solid fa-angle-right" onClick={() => {
+                        if (pgNo < totPages.current)
+                            setPgNo((cur) => cur + 1)
+                    }}
+                        style={{ opacity: pgNo === totPages.current ? 0.4 : 1 }}
+                    ></i>
+                </div> : <></>}
         </>
     );
 };

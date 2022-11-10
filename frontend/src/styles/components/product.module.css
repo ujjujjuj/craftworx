@@ -5,12 +5,19 @@
     display: grid;
     column-gap: 70px;
     grid-template-columns: 0.7fr 1.3fr;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 }
 
-.header.sm{
-    min-height: 100vh;
+.header.sm {
+    min-height: 70vh;
 }
+
+.loading{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .header .details {
     display: flex;
     flex-direction: column;
@@ -221,10 +228,12 @@
         height: 0;
         padding-top: 100%;
     }
+
     .details .heading h1 {
         font-size: 1.4em;
     }
-    .cost h1{
+
+    .cost h1 {
         font-size: 1.3em;
     }
 }

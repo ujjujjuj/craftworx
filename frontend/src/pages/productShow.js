@@ -8,20 +8,20 @@ import Product from "./Product";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import useWindowDimensions from "../hooks/windowDimensions";
+import { ThreeDots } from "react-loader-spinner";
 const qs = require('qs');
 const ProductShow = () => {
     const { id } = useParams();
     const [product, setProduct] = useState({});
     const [imgArray, setImgArray] = useState([]);
-    const [isPopVisible, setPopVisible] = useState(true)
+    const [isPopVisible, setPopVisible] = useState(false)
     const [prodQty, setProdQty] = useState(1);
     const [mainImg, setMain] = useState('');
     const { width } = useWindowDimensions();
-    const [isLoading, setLoading] = useState(false)
+    const [isLoading, setLoading] = useState(true)
     const [relatedArray, setRelated] = useState([]);
     useEffect(() => {
         window.scrollTo(0, 0)
-        setLoading(true)
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/products/${id}?fields=*&populate=images`)
             .then((res) => res.json())
             .then((data) => {
@@ -46,9 +46,13 @@ const ProductShow = () => {
                     encodeValuesOnly: true,
                 });
                 setLoading(false)
+                setPopVisible(true)
+
                 fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?${query}&fields=name,price,category&populate=images&pagination[pageSize]=7`).then((res) => res.json()).then((data1) => {
                     if (data1.data.length === 1) {
                         setPopVisible(false)
+                    } else {
+                        setPopVisible(true)
                     }
                     setRelated(data1.data.map((obj) => ({ id: obj.id, ...obj.attributes })).filter(obj => {
                         if (obj.id !== data.data.id)
@@ -57,7 +61,6 @@ const ProductShow = () => {
                             return false
                     }));
                 })
-
             });
     }, [id]);
 
@@ -80,94 +83,106 @@ const ProductShow = () => {
 
     return (
         <>
-
-            <div className={classnames(styles.header, isPopVisible ? "" : styles.sm)}>
-                {
-                    width <= 800 ? <>
-                        <div className={styles.details}>
-                            <div className={styles.heading}>
-                                <Link to="/shop">Back to Shop</Link>
-                                <h1>{product.name}</h1>
-                            </div>
-                            <div className={styles.rating}>
-                                <img src="/images/star.svg" alt="Rating star" />
-                                <img src="/images/star.svg" alt="Rating star" />
-                                <img src="/images/star.svg" alt="Rating star" />
-                                <img src="/images/star.svg" alt="Rating star" />
-                                <p>42 Reviews</p>
-                            </div>
-                            <div className={styles.cost}>
-                                {product.discount > 0 ? <> <h1 className={styles.slash}>₹ {(product.price / 100).toFixed(2)}</h1>
-                                </> : <></>}
-                                <div className={styles.discWrap}>
-                                    <h1>₹ {product.price ? (productFinalAmt / 100).toFixed(2) : ""}</h1>   {product.discount > 0 ? <p>{product.discount}% off</p> : <></>}
+            {isLoading ?
+                <div className={classNames(styles.sm, styles.header, styles.loading)}>
+                    <ThreeDots
+                        height="25"
+                        width="50"
+                        radius="5"
+                        color="#54605F"
+                        ariaLabel="three-dots-loading"
+                        wrapperStyle={{ marginTop: "20px" }}
+                        wrapperClassName=""
+                        visible={true}
+                    />
+                </div> :
+                <div className={classnames(styles.header, isPopVisible ? "" : styles.sm)}>
+                    {
+                        width <= 800 ? <>
+                            <div className={styles.details}>
+                                <div className={styles.heading}>
+                                    <Link to="/shop">Back to Shop</Link>
+                                    <h1>{product.name}</h1>
+                                </div>
+                                <div className={styles.rating}>
+                                    <img src="/images/star.svg" alt="Rating star" />
+                                    <img src="/images/star.svg" alt="Rating star" />
+                                    <img src="/images/star.svg" alt="Rating star" />
+                                    <img src="/images/star.svg" alt="Rating star" />
+                                    <p>42 Reviews</p>
+                                </div>
+                                <div className={styles.cost}>
+                                    {product.discount > 0 ? <> <h1 className={styles.slash}>₹ {(product.price / 100).toFixed(2)}</h1>
+                                    </> : <></>}
+                                    <div className={styles.discWrap}>
+                                        <h1>₹ {product.price ? (productFinalAmt / 100).toFixed(2) : ""}</h1>   {product.discount > 0 ? <p>{product.discount}% off</p> : <></>}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </> : <></>
-                }
-                <div className={styles.gallery}>
-                    <div className={styles.mainImg} style={{ backgroundImage: `url('${mainImg?.length ? process.env.REACT_APP_SERVER_URL + mainImg : ""}')` }}>
-                    </div>
-                    <div className={styles.imgList}>
-                        {
-                            imgArray.map((e, n) => {
-                                return <div alt="small" key={n} data-url={e.url} data-index={n} onClick={(e) => { smallClick(e) }} className={classNames(styles.smallImg, e.active ? styles.selected : "")} style={{ backgroundImage: `url('${process.env.REACT_APP_SERVER_URL + e.url}')` }}></div>
-                            })
-                        }
-                    </div>
-                </div>
-                <div className={styles.details}>
-                    {width <= 800 ? <></> :
-                        <>
-                            <div className={styles.heading}>
-                                <Link to="/shop">Back to Shop</Link>
-                                <h1>{product.name}</h1>
-                            </div>
-                            <div className={styles.rating}>
-                                <img src="/images/star.svg" alt="Rating star" />
-                                <img src="/images/star.svg" alt="Rating star" />
-                                <img src="/images/star.svg" alt="Rating star" />
-                                <img src="/images/star.svg" alt="Rating star" />
-                                <p>42 Reviews</p>
-                            </div>
-                            <div className={styles.cost}>
-                                {product.discount > 0 ? <> <h1 className={styles.slash}>₹ {(product.price / 100).toFixed(2)}</h1>
-                                </> : <></>}
-                                <div className={styles.discWrap}>
-                                    <h1>₹ {product.price ? (productFinalAmt / 100).toFixed(2) : ""}</h1>   {product.discount > 0 ? <p>{product.discount}% off</p> : <></>}
-                                </div>
-                            </div>
-                        </>
+                        </> : <></>
                     }
-                    <p className={styles.desc}>
-                        {product.description}
-                    </p>
-                    <div className={styles.foot}>
-                        <div className="styles.qtyWrap">
-                            <p>Quantity</p>
-                            <div className={styles.qtyWrap}>
-                                <div className={styles.alter} onClick={(e) => {
-                                    setProdQty((prodQty - 1) > 0 ? (prodQty - 1) : 1)
-                                }} >
-                                    <i className="fas fa-minus"></i>
+                    <div className={styles.gallery}>
+                        <div className={styles.mainImg} style={{ backgroundImage: `url('${mainImg?.length ? process.env.REACT_APP_SERVER_URL + mainImg : ""}')` }}>
+                        </div>
+                        <div className={styles.imgList}>
+                            {
+                                imgArray.map((e, n) => {
+                                    return <div alt="small" key={n} data-url={e.url} data-index={n} onClick={(e) => { smallClick(e) }} className={classNames(styles.smallImg, e.active ? styles.selected : "")} style={{ backgroundImage: `url('${process.env.REACT_APP_SERVER_URL + e.url}')` }}></div>
+                                })
+                            }
+                        </div>
+                    </div>
+                    <div className={styles.details}>
+                        {width <= 800 ? <></> :
+                            <>
+                                <div className={styles.heading}>
+                                    <Link to="/shop">Back to Shop</Link>
+                                    <h1>{product.name}</h1>
                                 </div>
-                                <input
-                                    type="number"
-                                    value={prodQty}
-                                    readOnly
-                                ></input>
-                                <div className={styles.alter} onClick={(e) => {
-                                    setProdQty(prodQty + 1)
-                                }}>
-                                    <i className="fas fa-plus"></i>
+                                <div className={styles.rating}>
+                                    <img src="/images/star.svg" alt="Rating star" />
+                                    <img src="/images/star.svg" alt="Rating star" />
+                                    <img src="/images/star.svg" alt="Rating star" />
+                                    <img src="/images/star.svg" alt="Rating star" />
+                                    <p>42 Reviews</p>
+                                </div>
+                                <div className={styles.cost}>
+                                    {product.discount > 0 ? <> <h1 className={styles.slash}>₹ {(product.price / 100).toFixed(2)}</h1>
+                                    </> : <></>}
+                                    <div className={styles.discWrap}>
+                                        <h1>₹ {product.price ? (productFinalAmt / 100).toFixed(2) : ""}</h1>   {product.discount > 0 ? <p>{product.discount}% off</p> : <></>}
+                                    </div>
+                                </div>
+                            </>
+                        }
+                        <p className={styles.desc}>
+                            {product.description}
+                        </p>
+                        <div className={styles.foot}>
+                            <div className="styles.qtyWrap">
+                                <p>Quantity</p>
+                                <div className={styles.qtyWrap}>
+                                    <div className={styles.alter} onClick={(e) => {
+                                        setProdQty((prodQty - 1) > 0 ? (prodQty - 1) : 1)
+                                    }} >
+                                        <i className="fas fa-minus"></i>
+                                    </div>
+                                    <input
+                                        type="number"
+                                        value={prodQty}
+                                        readOnly
+                                    ></input>
+                                    <div className={styles.alter} onClick={(e) => {
+                                        setProdQty(prodQty + 1)
+                                    }}>
+                                        <i className="fas fa-plus"></i>
+                                    </div>
                                 </div>
                             </div>
+                            <AddToCart ctx="pView" qty={prodQty} product={product} />
                         </div>
-                        <AddToCart ctx="pView" qty={prodQty} product={product} />
                     </div>
-                </div>
-            </div>
+                </div>}
             <section className={classnames(styles1.homeSec1, !isPopVisible ? styles1.hidden : "")}>
                 <div className={styles1.title}>
                     <p>More products like this</p>
