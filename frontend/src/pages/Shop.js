@@ -74,6 +74,10 @@ const Shop = () => {
     }
 
     useEffect(() => {
+        console.log("re-render")
+    })
+
+    useEffect(() => {
         window.scrollTo(0, 0);
         fetch("https://api.craftworxagra.co.in/api/categories").then((res) => res.json()).then((data) => {
             setCategs([...categories, ...data.data.map((x) => getCateg(x)).sort(sortCateg)])
@@ -106,6 +110,8 @@ const Shop = () => {
         if (firstUpdate.current) {
             firstUpdate.current = false;
         } else {
+            setFilteredProducts([])
+            setInit(true)
             setPgNo(1)
             getProducts(1, categs[cat].id, updateProducts);
         }

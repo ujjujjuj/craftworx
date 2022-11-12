@@ -22,7 +22,7 @@ const ProductShow = () => {
     const [relatedArray, setRelated] = useState([]);
     useEffect(() => {
         window.scrollTo(0, 0)
-        fetch(`${process.env.REACT_APP_SERVER_URL}/api/products/${id}?fields=*&populate=images`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/api/products/${id}?fields=*&populate=images,prod_categories`)
             .then((res) => res.json())
             .then((data) => {
                 setProduct({
@@ -38,8 +38,10 @@ const ProductShow = () => {
                 setMain(data.data.attributes.images.data[0].attributes.url)
                 const query = qs.stringify({
                     filters: {
-                        category: {
-                            $eq: data.data.attributes.category,
+                        prod_categories: {
+                            id: {
+                                $in: data.data.attributes.prod_categories.data.map((x) => x.id)
+                            }
                         },
                     },
                 }, {
@@ -48,7 +50,8 @@ const ProductShow = () => {
                 setLoading(false)
                 setPopVisible(true)
 
-                fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?${query}&fields=name,price,category&populate=images&pagination[pageSize]=7`).then((res) => res.json()).then((data1) => {
+                fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?${query}&fields=name,price&populate=images&pagination[pageSize]=7`).then((res) => res.json()).then((data1) => {
+                    console.log(data1)
                     if (data1.data.length === 1) {
                         setPopVisible(false)
                     } else {
