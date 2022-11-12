@@ -10,6 +10,8 @@ body {
 .header {
     display: flex;
     align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 25px;
 }
 
 .filter {
@@ -95,9 +97,13 @@ input:focus {
     border-radius: 4px;
     justify-content: space-between;
     align-items: center;
-    margin-left: 25px;
     font-size: 0.9em;
     cursor: pointer;
+}
+
+.sort {
+    width: 20%;
+    min-width: 230px;
 }
 
 .sort p {
@@ -107,7 +113,13 @@ input:focus {
     -khtml-user-select: none;
     -webkit-user-select: none;
     -o-user-select: none;
-    padding-right: 30px;
+    padding-right: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
 }
 
 
@@ -126,6 +138,7 @@ input:focus {
     background-color: #FFFBFB;
     transition: all 0.3s ease;
     border-radius: 4px;
+    overflow: scroll;
     list-style: none;
     border: 1px solid #8D8D8D;
 
@@ -136,6 +149,10 @@ input:focus {
     pointer-events: all;
     padding: 8px 0;
     visibility: visible;
+}
+
+.sort.sort.categ ul.ulExpanded {
+    max-height: 200px;
 }
 
 .sort ul li {
@@ -210,6 +227,7 @@ input:focus {
     column-gap: 6vw;
     min-height: 80vh;
     row-gap: 50px;
+    margin-top: 30px;
     padding-bottom: 70px;
     grid-template-columns: 1fr 1fr 1fr;
 }
@@ -281,7 +299,11 @@ input:focus {
         padding-inline: 30px;
     }
 
-    .pagination{
+    .header {
+        gap: 20px;
+    }
+
+    .pagination {
         padding-inline: 30px;
     }
 }
@@ -301,6 +323,26 @@ input:focus {
     .products {
         grid-template-columns: 1fr 1fr;
     }
+
+    .header .searchBox {
+        width: 100%;
+        margin: 0;
+    }
+    
+    .header{
+        row-gap: 15px;
+    }
+
+
+    .header .searchBox input {
+        width: 100%;
+    }
+
+    .sort {
+        min-width: auto;
+        width: calc(50% - 10px);
+    }
+
 
 }
 
@@ -325,20 +367,10 @@ input:focus {
         justify-content: center;
     }
 
-    .sort {
-        margin-left: 18px;
-        width: 18em;
+    .sort{
+        width: 100%;
     }
 
-    .sort p {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        min-width: -moz-fit-content;
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
-    }
 }
 
 @media (max-width:478px) {
@@ -347,18 +379,6 @@ input:focus {
         align-items: center;
     }
 
-    .header>* {
-        width: 100%;
-        margin: 0;
-    }
-
-    .header .searchBox input {
-        width: 100%;
-    }
-
-    .sort {
-        margin-top: 15px;
-    }
 
     .main {
         margin-top: 80px;
@@ -370,7 +390,7 @@ input:focus {
         padding-inline: 18px;
     }
 
-    .pagination{
+    .pagination {
         padding-inline: 18px;
     }
 

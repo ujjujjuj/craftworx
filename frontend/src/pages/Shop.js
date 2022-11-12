@@ -31,36 +31,60 @@ const dropdownOptions = [
     },
 ];
 
-const categories = ["All", "MDF Boards/Boxes", "Pinewood", "Tissue Box"];
+const categories = [{
+    id: -1,
+    name: "All"
+}];
+
+const getCateg = (x) => {
+    return {
+        id: x.id,
+        name: x.attributes.name
+    }
+}
+
+const sortCateg = (a, b) => {
+    var textA = a.name.toUpperCase();
+    var textB = b.name.toUpperCase();
+    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+};
 
 const Shop = () => {
     const [init, setInit] = useState(true);
+    const [categs, setCategs] = useState(categories);
     const [searchParams] = useSearchParams();
     const [dropState, setDropState] = useState(false);
+    const [catDropState, setCatDropState] = useState(false);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [filters, setFilters] = useState({
         searchQuery: searchParams.get("q") || "",
-        dropdownSelection: 0,
-        categorySelection: 0,
+        dropdownSelection: 0
     });
     const products = useRef([]);
     const [pgNo, setPgNo] = useState(1);
-    const totPages = useRef(0);
+    const [totPages, setTotPages] = useState(0);
+    const [cat, setCat] = useState(0);
+    const firstUpdate = useRef(true);
+    const updateProducts = (data) => {
+        products.current = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
+        setFilteredProducts(products.current);
+        applyFilters();
+        setTotPages(data.meta.pagination.pageCount);
+        setInit(false);
+    }
+
     useEffect(() => {
         window.scrollTo(0, 0);
+        fetch("https://api.craftworxagra.co.in/api/categories").then((res) => res.json()).then((data) => {
+            setCategs([...categories, ...data.data.map((x) => getCateg(x)).sort(sortCateg)])
+        })
     }, []);
 
     useEffect(() => {
         window.scrollTo(0, 0);
         setFilteredProducts([])
         setInit(true)
-        getProducts(pgNo, (data) => {
-            products.current = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
-            setFilteredProducts(products.current);
-            applyFilters();
-            totPages.current = data.meta.pagination.pageCount;
-            setInit(false);
-        })
+        getProducts(pgNo, categs[cat].id, updateProducts)
     }, [pgNo])
 
     useEffect(() => {
@@ -70,11 +94,7 @@ const Shop = () => {
     const applyFilters = () => {
         let filtered = products.current;
         filtered = dropdownOptions[filters.dropdownSelection].func(filtered);
-        filtered = filtered.filter(
-            (prod) => filters.categorySelection === 0 || prod.category === categories[filters.categorySelection]
-        );
         filtered = filtered.filter((prod) => prod.name.toLowerCase().includes(filters.searchQuery.toLowerCase()));
-
         setFilteredProducts(filtered);
     };
 
@@ -82,7 +102,14 @@ const Shop = () => {
         applyFilters();
     }, [filters]);
 
-
+    useEffect(() => {
+        if (firstUpdate.current) {
+            firstUpdate.current = false;
+        } else {
+            setPgNo(1)
+            getProducts(1, categs[cat].id, updateProducts);
+        }
+    }, [cat])
 
     return (
         <>
@@ -112,7 +139,24 @@ const Shop = () => {
                             <p>Lorem Ipsum ipsum ipsum ipsum ipsum </p>
                         </div>
                     </div>
-                    <div className={styles.sort} onClick={() => setDropState((x) => !x)}>
+                    <div className={classnames(styles.sort, styles.categ)} onClick={() => { setCatDropState((x) => !x); setDropState(false); }}>
+                        <p unselectable="on">
+                            Category: <span id="sort-label">{categs[cat].name}</span>{" "}
+                        </p>
+                        <ul className={classnames(styles.dropList, catDropState ? styles.ulExpanded : "")}>
+                            {categs.map((categ, index) => (
+                                <li
+                                    key={index}
+                                    onClick={() => setCat(index)}
+                                    className={index === cat ? styles.selected : ""}
+                                >
+                                    {categ.name}
+                                </li>
+                            ))}
+                        </ul>
+                        <img src="/images/drop.svg" className={catDropState ? styles.rotate : ""} alt="" />
+                    </div>
+                    <div className={styles.sort} onClick={() => { setDropState((x) => !x); setCatDropState(false); }}>
                         <p unselectable="on">
                             Sort By: <span id="sort-label">{dropdownOptions[filters.dropdownSelection].text}</span>{" "}
                         </p>
@@ -134,22 +178,7 @@ const Shop = () => {
                         </ul>
                         <img src="/images/drop.svg" className={dropState ? styles.rotate : ""} alt="" />
                     </div>
-                </div>
-                <div className={styles.filter}>
-                    {categories.map((_category, index) => (
-                        <p
-                            className={index === filters.categorySelection ? styles.active : ""}
-                            onClick={() =>
-                                setFilters((_filters) => ({
-                                    ..._filters,
-                                    categorySelection: index,
-                                }))
-                            }
-                            key={index}
-                        >
-                            {_category}
-                        </p>
-                    ))}
+
                 </div>
             </div>
 
@@ -165,30 +194,88 @@ const Shop = () => {
                     filteredProducts.map((product) => <Product key={product.id} shimmer={false} product={product} />)
                 )}
             </section>
-            {totPages.current ?
+            {totPages ?
                 <div className={styles.pagination}>
                     <i className="fa-solid fa-angle-left" onClick={() => {
                         if (pgNo > 1)
                             setPgNo((cur) => cur - 1)
                     }} style={{ opacity: pgNo === 1 ? 0.4 : 1 }}></i>
+
                     <div className={styles.pages}>
                         {
-                            Array.from({ length: totPages.current }, (_, i) => i + 1).map((x, n) => {
-                                return <div key={n} className={classnames(styles.page, x === pgNo ? styles.active : "")} onClick={
+                            totPages < 5 ?
+                                Array.from({ length: totPages }, (_, i) => i + 1).map((x, n) => {
+                                    return <div key={n} className={classnames(styles.page, x === pgNo ? styles.active : "")} onClick={
+                                        () => {
+                                            setPgNo(x)
+                                        }
+                                    }>
+                                        {x}
+                                    </div>;
+                                }) :
+                                pgNo < 4 ? [...(pgNo === 3 ? [1, 2, 3, 4] : [1, 2, 3]).map((x, n) => {
+                                    return <div key={n} className={classnames(styles.page, x === pgNo ? styles.active : "")} onClick={
+                                        () => {
+                                            setPgNo(x)
+                                        }
+                                    }>
+                                        {x}
+                                    </div>;
+                                }), <div key={-1} className={classnames(styles.page)}>...</div>, <div key={totPages} className={classnames(styles.page)} onClick={
                                     () => {
-                                        setPgNo(x)
+                                        setPgNo(totPages)
                                     }
                                 }>
-                                    {x}
-                                </div>;
-                            })
+                                    {totPages}
+                                </div>] : pgNo > (totPages - 3) ? [<div key={0} className={classnames(styles.page)} onClick={
+                                    () => {
+                                        setPgNo(1)
+                                    }
+                                }>
+                                    {1}
+                                </div>,
+                                <div key={-1} className={classnames(styles.page)}>...</div>,
+                                Array.from({ length: 3 }, (_, i) => i + totPages - 2).map((x, n) => {
+                                    return <div key={n} className={classnames(styles.page, x === pgNo ? styles.active : "")} onClick={
+                                        () => {
+                                            setPgNo(x)
+                                        }
+                                    }>
+                                        {x}
+                                    </div>;
+                                })] : [
+                                    <div key={0} className={classnames(styles.page)} onClick={
+                                        () => {
+                                            setPgNo(1)
+                                        }
+                                    }>
+                                        {1}
+                                    </div>, <div key={-1} className={classnames(styles.page)}>...</div>,
+                                    Array.from({ length: 3 }, (_, i) => i + pgNo - 1).map((x, n) => {
+                                        console.log(x)
+                                        return <div key={n} className={classnames(styles.page, x === pgNo ? styles.active : "")} onClick={
+                                            () => {
+                                                setPgNo(x)
+                                            }
+                                        }>
+                                            {x}
+                                        </div>;
+                                    }), <div key={-2} className={classnames(styles.page)}>...</div>,
+                                    <div key={totPages} className={classnames(styles.page)} onClick={
+                                        () => {
+                                            setPgNo(totPages)
+                                        }
+                                    }>
+                                        {totPages}
+                                    </div>
+                                ]
                         }
                     </div>
                     <i className="fa-solid fa-angle-right" onClick={() => {
-                        if (pgNo < totPages.current)
+                        if (pgNo < totPages)
                             setPgNo((cur) => cur + 1)
                     }}
-                        style={{ opacity: pgNo === totPages.current ? 0.4 : 1 }}
+                        style={{ opacity: pgNo === totPages ? 0.4 : 1 }}
                     ></i>
                 </div> : <></>}
         </>
