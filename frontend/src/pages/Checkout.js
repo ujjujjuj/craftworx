@@ -81,6 +81,20 @@ const Checkout = () => {
         }
     };
 
+    useEffect(() => {
+        if (shippingOptions.data.length) {
+            setShipOptions({
+                currentSelected: -1,
+                data: [],
+            });
+            setShippingCost(0);
+            document
+                .querySelector(`.${styles1.shipLoadStatus}`)
+                .classList.add(styles1.hidden);
+            startShipProcess()
+        }
+    }, [checkoutCart])
+
     const dismissCallback = () => {
         setPlaceText("Place Order");
     };

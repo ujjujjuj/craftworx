@@ -66,16 +66,13 @@ const Shop = () => {
     const [cat, setCat] = useState(0);
     const firstUpdate = useRef(true);
     const updateProducts = (data) => {
+        window.scrollTo(0, 0);
         products.current = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
         setFilteredProducts(products.current);
         applyFilters();
         setTotPages(data.meta.pagination.pageCount);
         setInit(false);
     }
-
-    useEffect(() => {
-        console.log("re-render")
-    })
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -85,11 +82,17 @@ const Shop = () => {
     }, []);
 
     useEffect(() => {
-        window.scrollTo(0, 0);
         setFilteredProducts([])
         setInit(true)
         getProducts(pgNo, categs[cat].id, updateProducts)
     }, [pgNo])
+
+
+    useEffect(() => {
+        if (filteredProducts.length === 0) {
+            window.scrollTo(0, 0);
+        }
+    }, [filteredProducts])
 
     useEffect(() => {
         setFilters({ ...filters, searchQuery: searchParams.get("q") || "" });
@@ -205,7 +208,7 @@ const Shop = () => {
                     <i className="fa-solid fa-angle-left" onClick={() => {
                         if (pgNo > 1)
                             setPgNo((cur) => cur - 1)
-                    }} style={{ opacity: pgNo === 1 ? 0.4 : 1 }}></i>
+                    }} style={{ opacity: pgNo === 1 ? 0.4 : 1, cursor: pgNo === 1 ? "auto" : "pointer" }}></i>
 
                     <div className={styles.pages}>
                         {
@@ -281,7 +284,7 @@ const Shop = () => {
                         if (pgNo < totPages)
                             setPgNo((cur) => cur + 1)
                     }}
-                        style={{ opacity: pgNo === totPages ? 0.4 : 1 }}
+                        style={{ opacity: pgNo === totPages ? 0.4 : 1, cursor: pgNo === totPages ? "auto" : "pointer" }}
                     ></i>
                 </div> : <></>}
         </>
