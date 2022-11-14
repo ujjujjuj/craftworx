@@ -58,6 +58,9 @@
     },
     "prodDescription": {
       "type": "richtext"
+    },
+    "count": {
+      "type": "integer"
     }
   }
 }

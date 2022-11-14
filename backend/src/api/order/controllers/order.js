@@ -30,24 +30,30 @@ const getShiprocketToken = (() => {
 })();
 
 const getEmailHtml = (user, order, products) => {
-
-  let items = ``
+  let items = ``;
   products.map((prod, index) => {
     items += `
     <tr>
         <td>
-            <img src="https://api.craftworxagra.co.in${prod.images[0].url}" style="width: 90px; height:90px; object-fit: cover;border-radius: 7px;"/>
+            <img src="https://api.craftworxagra.co.in${
+              prod.images[0].url
+            }" style="width: 90px; height:90px; object-fit: cover;border-radius: 7px;"/>
         </td>
         <td style="width: 20px;"></td>
         <td>
-            <p style="font-weight: 500; font-size: 16px; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">${prod.name}&nbsp;<small style="color: black; opacity: 0.5;">x${order.items[prod.id]}</small>
+            <p style="font-weight: 500; font-size: 16px; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">${
+              prod.name
+            }&nbsp;<small style="color: black; opacity: 0.5;">x${
+      order.items[prod.id]
+    }</small>
             </p>
         </td>
     </tr>
-  `
-  })
+  `;
+  });
 
-  return `
+  return (
+    `
         <table style="font-family: 'Poppins','Google Sans',Roboto,sans-serif; width:fit-content; border-collapse:collapse;" cellspacing="0">
         <tr>
             <td>
@@ -56,7 +62,9 @@ const getEmailHtml = (user, order, products) => {
         </tr>
         <tr>
             <td>
-                <h1 style="color: #54605F; font-family: 'Poppins','Google Sans',Roboto,sans-serif; font-weight: 600; font-size: 24px; margin-top: 30px;">Thanks for shopping, ${user.fName}!</h1>
+                <h1 style="color: #54605F; font-family: 'Poppins','Google Sans',Roboto,sans-serif; font-weight: 600; font-size: 24px; margin-top: 30px;">Thanks for shopping, ${
+                  user.fName
+                }!</h1>
             </td>
         </tr>
         <tr>
@@ -66,7 +74,13 @@ const getEmailHtml = (user, order, products) => {
         </tr>
         <tr>
             <td>
-                <p style="color: black; font-size: 15px; font-family: 'Poppins','Google Sans',Roboto,sans-serif; margin-bottom: 0; margin-top: 18px;">${new Date(order.createdAt).toLocaleString("en", { year: "numeric", month: "long", day: "numeric" })}</p>
+                <p style="color: black; font-size: 15px; font-family: 'Poppins','Google Sans',Roboto,sans-serif; margin-bottom: 0; margin-top: 18px;">${new Date(
+                  order.createdAt
+                ).toLocaleString("en", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}</p>
             </td>
         </tr>
         <tr>
@@ -80,7 +94,9 @@ const getEmailHtml = (user, order, products) => {
         <tr>
             <td>
                 <table class="orders" style="border-spacing:0 10px; margin-top: 10px;">
-                   `+ items + `
+                   ` +
+    items +
+    `
                 </table>
             </td>
         </tr>
@@ -109,17 +125,23 @@ const getEmailHtml = (user, order, products) => {
                         <tr>
                             <td style="font-family: 'Poppins','Google Sans',Roboto,sans-serif;">Subtotal (tax inclusive)</td>
                             <td style="width: 40px;"></td>
-                            <td style="text-align: right; font-weight: 500; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">₹ ${(order.amount - order.shipping) / 100}</td>
+                            <td style="text-align: right; font-weight: 500; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">₹ ${
+                              (order.amount - order.shipping) / 100
+                            }</td>
                         </tr>
                         <tr>
                             <td style="font-family: 'Poppins','Google Sans',Roboto,sans-serif;">Shipping</td>
                             <td></td>
-                            <td style="text-align: right; font-weight: 500; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">₹ ${(order.shipping) / 100}</td>
+                            <td style="text-align: right; font-weight: 500; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">₹ ${
+                              order.shipping / 100
+                            }</td>
                         </tr>
                         <tr>
                             <th style="text-align: left; font-weight: 600; font-size: 1.1rem; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">Total</th>
                             <td></td>
-                            <td style="font-size: 1.1rem; text-align: right; font-weight: 600; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">₹ ${(order.amount) / 100}</td>
+                            <td style="font-size: 1.1rem; text-align: right; font-weight: 600; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">₹ ${
+                              order.amount / 100
+                            }</td>
                         </tr>
                     </tbody>
                 </table>
@@ -130,7 +152,9 @@ const getEmailHtml = (user, order, products) => {
                 <table>
                     <tr>
                         <td>
-                            <a href="https://craftworxagra.co.in/order?id=${order.orderId}" target="_blank" style="text-decoration: none; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">
+                            <a href="https://craftworxagra.co.in/order?id=${
+                              order.orderId
+                            }" target="_blank" style="text-decoration: none; font-family: 'Poppins','Google Sans',Roboto,sans-serif;">
                                 <div style="background:#54605F; padding: 9px 30px; font-size: 0.85rem; color: white; margin-top: 10px; border-radius: 8px; border: 2px solid #54605F; ">View Order</div>
                             </a>
                         </td>
@@ -153,8 +177,8 @@ const getEmailHtml = (user, order, products) => {
         </tr>
       </table>
     `
-}
-
+  );
+};
 
 const getShiprocketOptions = async (pinCode, weight) => {
   let params = {
@@ -166,7 +190,7 @@ const getShiprocketOptions = async (pinCode, weight) => {
   return await axios
     .get(
       "https://apiv2.shiprocket.in/v1/external/courier/serviceability?" +
-      new URLSearchParams(params),
+        new URLSearchParams(params),
       {
         headers: {
           Authorization: `Bearer ${getShiprocketToken()}`,
@@ -212,9 +236,15 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
     if (!ctx.request.query?.user) return;
 
     const orders = await strapi.db.query("api::order.order").findMany({
-      where: { $or: [{ userEmail: ctx.request.query.email }, { userId: ctx.request.query.user }], isConfirmed: true },
+      where: {
+        $or: [
+          { userEmail: ctx.request.query.email },
+          { userId: ctx.request.query.user },
+        ],
+        isConfirmed: true,
+      },
       orderBy: { createdAt: "DESC" },
-      populate: true
+      populate: true,
     });
     if (orders === null) return;
     let orderDets = [];
@@ -256,8 +286,8 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           (prev, next) =>
             prev +
             ctx.request.body.cart[next.id] *
-            next.price *
-            (1 - next.discount / 100),
+              next.price *
+              (1 - next.discount / 100),
           0
         ) *
           1.18) /
@@ -290,7 +320,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           ctx
         );
         userId = user.id;
-      } catch (err) { }
+      } catch (err) {}
     }
 
     const entry = await strapi.db.query("api::order.order").create({
@@ -329,12 +359,11 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
       .createHmac("sha256", process.env.RAZORPAY_SECRET)
       .update(
         ctx.request.body.razorpay_order_id +
-        "|" +
-        ctx.request.body.razorpay_payment_id
+          "|" +
+          ctx.request.body.razorpay_payment_id
       )
       .digest("hex");
 
-    console.log(hash);
     if (hash === ctx.request.body.razorpay_signature) {
       const order = await strapi.db
         .query("api::order.order")
@@ -406,7 +435,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           console.log(JSON.stringify(e.response.data, null, 2));
           throw "Error";
         });
-      console.log(JSON.stringify(shipres.data, null, 2));
+
       await strapi.db.query("api::order.order").update({
         where: { orderId: ctx.request.body.razorpay_order_id },
         data: {
@@ -414,6 +443,13 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           shiprocketId: shipres.data.order_id,
           shippingId: shipres.data.shipment_id,
         },
+      });
+      Object.entries(order.items).forEach(([itemId, amt]) => {
+        itemId = parseInt(itemId);
+        const cnt = products.find((prod) => prod.id === itemId)?.count || 0;
+        strapi.db
+          .query("api::product.product")
+          .update({ where: { id: itemId }, data: { count: cnt + amt } });
       });
       ctx.body = { error: false };
       strapi
@@ -437,6 +473,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
   },
 
   async getShipOptions(ctx) {
+    console.log(ctx.request.body);
     let res = await getShiprocketOptions(
       ctx.request.body.delivery_postcode,
       ctx.request.body.weight / 1000
