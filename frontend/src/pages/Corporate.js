@@ -10,14 +10,9 @@ const Corporate = () => {
         email: "",
         desc: ""
     })
-    const [imgLoaded, setImgLoaded] = useState(false);
+    const [imgLoaded, setImgLoaded] = useState(true);
     useEffect(() => {
         window.scrollTo(0, 0);
-        const img = new Image();
-        img.src = 'https://api.craftworxagra.co.in/uploads/corp_b2e4959f33.jpg'
-        img.onload = () => {
-            setImgLoaded(true)
-        }
     }, []);
 
     const handleSubmit = (e) => {

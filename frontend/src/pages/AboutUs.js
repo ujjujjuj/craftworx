@@ -56,20 +56,12 @@ const About = () => {
         }
     };
 
-    const [imgLoaded, setImgLoaded] = useState(false);
+    const [imgLoaded, setImgLoaded] = useState(true);
 
     useEffect(() => {
         document.title = "Craftworx | Contact Us"
         window.scrollTo(0, 0);
-        const img = new Image();
-        img.src = "../images/aboutUs.png"
-        img.onload = () => {
-            setImgLoaded(true)
-        }
-        if (!isAnim) {
-            init()
-            setIsAnim(true)
-        }
+
 
     }, []);
 

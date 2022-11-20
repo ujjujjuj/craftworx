@@ -5,29 +5,26 @@ import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { getProducts } from "../api/products";
+import useWindowDimensions from "../hooks/windowDimensions";
+import OutsideAlerter from "../components/outsideClickDiv";
+import { NotFound } from "../components/NotFound";
 
 const dropdownOptions = [
     {
-        text: "Relevance",
-        func: (arr) => arr,
+        text: "Popularity",
+        sortTag: "count%3Adesc",
     },
     {
         text: "Price: Low to High",
-        func: (arr) => {
-            arr.sort((a, b) => (a.price < b.price ? -1 : 1));
-            return arr;
-        },
+        sortTag: "price%3Aasc",
     },
     {
         text: "Price: High to Low",
-        func: (arr) => {
-            arr.sort((a, b) => (a.price > b.price ? -1 : 1));
-            return arr;
-        },
+        sortTag: "price%3Adesc"
     },
     {
         text: "Newest Arrivals",
-        func: (arr) => arr,
+        sortTag: "createdAt%3Adesc",
     },
 ];
 
@@ -69,10 +66,11 @@ const Shop = () => {
         window.scrollTo(0, 0);
         products.current = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
         setFilteredProducts(products.current);
-        applyFilters();
+        // applyFilters();
         setTotPages(data.meta.pagination.pageCount);
         setInit(false);
     }
+    const { width } = useWindowDimensions();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -84,9 +82,35 @@ const Shop = () => {
     useEffect(() => {
         setFilteredProducts([])
         setInit(true)
-        getProducts(pgNo, categs[cat].id, updateProducts)
-    }, [pgNo])
+        getProducts(pgNo, categs[cat].id, updateProducts, width < 1650 ? 21 : 24, dropdownOptions[filters.dropdownSelection].sortTag, filters.searchQuery)
+    }, [pgNo, filters.dropdownSelection]);
 
+    useEffect(() => {
+
+        let timer;
+        const srch = () => {
+            setFilteredProducts([])
+            setInit(true)
+            getProducts(pgNo, categs[cat].id, updateProducts, width < 1650 ? 21 : 24, dropdownOptions[filters.dropdownSelection].sortTag, filters.searchQuery)
+        }
+        if (firstUpdate.current) {
+            firstUpdate.current = false;
+        } else if (filters.searchQuery === "") {
+            srch()
+        } else {
+            timer = setTimeout(() => {
+                srch()
+            }, 500);
+        }
+        return () => clearTimeout(timer)
+
+    }, [filters.searchQuery]);
+
+    const search = () => {
+        setFilteredProducts([])
+        setInit(true)
+        getProducts(pgNo, categs[cat].id, updateProducts, width < 1650 ? 21 : 24, dropdownOptions[filters.dropdownSelection].sortTag, filters.searchQuery)
+    }
 
     useEffect(() => {
         if (filteredProducts.length === 0) {
@@ -98,16 +122,7 @@ const Shop = () => {
         setFilters({ ...filters, searchQuery: searchParams.get("q") || "" });
     }, [searchParams]);
 
-    const applyFilters = () => {
-        let filtered = products.current;
-        filtered = dropdownOptions[filters.dropdownSelection].func(filtered);
-        filtered = filtered.filter((prod) => prod.name.toLowerCase().includes(filters.searchQuery.toLowerCase()));
-        setFilteredProducts(filtered);
-    };
 
-    useEffect(() => {
-        applyFilters();
-    }, [filters]);
 
     useEffect(() => {
         if (firstUpdate.current) {
@@ -116,9 +131,10 @@ const Shop = () => {
             setFilteredProducts([])
             setInit(true)
             setPgNo(1)
-            getProducts(1, categs[cat].id, updateProducts);
+            getProducts(1, categs[cat].id, updateProducts, width < 1650 ? 21 : 24, dropdownOptions[filters.dropdownSelection].sortTag, filters.searchQuery);
         }
     }, [cat])
+
 
     return (
         <>
@@ -140,15 +156,20 @@ const Shop = () => {
                                     searchQuery: e.target.value,
                                 }))
                             }
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    search()
+                                }
+                            }}
                         />
-                        <img src="/images/search.svg" alt="search" />
+                        <img src="/images/search.svg" alt="search" onClick={search} />
                         <div className={styles.suggestion}>
                             <p>Lorem Ipsum ipsum ipsum ipsum ipsum </p>
                             <p>Lorem Ipsum ipsum ipsum ipsum ipsum </p>
                             <p>Lorem Ipsum ipsum ipsum ipsum ipsum </p>
                         </div>
                     </div>
-                    <div className={classnames(styles.sort, styles.categ)} onClick={() => { setCatDropState((x) => !x); setDropState(false); }}>
+                    <OutsideAlerter state={() => { setCatDropState(false) }} className={classnames(styles.sort, styles.categ)} onClick={() => { setCatDropState((x) => !x); setDropState(false); }}>
                         <p unselectable="on">
                             Category: <span id="sort-label">{categs[cat].name}</span>{" "}
                         </p>
@@ -164,8 +185,8 @@ const Shop = () => {
                             ))}
                         </ul>
                         <img src="/images/drop.svg" className={catDropState ? styles.rotate : ""} alt="" />
-                    </div>
-                    <div className={styles.sort} onClick={() => { setDropState((x) => !x); setCatDropState(false); }}>
+                    </OutsideAlerter>
+                    <OutsideAlerter state={() => { setDropState(false) }} className={styles.sort} onClick={() => { setDropState((x) => !x); setCatDropState(false); }}>
                         <p unselectable="on">
                             Sort By: <span id="sort-label">{dropdownOptions[filters.dropdownSelection].text}</span>{" "}
                         </p>
@@ -186,18 +207,19 @@ const Shop = () => {
                             ))}
                         </ul>
                         <img src="/images/drop.svg" className={dropState ? styles.rotate : ""} alt="" />
-                    </div>
-
+                    </OutsideAlerter>
                 </div>
             </div>
-
+            {
+                filteredProducts.length === 0 && init === false ? <NotFound></NotFound> : ""
+            }
             <section className={classnames(styles.products, styles.shopPage)}>
                 {filteredProducts.length === 0 && init === true ? (
                     <>
                         <Product shimmer="true" />
                         <Product shimmer="true" />
                         <Product shimmer="true" />
-                        {window.innerWidth > 1650 ? <Product shimmer="true" /> : <></>}
+                        {window.innerWidth >= 1650 ? <Product shimmer="true" /> : <></>}
                     </>
                 ) : (
                     filteredProducts.map((product) => <Product key={product.id} shimmer={false} product={product} />)

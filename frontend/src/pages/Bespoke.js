@@ -9,15 +9,12 @@ const Bespoke = () => {
         email: "",
         desc: ""
     })
-    const [imgLoaded, setImgLoaded] = useState(false);
+    const [imgLoaded, setImgLoaded] = useState(true);
+
     useEffect(() => {
         window.scrollTo(0, 0);
-        const img = new Image();
-        img.src = "https://api.craftworxagra.co.in/uploads/custom_78e6bd0819.jpeg"
-        img.onload = () => {
-            setImgLoaded(true)
-        }
     }, []);
+    
     return (
         <>
             <Helmet>

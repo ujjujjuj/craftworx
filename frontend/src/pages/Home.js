@@ -136,14 +136,11 @@ const Home = () => {
             init1();
         else init();
 
-        fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?fields=name,price,category,discount&populate=images`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/api/products?fields=name,price,category,discount,weight,material,length,breadth,height&populate=images&sort=count%3Adesc&pagination[pageSize]=4`)
             .then((res) => res.json())
             .then((data) => {
                 let products = data.data.map((obj) => ({ id: obj.id, ...obj.attributes }));
-                if (products.length > 3)
-                    setPopProducts(products.slice(0, 3));
-                else
-                    setPopProducts(products)
+                setPopProducts(products)
             });
     }, []);
     return (

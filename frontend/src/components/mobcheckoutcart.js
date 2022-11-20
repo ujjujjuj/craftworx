@@ -9,14 +9,14 @@ export const MobileCheckoutCart = ({ shippingCost, prices, cartSize, cart, setCh
 
     return (<>
         <section className={classnames(styles.mobCart, dropState ? styles.drop : "")}>
-            <div className={styles.cartHeader}>
+            <div className={styles.cartHeader} onClick={() => setDropState((x) => !x)}>
                 <div className={styles.left}>
                     <img src="/images/cart.svg" alt="" />
                     <p>Your Cart</p>
                     <small>{cartSize} items</small>
                     <p>•&nbsp;&nbsp;₹ {shippingCost ? ((prices.amount + prices.tax) / 100 + shippingCost).toFixed(2) : ((prices.amount + prices.tax) / 100).toFixed(2)}</p>
                 </div>
-                <div className={styles.right} onClick={() => setDropState((x) => !x)}>
+                <div className={styles.right}>
                     <img src="/images/drop.svg" className={dropState ? styles.rotate : ""} alt="" />
                 </div>
             </div>

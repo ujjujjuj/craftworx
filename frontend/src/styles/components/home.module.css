@@ -510,7 +510,6 @@ nav {
     .popProducts {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
-
 }
 
 .userTestimonial {
@@ -559,6 +558,14 @@ nav {
     }
 }
 
+@media (max-width: 1649px) {
+
+    .popProducts .productCard:nth-child(4) {
+        display: none;
+    }
+}
+
+
 @media (max-width:1160px) {
     .userTestimonial {
         padding: 53px 70px;
@@ -577,9 +584,11 @@ nav {
     p.prodName {
         font-size: 0.9em;
     }
-    .popProducts{
+
+    .popProducts {
         grid-template-columns: 1fr 1fr 1fr;
     }
+
 }
 
 
@@ -681,7 +690,7 @@ nav {
         width: 87%;
     }
 
-    .popProducts{
+    .popProducts {
         grid-template-columns: 1fr;
         justify-items: center;
         row-gap: 35px;
@@ -691,7 +700,7 @@ nav {
         height: 52vw;
     }
 
-    .pViewAdd{
+    .pViewAdd {
         align-self: auto;
         width: 100%;
     }

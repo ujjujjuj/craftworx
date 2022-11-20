@@ -132,7 +132,7 @@
 
 .aboutImg.corporate {
     opacity: 1;
-    background-image: url('https://api.craftworxagra.co.in/uploads/corp_b2e4959f33.jpg');
+    background-image: url('../images/corporate.png');
     background-position: center;
     height: auto;
 
@@ -140,14 +140,14 @@
 
 .aboutImg.bespoke {
     opacity: 1;
-    background-image: url('https://api.craftworxagra.co.in/uploads/custom_78e6bd0819.jpeg');
+    background-image: url('../images/custom.png');
     background-position: top center;
     height: auto;
 }
 
 .aboutImg.aboutHeroImg {
     opacity: 1;
-    background-image: url('https://api.craftworxagra.co.in/uploads/about_Us_59822b8772.png');
+    background-image: url("../images/aboutUs.png");
     background-position: -20px 40px;
 }
 
