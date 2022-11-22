@@ -18,6 +18,7 @@
     "better-sqlite3": "7.4.6",
     "razorpay": "^2.8.1",
     "sqlite3": "5.0.8",
+    "strapi-plugin-measurement-protocol": "^1.0.1",
     "uuid": "^8.3.2"
   },
   "author": {

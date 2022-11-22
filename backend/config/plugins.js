@@ -16,4 +16,11 @@ module.exports = ({ env }) => ({
       },
     },
   },
+  "measurement-protocol": {
+    config: {
+      apiSecret: '26JtDHoYRC6XoXV5r6kATw',
+      measurementId: 'G-6BEMP9ZBY2',
+      useValidationServer: false,
+    }
+  }
 });
