@@ -50,6 +50,20 @@ export const getCartSize = (state) => {
     return n;
 };
 
+export const getCartValue = (state) => {
+    const amount = Object.values(state.cartState.items).reduce(
+        (a, b) => ({
+            price: a.price + (b.price - (b.discount * b.price) / 100) * b.quantity,
+        }),
+        {
+            price: 0,
+            quantity: 0,
+            discount: 0,
+        }
+    ).price;
+    return amount;
+}
+
 export const { toggleCart, setCartItem, deleteCartItem, emptyCart } = cartSlice.actions;
 
 export default cartSlice;

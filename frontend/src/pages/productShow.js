@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import classNames from "classnames";
 import useWindowDimensions from "../hooks/windowDimensions";
 import { ThreeDots } from "react-loader-spinner";
+import useAnalyticsEventTracker from "../api/useAnalyticsEventTracker";
+import { gtag } from "ga-gtag";
 const qs = require('qs');
 const ProductShow = () => {
     const { id } = useParams();
@@ -20,6 +22,7 @@ const ProductShow = () => {
     const { width } = useWindowDimensions();
     const [isLoading, setLoading] = useState(true)
     const [relatedArray, setRelated] = useState([]);
+    const gaEventTracker = useAnalyticsEventTracker("Product")
     useEffect(() => {
         window.scrollTo(0, 0)
         fetch(`${process.env.REACT_APP_SERVER_URL}/api/products/${id}?fields=*&populate=images,prod_categories`)
@@ -29,6 +32,7 @@ const ProductShow = () => {
                     id: data.data.id,
                     ...data.data.attributes
                 });
+                gaEventTracker("Product View", `ID:${data.data.id}; Name:${data.data.attributes.name}`)
                 setImgArray(data.data.attributes.images.data.map((e, n) => {
                     return {
                         url: e.attributes.url,
@@ -64,6 +68,31 @@ const ProductShow = () => {
                             return false
                     }));
                 })
+                gtag("event", "view_item")
+                gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                    fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            client_id: clientId,
+                            events: [{
+                                "name": "view_item",
+                                "params": {
+                                    "currency": "INR",
+                                    "value": data.data.attributes.price,
+                                    "items": [
+                                        {
+                                            "item_id": data.data.id,
+                                            "item_name": data.data.attributes.price,
+                                            "currency": "INR",
+                                            "discount": data.data.attributes.discount,
+                                            "price": data.data.attributes.price
+                                        }
+                                    ]
+                                }
+                            }]
+                        })
+                    })
+                });
             });
     }, [id]);
 

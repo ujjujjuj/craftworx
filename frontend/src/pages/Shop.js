@@ -8,6 +8,8 @@ import { getProducts } from "../api/products";
 import useWindowDimensions from "../hooks/windowDimensions";
 import OutsideAlerter from "../components/outsideClickDiv";
 import { NotFound } from "../components/NotFound";
+import useAnalyticsEventTracker from "../api/useAnalyticsEventTracker";
+import { gtag } from "ga-gtag";
 
 const dropdownOptions = [
     {
@@ -92,6 +94,21 @@ const Shop = () => {
             setFilteredProducts([])
             setInit(true)
             getProducts(pgNo, categs[cat].id, updateProducts, width < 1650 ? 21 : 24, dropdownOptions[filters.dropdownSelection].sortTag, filters.searchQuery)
+            gtag("event", "search")
+            gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        client_id: clientId,
+                        events: [{
+                            "name": "search",
+                            "params": {
+                                "search_term": filters.searchQuery
+                            }
+                        }]
+                    })
+                })
+            });
         }
         if (firstUpdate.current) {
             firstUpdate.current = false;
@@ -100,7 +117,7 @@ const Shop = () => {
         } else {
             timer = setTimeout(() => {
                 srch()
-            }, 500);
+            }, 600);
         }
         return () => clearTimeout(timer)
 
@@ -110,6 +127,21 @@ const Shop = () => {
         setFilteredProducts([])
         setInit(true)
         getProducts(pgNo, categs[cat].id, updateProducts, width < 1650 ? 21 : 24, dropdownOptions[filters.dropdownSelection].sortTag, filters.searchQuery)
+        gtag("event", "search")
+        gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+            fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                method: 'POST',
+                body: JSON.stringify({
+                    client_id: clientId,
+                    events: [{
+                        "name": "search",
+                        "params": {
+                            "search_term": filters.searchQuery
+                        }
+                    }]
+                })
+            })
+        });
     }
 
     useEffect(() => {
@@ -135,7 +167,7 @@ const Shop = () => {
         }
     }, [cat])
 
-
+    const gaEventTracker = useAnalyticsEventTracker("Shop")
     return (
         <>
             <Helmet>
@@ -177,7 +209,10 @@ const Shop = () => {
                             {categs.map((categ, index) => (
                                 <li
                                     key={index}
-                                    onClick={() => setCat(index)}
+                                    onClick={() => {
+                                        gaEventTracker("Category", categ.name)
+                                        setCat(index);
+                                    }}
                                     className={index === cat ? styles.selected : ""}
                                 >
                                     {categ.name}

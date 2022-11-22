@@ -1,8 +1,4 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import {
-    TransitionGroup,
-    CSSTransition
-} from "react-transition-group";
 import Navbar from "./components/Navbar";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
@@ -30,8 +26,20 @@ import { Reset } from "./pages/Reset";
 import { NewPass } from "./pages/NewPass";
 import { NotFound } from "./pages/NotFound";
 import { ChangePass } from "./pages/ChangePass";
+import ReactGA from 'react-ga';
+import { useEffect } from "react";
+import { install } from "ga-gtag"
+const TRACKING_ID = "G-6BEMP9ZBY2";
+ReactGA.initialize(TRACKING_ID);
+install('G-6BEMP9ZBY2');
 
 const App = () => {
+
+    useEffect(() => {
+        ReactGA.pageview(window.location.pathname + window.location.search);
+    }, []);
+
+
     return (
         <Router>
             <Navbar />

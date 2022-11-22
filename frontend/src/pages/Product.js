@@ -2,10 +2,33 @@ import styles from "../styles/components/home.module.css";
 import AddToCart from "../components/addToCart";
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
+import { gtag } from "ga-gtag";
 
 const Product = ({ product = { name: "Example Product", price: 42000, images: { data: null }, discount: 0 }, shimmer = false }) => {
     const navigate = useNavigate();
     const openProduct = () => {
+        gtag("event", "select_item")
+        gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+            fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                method: 'POST',
+                body: JSON.stringify({
+                    client_id: clientId,
+                    events: [{
+                        "name": "select_item",
+                        "params": {
+                            "items": [
+                                {
+                                    "item_id": product.id,
+                                    "item_name": product.name,
+                                    "discount": product.discount ?? 0,
+                                    "price": product.price / 100
+                                }
+                            ]
+                        }
+                    }]
+                })
+            })
+        });
         navigate(`/product/${product.id}`);
     }
 

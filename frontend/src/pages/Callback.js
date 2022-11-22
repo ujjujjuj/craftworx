@@ -5,6 +5,7 @@ import { loginUser } from "../app/authSlice";
 import { ThreeDots } from "react-loader-spinner";
 import updateUserDb from "../api/update";
 import { Helmet } from "react-helmet";
+import { gtag } from "ga-gtag";
 
 const toTitleCase = (str) => {
     return str.replace(
@@ -47,6 +48,21 @@ const Callback = () => {
                             }, data.jwt, data.user.id)
                         }
                     }
+                    gtag("event", "login")
+                    gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                        fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                client_id: clientId,
+                                events: [{
+                                    "name": "login",
+                                    "params": {
+                                        "method": "Google"
+                                    }
+                                }]
+                            })
+                        })
+                    });
                     dispatch(loginUser(data));
                     navigate("/shop");
                 } else {

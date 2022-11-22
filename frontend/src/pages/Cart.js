@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getCartSize, toggleCart } from "../app/cartSlice";
+import useAnalyticsEventTracker from "../api/useAnalyticsEventTracker";
 
 const Cart = () => {
     const cart = useSelector((state) => state.cartState);
@@ -13,7 +14,7 @@ const Cart = () => {
     const navigate = useNavigate();
     const [prices, setPrices] = useState({ amount: 0, tax: 0 });
     const location = useLocation();
-
+    const gaEventTracker = useAnalyticsEventTracker("Cart");
     useEffect(() => {
         const closeOnEscape = (e) => {
             if (e.key === "Escape" && !location.pathname.includes("checkout")) {
@@ -26,6 +27,8 @@ const Cart = () => {
             document.removeEventListener("keydown", closeOnEscape);
         };
     });
+
+
 
     useEffect(() => {
         const amount = Object.values(cart.items).reduce(
@@ -117,6 +120,7 @@ const Cart = () => {
                             className={classnames(styles.checkout, cartSize ? "" : styles.disabled)}
                             onClick={() => {
                                 if (cartSize) {
+                                    gaEventTracker("Checkout")
                                     dispatch(toggleCart());
                                     navigate("/checkout");
                                 }

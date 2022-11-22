@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../app/authSlice";
 import { ThreeDots } from "react-loader-spinner";
 import { Helmet } from "react-helmet";
+import useAnalyticsEventTracker from "../api/useAnalyticsEventTracker";
+import { gtag } from "ga-gtag";
 
 const Login = () => {
     const [formData, setFormData] = useState({ identifier: "", password: "" });
@@ -31,6 +33,7 @@ const Login = () => {
     }, []);
 
     const formSubmit = (e) => {
+        gaEventTracker("Sign In")
         e.preventDefault();
         setLoading(true);
         setError("")
@@ -43,12 +46,26 @@ const Login = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data)
                 if (data.data === null) {
                     setLoading(false);
                     setError("Invalid Email & Password combination");
                     return console.log(data);
                 }
+                gtag("event", "login")
+                gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                    fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            client_id: clientId,
+                            events: [{
+                                "name": "login",
+                                "params": {
+                                    "method": "Normal"
+                                }
+                            }]
+                        })
+                    })
+                });
                 dispatch(loginUser(data));
                 if (state?.fromCheckout) navigate("/checkout");
                 else navigate("/shop");
@@ -57,6 +74,8 @@ const Login = () => {
                 console.log(e);
             });
     };
+
+    const gaEventTracker = useAnalyticsEventTracker('Login');
 
     return (
         <>

@@ -15,6 +15,8 @@ import { updateAddr } from "../app/authSlice";
 import updateUserDb from "../api/update";
 import useWindowDimensions from "../hooks/windowDimensions";
 import { MobileCheckoutCart } from "../components/mobcheckoutcart";
+import useAnalyticsEventTracker from "../api/useAnalyticsEventTracker";
+import { gtag } from "ga-gtag";
 
 const Checkout = () => {
     const cart = useSelector((state) => state.cartState);
@@ -131,6 +133,10 @@ const Checkout = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cart]);
 
+
+
+
+
     useEffect(() => {
         const amount = Object.values(cart.items).reduce(
             (a, b) => ({
@@ -144,6 +150,38 @@ const Checkout = () => {
         ).price;
         const tax = ((amount * 18) / 100);
         setPrices({ amount, tax });
+        if (refresh.current === 0) {
+            let items = []
+            Object.values(cart.items).forEach((x, n) => {
+                items.push(
+                    {
+                        "item_id": x.id,
+                        "item_name": x.name,
+                        "currency": "INR",
+                        "discount": x.discount ?? 0,
+                        "index": n,
+                        "price": x.price / 100,
+                        "quantity": x.quantity
+                    })
+            });
+            gtag("event", "begin_checkout")
+            gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        client_id: clientId,
+                        events: [{
+                            "name": "begin_checkout",
+                            "params": {
+                                "currency": "INR",
+                                "value": amount,
+                                "items": items
+                            }
+                        }]
+                    })
+                })
+            });
+        }
     }, [cart]);
 
     useEffect(() => {
@@ -256,6 +294,7 @@ const Checkout = () => {
         setStates(state);
     }
 
+    const gaEventTracker = useAnalyticsEventTracker("Checkout")
 
     return (
         <>
@@ -300,6 +339,7 @@ const Checkout = () => {
                             <div
                                 className={styles1.button}
                                 onClick={() => {
+                                    gaEventTracker("Login")
                                     navigate("/login", {
                                         state: {
                                             fromCheckout: true,
@@ -313,6 +353,7 @@ const Checkout = () => {
                             <div
                                 className={classnames(styles1.button, styles1.buttonAlt)}
                                 onClick={() => {
+                                    gaEventTracker("Guest")
                                     setProcessState("unAuth");
                                 }}
                             >

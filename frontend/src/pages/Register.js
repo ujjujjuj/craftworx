@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { loginUser } from "../app/authSlice";
 import { ThreeDots } from "react-loader-spinner";
 import { Helmet } from "react-helmet";
+import { gtag } from "ga-gtag";
 
 const Register = () => {
     const [formData, setFormData] = useState({ username: "", password: "", firstName: "", lastName: "" });
@@ -41,6 +42,21 @@ const Register = () => {
                     setLoading(false)
                     return console.log(data);
                 }
+                gtag("event", "sign_up")
+                gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                    fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            client_id: clientId,
+                            events: [{
+                                "name": "sign_up",
+                                "params": {
+                                    "method": "Normal"
+                                }
+                            }]
+                        })
+                    })
+                });
                 setLoading(false)
                 dispatch(loginUser(data));
                 navigate("/shop");

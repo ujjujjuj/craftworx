@@ -5,8 +5,9 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import useWindowDimensions from "../hooks/windowDimensions";
 import { useSelector, useDispatch } from "react-redux";
-import { getCartSize, toggleCart } from "../app/cartSlice";
+import { getCartSize, getCartValue, toggleCart } from "../app/cartSlice";
 import { useEffect } from "react";
+import { gtag } from "ga-gtag";
 
 const tabs = [
     {
@@ -35,6 +36,7 @@ const Navbar = () => {
     const cartSize = useSelector(getCartSize);
     const dispatch = useDispatch();
     const user = useSelector((state) => state.authState);
+    const cartValue = useSelector(getCartValue);
     const location = useLocation();
     const [isNavExpanded, setNavExpanded] = useState(false)
     const [isUserExpanded, setUserExpanded] = useState(false)
@@ -44,6 +46,21 @@ const Navbar = () => {
     const checkEnter = (e) => {
         if (e.key === "Enter") {
             setSearch("");
+            gtag("event", "search")
+            gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        client_id: clientId,
+                        events: [{
+                            "name": "search",
+                            "params": {
+                                "search_term": search
+                            }
+                        }]
+                    })
+                })
+            });
             navigate(`/shop?q=${search}`);
         }
     };
@@ -88,7 +105,24 @@ const Navbar = () => {
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={checkEnter}
                         />
-                        <img src="/images/search.svg" alt="" />
+                        <img src="/images/search.svg" onClick={() => {
+                            gtag("event", "search")
+                            gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                                fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                                    method: 'POST',
+                                    body: JSON.stringify({
+                                        client_id: clientId,
+                                        events: [{
+                                            "name": "search",
+                                            "params": {
+                                                "search_term": search
+                                            }
+                                        }]
+                                    })
+                                })
+                            });
+                            navigate(`/shop?q=${search}`);
+                        }} alt="" />
                     </div>
                 ) : (
                     <></>
@@ -103,7 +137,24 @@ const Navbar = () => {
                                 onChange={(e) => setSearch(e.target.value)}
                                 onKeyDown={checkEnter}
                             />
-                            <img src="/images/search.svg" alt="" />
+                            <img src="/images/search.svg" onClick={() => {
+                                gtag("event", "search")
+                                gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                                    fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                                        method: 'POST',
+                                        body: JSON.stringify({
+                                            client_id: clientId,
+                                            events: [{
+                                                "name": "search",
+                                                "params": {
+                                                    "search_term": search
+                                                }
+                                            }]
+                                        })
+                                    })
+                                });
+                                navigate(`/shop?q=${search}`);
+                            }} alt="" />
                         </div>
                     ) : (
                         <></>
@@ -112,6 +163,7 @@ const Navbar = () => {
                         className={classnames(styles.item, styles.cartNav)}
                         onClick={() => {
                             dispatch(toggleCart());
+
                         }}
                     >
                         <div className={styles.cartWrap}>

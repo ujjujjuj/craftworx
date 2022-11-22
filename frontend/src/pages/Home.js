@@ -15,10 +15,12 @@ import { useNavigate } from "react-router-dom";
 import useWindowDimensions from "../hooks/windowDimensions";
 import { Helmet } from "react-helmet";
 import { testimonials } from "../data/testimonials";
+import useAnalyticsEventTracker from "../api/useAnalyticsEventTracker";
 
 const Home = () => {
     const navigate = useNavigate();
     const { width } = useWindowDimensions();
+    const gaEventTracker = useAnalyticsEventTracker('Home');
     const init = () => {
         gsap.set(`${styles.container}`, { perspective: 600 });
         gsap.set("img", { xPercent: "-50%", yPercent: "-50%" });
@@ -162,7 +164,7 @@ const Home = () => {
                         you with the best quality of services with premium packaging that will leave
                         everyone awestruck.
                     </p>
-                    <div className={styles.shopBtn} onClick={() => { navigate('/shop') }}>Shop now</div>
+                    <div className={styles.shopBtn} onClick={() => { gaEventTracker("Shop Now"); navigate('/shop'); }}>Shop now</div>
                 </div>
             </div>
             <section className={styles.homeSec1}>
@@ -221,7 +223,7 @@ const Home = () => {
                 >
                     {
                         testimonials.map((elem, n) =>
-                            <SwiperSlide>
+                            <SwiperSlide key={n}>
                                 <UserTestimonial content={elem.review} key={n} name={elem.name} desig={elem.from} ></UserTestimonial>
                             </SwiperSlide>
                         )

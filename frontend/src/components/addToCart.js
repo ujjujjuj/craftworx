@@ -3,10 +3,12 @@ import classnames from "classnames";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCartItem } from "../app/cartSlice";
-
+import useAnalyticsEventTracker from "../api/useAnalyticsEventTracker";
+import { gtag } from "ga-gtag";
 const AddToCart = ({ product, ctx, qty }) => {
     const dispatch = useDispatch();
     const [btnText, setBtnText] = useState("Add to cart");
+    const gaEventTracker = useAnalyticsEventTracker("Add to Cart")
     useEffect(() => {
         if (btnText === "Added") {
             setTimeout(() => {
@@ -29,7 +31,33 @@ const AddToCart = ({ product, ctx, qty }) => {
                     } else {
                         dispatch(setCartItem({ amount: qty, product }));
                     }
+                    gaEventTracker("Added to cart", `Name: ${product.name}; ID: ${product.id}`)
                     setBtnText("Added");
+                    gtag("event", "add_to_cart")
+                    gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                        fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                client_id: clientId,
+                                events: [{
+                                    "name": "add_to_cart",
+                                    "params": {
+                                        "currency": "INR",
+                                        "value": (product.price / 100) * (ctx ? qty : 1),
+                                        "items": [
+                                            {
+                                                "item_id": product.id,
+                                                "item_name": product.name,
+                                                "discount": product.discount ?? 0,
+                                                "price": product.price / 100,
+                                                "quantity": ctx ? qty : 1
+                                            }
+                                        ]
+                                    }
+                                }]
+                            })
+                        })
+                    });
                 }}
             >
                 {btnText === "Added" ? <i className="fas fa-check"></i> : <img src="/images/cart.svg" alt="" />}

@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteCartItem, getCartSize, setCartItem, toggleCart } from "../app/cartSlice";
 import { useEffect } from "react";
 import classNames from "classnames";
+import useAnalyticsEventTracker from "../api/useAnalyticsEventTracker";
+import { gtag } from "ga-gtag";
 
 const CartItem = ({ product, checkoutModalState, isSm }) => {
     // const { setCartItem, deleteCartItem, cart, toggleCart,getCartSize } = useCart();
@@ -12,6 +14,7 @@ const CartItem = ({ product, checkoutModalState, isSm }) => {
     const location = useLocation();
     const cart = useSelector((state) => state.cartState);
     const cartSize = useSelector(getCartSize);
+    const gaEventTracker = useAnalyticsEventTracker("Cart");
     let productFinalAmt = (product.price - ((product.discount ?? 0) * product.price) / 100);
     return (
         <>
@@ -67,6 +70,33 @@ const CartItem = ({ product, checkoutModalState, isSm }) => {
                         <i
                             className="far fa-trash-alt"
                             onClick={() => {
+                                gaEventTracker("Product Abandoned", `Name: ${product.name}; ID:${product.id}`)
+                                gtag("event", "remove_from_cart")
+                                gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                                    fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                                        method: 'POST',
+                                        body: JSON.stringify({
+                                            client_id: clientId,
+                                            events: [{
+                                                "name": "remove_from_cart",
+                                                "params": {
+                                                    "currency": "INR",
+                                                    "value": (product.price / 100) * product.quantity,
+                                                    "items": [
+                                                        {
+                                                            "item_id": product.id,
+                                                            "item_name": product.name,
+                                                            "currency": "INR",
+                                                            "discount": product.discount ?? 0,
+                                                            "price": product.price / 100,
+                                                            "quantity": product.quantity
+                                                        }
+                                                    ]
+                                                }
+                                            }]
+                                        })
+                                    })
+                                });
                                 if (location.pathname.includes("checkout") && Object.keys(cart.items).length === 1) {
                                     checkoutModalState(true);
                                 } else dispatch(deleteCartItem(product.id));
