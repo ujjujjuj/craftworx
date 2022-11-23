@@ -47,7 +47,7 @@ const Navbar = () => {
         if (e.key === "Enter") {
             setSearch("");
             gtag("event", "search")
-            gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+            gtag('get', 'G-SC82Z7RD6Y', 'client_id', (clientId) => {
                 fetch('https://api.craftworxagra.co.in/api/analytics/collect', {
                     headers: {
                         "Content-Type": "application/json",
@@ -110,7 +110,7 @@ const Navbar = () => {
                         />
                         <img src="/images/search.svg" onClick={() => {
                             gtag("event", "search")
-                            gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                            gtag('get', 'G-SC82Z7RD6Y', 'client_id', (clientId) => {
                                 fetch('https://api.craftworxagra.co.in/api/analytics/collect', {
                                     headers: {
                                         "Content-Type": "application/json",
@@ -145,7 +145,7 @@ const Navbar = () => {
                             />
                             <img src="/images/search.svg" onClick={() => {
                                 gtag("event", "search")
-                                gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                                gtag('get', 'G-SC82Z7RD6Y', 'client_id', (clientId) => {
                                     fetch('https://api.craftworxagra.co.in/api/analytics/collect', {
                                         headers: {
                                             "Content-Type": "application/json",

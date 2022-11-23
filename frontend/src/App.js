@@ -29,9 +29,9 @@ import { ChangePass } from "./pages/ChangePass";
 import ReactGA from 'react-ga';
 import { useEffect } from "react";
 import { install } from "ga-gtag"
-const TRACKING_ID = "G-6BEMP9ZBY2";
+const TRACKING_ID = "G-SC82Z7RD6Y";
 ReactGA.initialize(TRACKING_ID);
-install('G-6BEMP9ZBY2');
+install('G-SC82Z7RD6Y');
 
 const App = () => {
 

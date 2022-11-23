@@ -34,7 +34,7 @@ const AddToCart = ({ product, ctx, qty }) => {
                     gaEventTracker("Added to cart", `Name: ${product.name}; ID: ${product.id}`)
                     setBtnText("Added");
                     gtag("event", "add_to_cart")
-                    gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+                    gtag('get', 'G-SC82Z7RD6Y', 'client_id', (clientId) => {
                         fetch('https://api.craftworxagra.co.in/api/analytics/collect', {
                             method: 'POST',
                             headers: {

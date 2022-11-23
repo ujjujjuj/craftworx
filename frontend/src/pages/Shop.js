@@ -95,7 +95,7 @@ const Shop = () => {
             setInit(true)
             getProducts(pgNo, categs[cat].id, updateProducts, width < 1650 ? 21 : 24, dropdownOptions[filters.dropdownSelection].sortTag, filters.searchQuery)
             gtag("event", "search")
-            gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+            gtag('get', 'G-SC82Z7RD6Y', 'client_id', (clientId) => {
                 fetch('https://api.craftworxagra.co.in/api/analytics/collect', {
                     headers: {
                         "Content-Type": "application/json",
@@ -131,7 +131,7 @@ const Shop = () => {
         setInit(true)
         getProducts(pgNo, categs[cat].id, updateProducts, width < 1650 ? 21 : 24, dropdownOptions[filters.dropdownSelection].sortTag, filters.searchQuery)
         gtag("event", "search")
-        gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
+        gtag('get', 'G-SC82Z7RD6Y', 'client_id', (clientId) => {
             fetch('https://api.craftworxagra.co.in/api/analytics/collect', {
                 headers: {
                     "Content-Type": "application/json",
