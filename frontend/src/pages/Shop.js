@@ -96,7 +96,10 @@ const Shop = () => {
             getProducts(pgNo, categs[cat].id, updateProducts, width < 1650 ? 21 : 24, dropdownOptions[filters.dropdownSelection].sortTag, filters.searchQuery)
             gtag("event", "search")
             gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
-                fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                fetch('https://api.craftworxagra.co.in/api/analytics/collect', {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                     method: 'POST',
                     body: JSON.stringify({
                         client_id: clientId,
@@ -129,7 +132,10 @@ const Shop = () => {
         getProducts(pgNo, categs[cat].id, updateProducts, width < 1650 ? 21 : 24, dropdownOptions[filters.dropdownSelection].sortTag, filters.searchQuery)
         gtag("event", "search")
         gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
-            fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+            fetch('https://api.craftworxagra.co.in/api/analytics/collect', {
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 method: 'POST',
                 body: JSON.stringify({
                     client_id: clientId,

@@ -44,7 +44,10 @@ const Register = () => {
                 }
                 gtag("event", "sign_up")
                 gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
-                    fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                    fetch('https://api.craftworxagra.co.in/api/analytics/collect', {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
                         method: 'POST',
                         body: JSON.stringify({
                             client_id: clientId,

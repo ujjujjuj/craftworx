@@ -73,7 +73,10 @@ const CartItem = ({ product, checkoutModalState, isSm }) => {
                                 gaEventTracker("Product Abandoned", `Name: ${product.name}; ID:${product.id}`)
                                 gtag("event", "remove_from_cart")
                                 gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
-                                    fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                                    fetch('https://api.craftworxagra.co.in/api/analytics/collect', {
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
                                         method: 'POST',
                                         body: JSON.stringify({
                                             client_id: clientId,

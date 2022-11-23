@@ -35,8 +35,11 @@ const AddToCart = ({ product, ctx, qty }) => {
                     setBtnText("Added");
                     gtag("event", "add_to_cart")
                     gtag('get', 'G-6BEMP9ZBY2', 'client_id', (clientId) => {
-                        fetch('https://api.craftworxagra.co.in/api/measurement-protocol/collect', {
+                        fetch('https://api.craftworxagra.co.in/api/analytics/collect', {
                             method: 'POST',
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
                             body: JSON.stringify({
                                 client_id: clientId,
                                 events: [{

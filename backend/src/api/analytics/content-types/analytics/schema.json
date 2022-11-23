@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "analytics",
+  "info": {
+    "singularName": "analytics",
+    "pluralName": "analytic",
+    "displayName": "Analytics",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "id": {
+      "type": "uid"
+    }
+  }
+}
