@@ -1,5 +1,5 @@
 'use strict';
-
+const axios = require("axios");
 const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController("api::analytics.analytics", ({ strapi }) => ({
@@ -7,10 +7,7 @@ module.exports = createCoreController("api::analytics.analytics", ({ strapi }) =
     send(ctx) {
         const payload = ctx.request.body;
 
-        fetch(`https://www.google-analytics.com/mp/collect?measurement_id=G-SC82Z7RD6Y&api_secret=ucjKJE3CTYmHEk1WGYsjdQ`, {
-            method: "POST",
-            body: JSON.stringify(payload)
-        });
+        axios.post(`https://www.google-analytics.com/mp/collect?measurement_id=G-SC82Z7RD6Y&api_secret=ucjKJE3CTYmHEk1WGYsjdQ`, payload);
 
         // if (!payload.client_id) {
         //     return ctx.badRequest('client_id is required');
