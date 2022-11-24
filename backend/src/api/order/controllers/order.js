@@ -500,4 +500,23 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
       });
     ctx.body = { invoice: res.data.invoice_url };
   },
+
+  form(ctx) {
+    strapi
+      .plugin("email")
+      .service("email")
+      .send({
+        to: "ujjwaldimri123@gmail.com",
+        from: "Craftworx Agra <admin@craftworxagra.co.in>",
+        subject: "New Form Response",
+        html: JSON.stringify(ctx.request.body),
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    ctx.body = { error: false };
+  },
 }));

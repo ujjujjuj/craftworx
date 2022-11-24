@@ -47,6 +47,14 @@ module.exports = {
       config: {
         auth: false,
       },
-    },
+    },{
+      method: 'POST',
+      path: '/order/form',
+      handler: 'order.form',
+      config: {
+          auth: false,
+          policies: [],
+      },
+  },
   ],
 };

@@ -8,7 +8,7 @@ module.exports = {
                 auth: false,
                 policies: [],
             },
-        },
+        }
     ],
 
 };

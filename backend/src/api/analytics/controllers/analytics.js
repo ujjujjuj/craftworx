@@ -25,5 +25,5 @@ module.exports = createCoreController("api::analytics.analytics", ({ strapi }) =
         //     });
 
         return 'OK';
-    },
+    }
 }));
